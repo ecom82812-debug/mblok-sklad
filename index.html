@@ -522,6 +522,7 @@ function initApp(){
   // Products
   onSnapshot(collection(db,'products'),snap=>{
     allItems=snap.docs.map(d=>({id:d.id,...d.data()}));
+    allItems.sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
     renderStats(); renderPage(); setSyncStatus('ok');
   },()=>{setSyncStatus('error');toast('Помилка підключення','err');});
   // DS items
@@ -800,10 +801,11 @@ window.dragDrop=async function(e,targetId){
   const [moved]=whItems.splice(srcIdx,1);
   whItems.splice(tgtIdx,0,moved);
 
-  // Assign new order values
+  // Assign new order values and update global allItems
   whItems.forEach((item,i)=>{
+    item.order=i*10;
     const global=allItems.find(r=>r.id===item.id);
-    if(global)global.order=i*10;
+    if(global) global.order=i*10;
   });
 
   sortBy='order';
@@ -1002,7 +1004,8 @@ window.saveItem=async function(){
   if(!name){toast('Введи назву','err');return;}
   const id=document.getElementById('editId').value||undefined;
   const existing=id?allItems.find(x=>x.id===id):{};
-  const item={id,name,art:document.getElementById('fArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),order:existing.order||Date.now()};
+  const maxOrder=allItems.filter(r=>r.warehouse===document.getElementById('fWarehouse').value).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
+  const item={id,name,art:document.getElementById('fArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),order:existing.order!==undefined?existing.order:maxOrder+10};
   closeModal();await saveToDb(item);toast(id?'Оновлено':'Додано','ok');
 };
 
