@@ -467,7 +467,7 @@ const db = getFirestore(app);
 const SUP_COLORS = ['#1a5a9a','#1e6e35','#92610a','#8b3a8b','#b83232','#1a7a7a','#5a4a1a','#3a3a8b'];
 
 let allItems=[], allWarehouses=[], allDsItems=[], allSuppliers=[];
-let activeTab='wh_1', activeFilter='all', searchQ='', sortBy='name';
+let activeTab='wh_1', activeFilter='all', searchQ='', sortBy=localStorage.getItem('mblok_sort')||'order';
 let deleteTargetId=null, deleteTargetType=null, confirmCallback=null;
 let editingCell=null, incomingItemId=null, incMode=1;
 let currentUser=null, undoStack=[], undoTimer=null;
@@ -685,7 +685,7 @@ function renderWarehouse(){
       <button class="chip${activeFilter==='zero'?' active-red':''}" onclick="setFilter('zero',this)">✕ Нульові</button>
     </div>
     <div class="ml-auto">
-      <select id="sortSelect" onchange="sortBy=this.value;renderPage()" style="height:30px;font-size:12px;padding:0 8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted);font-family:inherit">
+      <select id="sortSelect" onchange="sortBy=this.value;localStorage.setItem('mblok_sort',this.value);renderPage()" style="height:30px;font-size:12px;padding:0 8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted);font-family:inherit">
         <option value="order"${sortBy==='order'?' selected':''}>Свій порядок</option>
         <option value="name"${sortBy==='name'?' selected':''}>За назвою</option>
         <option value="qty"${sortBy==='qty'?' selected':''}>За кількістю</option>
@@ -809,6 +809,7 @@ window.dragDrop=async function(e,targetId){
   });
 
   sortBy='order';
+  localStorage.setItem('mblok_sort','order');
   renderPage();
 
   // Save to Firebase
