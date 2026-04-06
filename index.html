@@ -18,8 +18,9 @@
 }
 body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh}
 
+/* LOGIN */
 .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:36px 32px;width:100%;max-width:360px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:36px 32px;width:100%;max-width:360px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
 .login-logo{font-size:20px;font-weight:600;margin-bottom:6px}.login-logo span{color:var(--green)}
 .login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
 .login-group{margin-bottom:14px}
@@ -32,10 +33,11 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 
 .app{display:none}
 
-.header{display:flex;align-items:center;gap:16px;padding:0 24px;height:54px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.logo{font-size:15px;font-weight:600;letter-spacing:-.5px}.logo span{color:var(--green)}
+/* HEADER */
+.header{display:flex;align-items:center;gap:12px;padding:0 20px;height:54px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.5px;flex-shrink:0}.logo span{color:var(--green)}
 .header-mid{flex:1;display:flex;align-items:center}
-.search-box{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:0 12px;height:34px;flex:1;max-width:360px}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:0 12px;height:34px;flex:1;max-width:340px}
 .search-box svg{width:14px;height:14px;color:var(--muted);flex-shrink:0}
 .search-box input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;width:100%}
 .search-box input::placeholder{color:var(--muted2)}
@@ -47,6 +49,7 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 .logout-btn{font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:var(--r-sm)}
 .logout-btn:hover{background:var(--surface2);color:var(--text)}
 
+/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:var(--r-sm);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;white-space:nowrap}
 .btn:hover{background:var(--surface2)}.btn:active{transform:scale(.97)}
 .btn-primary{background:var(--green);color:#fff;border-color:var(--green);font-weight:600}
@@ -58,27 +61,35 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 .btn-incoming{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500}
 .btn-incoming:hover{background:#ddeafc}
 
+/* ±1 */
 .qty-ctrl{display:inline-flex;align-items:center;gap:5px}
 .qty-btn{width:26px;height:26px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;flex-shrink:0;line-height:1}
 .qty-btn:hover{background:var(--green-bg);border-color:var(--green);color:var(--green)}
 .qty-btn.minus:hover{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 .qty-btn:active{transform:scale(.88)}
 
-.main{padding:20px 24px;max-width:1500px;margin:0 auto}
+.main{padding:16px 20px;max-width:1600px;margin:0 auto}
 
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
-.stat-label{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.stat-val{font-size:20px;font-weight:600;font-family:'JetBrains Mono',monospace}
-.stat-val.g{color:var(--green)}.stat-val.a{color:var(--amber)}.stat-val.r{color:var(--red)}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.stat-label{font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.stat-val{font-size:19px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.stat-val.g{color:var(--green)}.stat-val.a{color:var(--amber)}.stat-val.r{color:var(--red)}.stat-val.b{color:var(--blue)}
 
-.tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:4px;width:fit-content}
-.tab{height:30px;padding:0 16px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:13px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:500}
+/* TABS */
+.tabs-wrap{display:flex;align-items:center;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.tabs{display:flex;gap:3px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:3px;flex-shrink:0}
+.tab{height:30px;padding:0 14px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:13px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:500;white-space:nowrap;position:relative}
 .tab.active{background:var(--surface2);color:var(--text);border:1px solid var(--border2)}
 .tab:hover:not(.active){color:var(--text)}
+.tab-rename-input{height:26px;padding:0 6px;border:1.5px solid var(--green);border-radius:4px;font-size:13px;font-family:inherit;outline:none;background:var(--surface);color:var(--text);min-width:80px}
+.add-tab-btn{height:30px;padding:0 12px;border-radius:6px;border:1px dashed var(--border2);background:transparent;color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;white-space:nowrap}
+.add-tab-btn:hover{border-color:var(--green);color:var(--green)}
 
+/* TOOLBAR */
 .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.filter-chips{display:flex;gap:6px}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap}
 .chip{height:28px;padding:0 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s}
 .chip:hover{color:var(--text);border-color:var(--border2)}
 .chip.active{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
@@ -86,32 +97,36 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 .chip.active-red{background:var(--red-bg);border-color:var(--red-border);color:var(--red)}
 .ml-auto{margin-left:auto}
 
+/* TABLE */
 .tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .tbl-scroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead tr{border-bottom:1px solid var(--border)}
-th{padding:10px 12px;text-align:left;font-weight:500;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;background:var(--surface2)}
+th{padding:9px 12px;text-align:left;font-weight:500;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;background:var(--surface2)}
 th.r,td.r{text-align:right}
-td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#fafaf8}
 tr.editing td{background:var(--green-bg)}
+tr.row-zero td{opacity:.5}
+tr.row-zero .p-name{text-decoration:line-through;color:var(--muted)}
+tr.row-zero .product-img,tr.row-zero .product-img-placeholder{filter:grayscale(70%)}
+tr.drag-over td{background:var(--green-bg);border-top:2px solid var(--green)}
+tr.dragging{opacity:.4}
+.drag-handle{cursor:grab;color:var(--muted2);font-size:16px;padding:0 4px;user-select:none;line-height:1}
+.drag-handle:hover{color:var(--muted)}
+.drag-handle:active{cursor:grabbing}
 
 .cell-view{cursor:pointer;border-radius:4px;padding:2px 5px;margin:-2px -5px;transition:background .12s;display:inline-block}
 .cell-view:hover{background:var(--surface2)}
 .cell-input{background:var(--surface);border:1.5px solid var(--green);border-radius:4px;padding:3px 7px;color:var(--text);font-size:13px;font-family:inherit;outline:none}
 
-.td-photo{width:62px}
+.td-photo{width:66px}
 .product-img{width:58px;height:58px;border-radius:6px;object-fit:cover;border:1px solid var(--border);cursor:pointer}
 .product-img-placeholder{width:58px;height:58px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
 .td-name{min-width:180px}
 .p-name{font-weight:500;margin-bottom:1px}
 .p-art{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-tr.row-zero td{opacity:.5}
-tr.row-zero .p-name{text-decoration:line-through;text-decoration-color:var(--muted);color:var(--muted)}
-tr.row-zero .product-img{filter:grayscale(60%)}
-tr.row-zero .product-img-placeholder{filter:grayscale(60%)}
-
 .qty{display:inline-flex;align-items:center;justify-content:center;min-width:36px;padding:3px 8px;border-radius:20px;font-weight:600;font-size:12px;font-family:'JetBrains Mono',monospace}
 .qty-zero{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
 .qty-low{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
@@ -119,35 +134,72 @@ tr.row-zero .product-img-placeholder{filter:grayscale(60%)}
 .price{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
 .total-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500}
 .wh-badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px}
-.wh1{background:var(--green-bg);color:var(--green)}.wh2{background:var(--blue-bg);color:var(--blue)}
 
 .row-acts{display:flex;gap:4px;justify-content:flex-end;align-items:center}
 .row-acts-hidden{opacity:0;transition:opacity .15s}
 tr:hover .row-acts-hidden{opacity:1}
-
-.tbl-footer td{background:var(--surface2);font-weight:600;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);padding:10px 12px;border-top:1px solid var(--border2)}
+.tbl-footer td{background:var(--surface2);font-weight:600;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);padding:9px 12px;border-top:1px solid var(--border2)}
 .tbl-footer .total-sum{color:var(--green);font-size:13px}
 
+/* DROPSHIPPING GRID */
+.ds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.ds-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .15s}
+.ds-card:hover{border-color:var(--border2)}
+.ds-card-img{width:100%;height:120px;background:var(--surface2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.ds-card-img img{width:100%;height:100%;object-fit:cover}
+.ds-card-img svg{width:28px;height:28px;color:var(--muted2)}
+.ds-card-body{padding:10px 12px}
+.ds-sup-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-bottom:6px}
+.ds-name{font-size:13px;font-weight:500;margin-bottom:2px;line-height:1.35}
+.ds-art{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.ds-price{font-size:15px;font-weight:600;color:var(--green);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.ds-note{font-size:11px;color:var(--muted);border-left:2px solid var(--border2);padding-left:7px;margin-bottom:8px;line-height:1.4}
+.ds-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:8px}
+.ds-link{font-size:11px;color:var(--blue);display:flex;align-items:center;gap:4px;text-decoration:none}
+.ds-link:hover{text-decoration:underline}
+.ds-link svg{width:11px;height:11px;flex-shrink:0}
+.ds-acts{display:flex;gap:4px}
+.ds-add-card{border:1px dashed var(--border2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;min-height:200px;cursor:pointer;transition:all .15s;color:var(--muted);font-size:13px;flex-direction:column;gap:8px}
+.ds-add-card:hover{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.ds-add-card svg{width:24px;height:24px}
+
+/* SUPPLIERS BAR */
+.sup-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.sup-item{display:flex;align-items:center;gap:6px;cursor:pointer;padding:3px 8px;border-radius:20px;border:1px solid transparent;transition:all .15s}
+.sup-item:hover{background:var(--surface2);border-color:var(--border)}
+.sup-item.active{border-color:var(--border2);background:var(--surface2)}
+.sup-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sup-label{font-size:12px;color:var(--muted)}
+.sup-count{font-size:10px;padding:1px 6px;border-radius:10px;background:var(--surface2);color:var(--muted)}
+.sup-sep{width:1px;height:16px;background:var(--border)}
+.sup-manage{font-size:12px;color:var(--blue);cursor:pointer;margin-left:auto;background:none;border:none;font-family:inherit}
+.sup-manage:hover{text-decoration:underline}
+
+/* MODAL */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
 .overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.15)}
-.modal-hdr{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);width:100%;max-width:500px;max-height:92vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.15)}
+.modal-hdr{padding:18px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .modal-title{font-size:15px;font-weight:600}
 .modal-x{background:none;border:none;cursor:pointer;color:var(--muted);font-size:22px;line-height:1;padding:0}
 .modal-x:hover{color:var(--text)}
-.modal-body{padding:20px}.modal-footer{padding:0 20px 20px;display:flex;gap:8px;justify-content:flex-end}
-.form-group{margin-bottom:14px}
+.modal-body{padding:18px}.modal-footer{padding:0 18px 18px;display:flex;gap:8px;justify-content:flex-end}
+.form-group{margin-bottom:13px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
-input[type=text],input[type=number],input[type=password],select{width:100%;height:36px;padding:0 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border .15s}
-input:focus,select:focus{border-color:var(--green);background:var(--surface)}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+input[type=text],input[type=number],input[type=password],input[type=url],select,textarea{width:100%;height:36px;padding:0 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border .15s}
+textarea{height:auto;padding:8px 10px;resize:vertical;min-height:60px}
+input:focus,select:focus,textarea:focus{border-color:var(--green);background:var(--surface)}
 .photo-drop{border:1.5px dashed var(--border2);border-radius:var(--r-sm);height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;margin-top:6px;overflow:hidden;position:relative;background:var(--surface2)}
 .photo-drop:hover{border-color:var(--green);color:var(--green);background:var(--green-bg)}
 .photo-drop input{display:none}
 
-.incoming-info{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:16px;font-size:13px;color:var(--blue)}
+/* INCOMING */
+.incoming-info{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:16px;font-size:13px}
 .incoming-info strong{display:block;font-weight:600;margin-bottom:2px;font-size:14px;color:var(--text)}
-.incoming-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface2);border-radius:var(--r-sm);padding:3px}
+.incoming-info span{color:var(--blue)}
+.incoming-tabs{display:flex;gap:4px;margin-bottom:14px;background:var(--surface2);border-radius:var(--r-sm);padding:3px}
 .inc-tab{flex:1;height:28px;border:none;background:transparent;border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;color:var(--muted);font-weight:500;transition:all .15s}
 .inc-tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .calc-result{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r-sm);padding:12px 14px;margin-top:14px;font-size:13px}
@@ -155,6 +207,7 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
 .calc-result-row:last-child{margin-bottom:0;font-weight:600;font-size:14px;border-top:1px solid var(--green-border);padding-top:8px;margin-top:8px}
 .calc-label{color:var(--muted)}.calc-val{font-family:'JetBrains Mono',monospace;font-weight:500}
 
+/* USERS */
 .users-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .user-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px}
 .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--green-bg);border:1px solid var(--green-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--green);flex-shrink:0}
@@ -164,11 +217,23 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
 .add-user-form{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px}
 .add-user-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px}
 
+/* SUPPLIERS MANAGE */
+.sup-mgr-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.sup-mgr-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px}
+.sup-color-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.sup-mgr-info{flex:1;font-size:13px;font-weight:500}
+.color-picker-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.color-swatch{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .12s}
+.color-swatch.selected{border-color:var(--text)}
+.color-swatch:hover{transform:scale(1.15)}
+
+/* TOAST */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:10px 16px;border-radius:var(--r-sm);font-size:13px;z-index:999;opacity:0;transform:translateY(6px);transition:all .2s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.1)}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.ok{border-color:var(--green-border);color:var(--green)}
 .toast.err{border-color:var(--red-border);color:var(--red)}
 
+/* UNDO BAR */
 .undo-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;z-index:998;display:flex;align-items:center;gap:12px;transition:transform .25s;box-shadow:0 4px 20px rgba(0,0,0,.2)}
 .undo-bar.show{transform:translateX(-50%) translateY(0)}
 .undo-bar-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:4px 14px;font-size:12px;cursor:pointer;font-family:inherit}
@@ -206,60 +271,31 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
   <div class="header-mid">
     <div class="search-box">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Пошук товару або артикулу...">
+      <input type="text" id="searchInput" placeholder="Пошук...">
     </div>
   </div>
   <div class="header-right">
     <div class="sync-dot" id="syncDot"></div>
-    <button class="btn" id="usersBtn" onclick="openUsers()" style="display:none">👥 Користувачі</button>
-    <button class="btn btn-primary" onclick="openModal()">
+    <button class="btn" id="usersBtn" onclick="openUsers()" style="display:none">👥 Доступ</button>
+    <button class="btn btn-primary" id="addBtn" onclick="openModal()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Додати товар
     </button>
     <button class="logout-btn" onclick="doLogout()">Вийти</button>
   </div>
 </header>
+
 <main class="main">
   <div class="stats" id="statsBar"></div>
-  <div class="tabs">
-    <button class="tab active" data-tab="1" onclick="switchTab(1)">📦 Склад №1 Продаж</button>
-    <button class="tab" data-tab="2" onclick="switchTab(2)">🏭 Склад №2 Резерв</button>
-    <button class="tab" data-tab="0" onclick="switchTab(0)">🔍 Всі товари</button>
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabsEl"></div>
+    <button class="add-tab-btn" onclick="addWarehouse()">+ Новий склад</button>
   </div>
-  <div class="toolbar">
-    <div class="filter-chips">
-      <button class="chip active" onclick="setFilter('all',this)">Всі</button>
-      <button class="chip" onclick="setFilter('low',this)">⚠ Мало (≤5)</button>
-      <button class="chip" onclick="setFilter('zero',this)">✕ Нульові</button>
-    </div>
-    <div class="ml-auto">
-      <select id="sortSelect" onchange="renderTable()" style="height:30px;font-size:12px;padding:0 8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted);font-family:inherit">
-        <option value="name">За назвою</option>
-        <option value="qty">За кількістю</option>
-        <option value="price_buy">За ціною</option>
-        <option value="total">За сумою</option>
-      </select>
-    </div>
-  </div>
-  <div class="tbl-wrap"><div class="tbl-scroll">
-    <table>
-      <thead><tr>
-        <th style="width:46px"></th>
-        <th>Назва / Артикул</th>
-        <th>Склад</th>
-        <th class="r" style="width:160px">К-сть</th>
-        <th class="r">Сер. ціна закупки</th>
-        <th class="r">Загальна сума</th>
-        <th style="width:160px"></th>
-      </tr></thead>
-      <tbody id="tbody"><tr><td colspan="7"><div class="loading"><div class="spin"></div>Підключення...</div></td></tr></tbody>
-      <tfoot id="tfoot"></tfoot>
-    </table>
-  </div></div>
+  <div id="pageContent"></div>
 </main>
 </div>
 
-<!-- MODAL ТОВАР -->
+<!-- MODAL СКЛАД ТОВАР -->
 <div class="overlay" id="overlay" onclick="closeModalOut(event)">
   <div class="modal">
     <div class="modal-hdr"><div class="modal-title" id="modalTitle">Новий товар</div><button class="modal-x" onclick="closeModal()">×</button></div>
@@ -268,7 +304,7 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
       <div class="form-group"><label>Назва товару</label><input type="text" id="fName" placeholder="Конструктор..."></div>
       <div class="form-row">
         <div class="form-group"><label>Артикул</label><input type="text" id="fArt" placeholder="LB-001"></div>
-        <div class="form-group"><label>Склад</label><select id="fWarehouse"><option value="1">Склад №1 Продаж</option><option value="2">Склад №2 Резерв</option></select></div>
+        <div class="form-group"><label>Склад</label><select id="fWarehouse"></select></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Ціна закупки (грн)</label><input type="number" id="fPriceBuy" placeholder="0.00" step="0.01" min="0"></div>
@@ -288,6 +324,38 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
       <button class="btn btn-danger" id="deleteBtn" onclick="confirmDeleteCurrent()" style="display:none;margin-right:auto">Видалити</button>
       <button class="btn btn-ghost" onclick="closeModal()">Скасувати</button>
       <button class="btn btn-primary" onclick="saveItem()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ДРОПШИПІНГ ТОВАР -->
+<div class="overlay" id="dsOverlay" onclick="closeDsModalOut(event)">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" id="dsModalTitle">Новий товар дропшипінгу</div><button class="modal-x" onclick="closeDsModal()">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="dsEditId">
+      <div class="form-group"><label>Назва товару</label><input type="text" id="dsFName" placeholder="Конструктор..."></div>
+      <div class="form-row">
+        <div class="form-group"><label>Артикул</label><input type="text" id="dsFArt" placeholder="LB-001"></div>
+        <div class="form-group"><label>Постачальник</label><select id="dsFSupplier"></select></div>
+      </div>
+      <div class="form-group"><label>Ціна постачальника (грн)</label><input type="number" id="dsFPrice" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="form-group"><label>Посилання на товар</label><input type="url" id="dsFLink" placeholder="https://..."></div>
+      <div class="form-group"><label>Нотатки</label><textarea id="dsFNote" placeholder="Мін. замовлення, умови, знижки..."></textarea></div>
+      <div class="form-group">
+        <label>Фото (URL або завантаж)</label>
+        <input type="text" id="dsFPhoto" placeholder="https://..." oninput="previewDsPhotoVal(this.value)">
+        <div class="photo-drop" id="dsPDZ" onclick="document.getElementById('dsFPhotoFile').click()" ondragover="event.preventDefault()" ondrop="handleDsFileDrop(event)">
+          <input type="file" id="dsFPhotoFile" accept="image/*" onchange="handleDsFile(this)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Клікни або перетягни фото</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="dsDBtn" onclick="confirmDeleteDs()" style="display:none;margin-right:auto">Видалити</button>
+      <button class="btn btn-ghost" onclick="closeDsModal()">Скасувати</button>
+      <button class="btn btn-primary" onclick="saveDsItem()">Зберегти</button>
     </div>
   </div>
 </div>
@@ -312,9 +380,9 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
       </div></div>
       <div class="calc-result" id="calcResult" style="display:none">
         <div class="calc-result-row"><span class="calc-label">Приход:</span><span class="calc-val" id="crQty">—</span></div>
-        <div class="calc-result-row"><span class="calc-label">Ціна нової партії:</span><span class="calc-val" id="crPrice">—</span></div>
+        <div class="calc-result-row"><span class="calc-label">Ціна партії:</span><span class="calc-val" id="crPrice">—</span></div>
         <div class="calc-result-row"><span class="calc-label">Нова к-сть:</span><span class="calc-val" id="crNewQty">—</span></div>
-        <div class="calc-result-row"><span class="calc-label">Нова середня ціна:</span><span class="calc-val" id="crNewPrice">—</span></div>
+        <div class="calc-result-row"><span class="calc-label">Нова сер. ціна:</span><span class="calc-val" id="crNewPrice">—</span></div>
         <div class="calc-result-row"><span class="calc-label">Нова загальна сума:</span><span class="calc-val" id="crNewTotal">—</span></div>
       </div>
     </div>
@@ -325,19 +393,38 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
   </div>
 </div>
 
+<!-- MODAL ПОСТАЧАЛЬНИКИ -->
+<div class="overlay" id="supOverlay" onclick="closeSupOut(event)">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">🏢 Постачальники</div><button class="modal-x" onclick="closeSup()">×</button></div>
+    <div class="modal-body">
+      <div class="sup-mgr-list" id="supMgrList"></div>
+      <div class="add-user-form">
+        <div class="add-user-title">Додати постачальника</div>
+        <div class="form-group"><label>Назва</label><input type="text" id="newSupName" placeholder="Постачальник А"></div>
+        <div class="form-group">
+          <label>Колір</label>
+          <div class="color-picker-wrap" id="newSupColorPicker"></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="addSupplier()">+ Додати постачальника</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL КОРИСТУВАЧІ -->
 <div class="overlay" id="usersOverlay" onclick="closeUsersOut(event)">
   <div class="modal">
     <div class="modal-hdr"><div class="modal-title">👥 Керування доступом</div><button class="modal-x" onclick="closeUsers()">×</button></div>
     <div class="modal-body">
-      <div class="users-list" id="usersList"><div class="loading"><div class="spin"></div>Завантаження...</div></div>
+      <div class="users-list" id="usersList"></div>
       <div class="add-user-form">
         <div class="add-user-title">Додати користувача</div>
         <div class="form-row">
           <div class="form-group" style="margin-bottom:0"><label>Логін</label><input type="text" id="newUserLogin" placeholder="manager1"></div>
           <div class="form-group" style="margin-bottom:0"><label>Пароль</label><input type="password" id="newUserPass" placeholder="пароль"></div>
         </div>
-        <button class="btn btn-primary" style="margin-top:12px;width:100%;justify-content:center" onclick="addUser()">+ Додати користувача</button>
+        <button class="btn btn-primary" style="margin-top:12px;width:100%;justify-content:center" onclick="addUser()">+ Додати</button>
       </div>
     </div>
   </div>
@@ -347,20 +434,18 @@ input:focus,select:focus{border-color:var(--green);background:var(--surface)}
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <strong id="confirmName"></strong>
-    <p>Видалити цей товар? Дію не можна скасувати.</p>
+    <p id="confirmMsg">Видалити? Дію не можна скасувати.</p>
     <div class="confirm-actions">
       <button class="btn btn-ghost" onclick="closeConfirm()">Скасувати</button>
-      <button class="btn btn-danger" onclick="doDelete()">Видалити</button>
+      <button class="btn btn-danger" onclick="doConfirm()">Видалити</button>
     </div>
   </div>
 </div>
 
-<!-- UNDO BAR -->
 <div class="undo-bar" id="undoBar">
   <span id="undoMsg">Зміну збережено</span>
   <button class="undo-bar-btn" onclick="doUndo()">↩ Скасувати (Ctrl+Z)</button>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -379,168 +464,254 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let allItems=[], activeTab=1, activeFilter='all', searchQ='', sortBy='name';
-let deleteTargetId=null, editingCell=null, incomingItemId=null, incMode=1;
+const SUP_COLORS = ['#1a5a9a','#1e6e35','#92610a','#8b3a8b','#b83232','#1a7a7a','#5a4a1a','#3a3a8b'];
+
+let allItems=[], allWarehouses=[], allDsItems=[], allSuppliers=[];
+let activeTab='wh_1', activeFilter='all', searchQ='', sortBy='name';
+let deleteTargetId=null, deleteTargetType=null, confirmCallback=null;
+let editingCell=null, incomingItemId=null, incMode=1;
 let currentUser=null, undoStack=[], undoTimer=null;
+let dsSupFilter='all';
+let dragSrcId=null;
 
 // ─── LOGIN ─────────────────────────────────────────────
-window.doLogin = async function() {
+window.doLogin=async function(){
   const login=document.getElementById('loginUser').value.trim();
   const pass=document.getElementById('loginPass').value;
-  if (!login||!pass) return;
-  if (login==='admin' && pass==='12/') {
+  if(!login||!pass)return;
+  if(login==='admin'&&pass==='12/'){
     currentUser={login:'admin',role:'admin'};
     sessionStorage.setItem('mblok_user',JSON.stringify(currentUser));
-    showApp(); return;
+    showApp();return;
   }
-  try {
+  try{
     const snap=await getDoc(doc(db,'users',login));
-    if (snap.exists()&&snap.data().password===pass) {
+    if(snap.exists()&&snap.data().password===pass){
       currentUser={login,role:snap.data().role||'manager'};
       sessionStorage.setItem('mblok_user',JSON.stringify(currentUser));
       showApp();
-    } else { showLoginErr(); }
-  } catch(e) { showLoginErr(); }
+    }else{showLoginErr();}
+  }catch(e){showLoginErr();}
 };
-
-function showLoginErr() {
-  document.getElementById('loginErr').style.display='block';
-  document.getElementById('loginPass').value='';
-}
-
-window.doLogout=()=>{ sessionStorage.removeItem('mblok_user'); location.reload(); };
-
-function showApp() {
+function showLoginErr(){document.getElementById('loginErr').style.display='block';document.getElementById('loginPass').value='';}
+window.doLogout=()=>{sessionStorage.removeItem('mblok_user');location.reload();};
+function showApp(){
   document.getElementById('loginWrap').style.display='none';
   document.getElementById('appWrap').style.display='block';
-  if (currentUser?.role==='admin') document.getElementById('usersBtn').style.display='inline-flex';
+  if(currentUser?.role==='admin')document.getElementById('usersBtn').style.display='inline-flex';
   initApp();
 }
-
-document.getElementById('loginPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
-document.getElementById('loginUser').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('loginPass').focus(); });
-
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('loginUser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginPass').focus();});
 const saved=sessionStorage.getItem('mblok_user');
-if (saved) { currentUser=JSON.parse(saved); showApp(); }
+if(saved){currentUser=JSON.parse(saved);showApp();}
 
 // ─── INIT ──────────────────────────────────────────────
-function initApp() {
+function initApp(){
   setSyncStatus('syncing');
-  onSnapshot(collection(db,'products'), snap=>{
+  // Warehouses
+  onSnapshot(collection(db,'warehouses'),snap=>{
+    allWarehouses=snap.docs.map(d=>({id:d.id,...d.data()}));
+    allWarehouses.sort((a,b)=>(a.order||0)-(b.order||0));
+    if(!allWarehouses.length){
+      // Create defaults
+      setDoc(doc(db,'warehouses','wh_1'),{name:'Склад №1 Продаж',order:1});
+      setDoc(doc(db,'warehouses','wh_2'),{name:'Склад №2 Резерв',order:2});
+    }
+    renderTabs(); renderStats(); renderPage();
+  });
+  // Products
+  onSnapshot(collection(db,'products'),snap=>{
     allItems=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderStats(); renderTable(); setSyncStatus('ok');
-  }, ()=>{ setSyncStatus('error'); toast('Помилка підключення','err'); });
+    renderStats(); renderPage(); setSyncStatus('ok');
+  },()=>{setSyncStatus('error');toast('Помилка підключення','err');});
+  // DS items
+  onSnapshot(collection(db,'dropship'),snap=>{
+    allDsItems=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderPage(); renderStats();
+  });
+  // Suppliers
+  onSnapshot(collection(db,'suppliers'),snap=>{
+    allSuppliers=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderPage();
+  });
 }
-
-function setSyncStatus(s) {
-  const dot=document.getElementById('syncDot');
-  dot.className='sync-dot'+(s==='syncing'?' syncing':s==='error'?' error':'');
-}
+function setSyncStatus(s){const d=document.getElementById('syncDot');d.className='sync-dot'+(s==='syncing'?' syncing':s==='error'?' error':'');}
 
 // ─── DB ────────────────────────────────────────────────
-async function saveToDb(item) {
+async function saveToDb(item){
   setSyncStatus('syncing');
-  try {
+  try{
     const id=item.id||crypto.randomUUID();
     await setDoc(doc(db,'products',id),{
-      name:item.name||'',art:item.art||'',warehouse:Number(item.warehouse)||1,
+      name:item.name||'',art:item.art||'',warehouse:item.warehouse||'wh_1',
       qty:Number(item.qty)||0,price_buy:Number(item.price_buy)||0,
+      photo:item.photo||'',order:item.order||0,updated:serverTimestamp()
+    });
+    setSyncStatus('ok');return id;
+  }catch(e){setSyncStatus('error');toast('Помилка збереження','err');throw e;}
+}
+async function deleteFromDb(id){
+  try{await deleteDoc(doc(db,'products',id));setSyncStatus('ok');}
+  catch(e){setSyncStatus('error');}
+}
+async function saveDsToDb(item){
+  setSyncStatus('syncing');
+  try{
+    const id=item.id||crypto.randomUUID();
+    await setDoc(doc(db,'dropship',id),{
+      name:item.name||'',art:item.art||'',supplier:item.supplier||'',
+      price:Number(item.price)||0,link:item.link||'',note:item.note||'',
       photo:item.photo||'',updated:serverTimestamp()
     });
-    setSyncStatus('ok'); return id;
-  } catch(e) { setSyncStatus('error'); toast('Помилка збереження','err'); throw e; }
+    setSyncStatus('ok');return id;
+  }catch(e){setSyncStatus('error');throw e;}
 }
-
-async function deleteFromDb(id) {
-  try { await deleteDoc(doc(db,'products',id)); setSyncStatus('ok'); }
-  catch(e) { setSyncStatus('error'); toast('Помилка видалення','err'); }
-}
+async function deleteDsFromDb(id){await deleteDoc(doc(db,'dropship',id));}
 
 // ─── UNDO ──────────────────────────────────────────────
-function pushUndo(item, desc) {
+function pushUndo(item,desc){
   undoStack.push({id:item.id,snapshot:{...item},desc});
-  if (undoStack.length>20) undoStack.shift();
-  const bar=document.getElementById('undoBar');
+  if(undoStack.length>20)undoStack.shift();
   document.getElementById('undoMsg').textContent=desc;
-  bar.classList.add('show');
-  clearTimeout(undoTimer);
-  undoTimer=setTimeout(()=>bar.classList.remove('show'),5000);
+  const bar=document.getElementById('undoBar');bar.classList.add('show');
+  clearTimeout(undoTimer);undoTimer=setTimeout(()=>bar.classList.remove('show'),5000);
 }
-
-window.doUndo=async function() {
-  if (!undoStack.length) return;
+window.doUndo=async function(){
+  if(!undoStack.length)return;
   const {id,snapshot,desc}=undoStack.pop();
   document.getElementById('undoBar').classList.remove('show');
   const idx=allItems.findIndex(r=>r.id===id);
-  if (idx>=0) allItems[idx]={...snapshot};
-  renderTable(); renderStats();
+  if(idx>=0)allItems[idx]={...snapshot};
+  renderPage();renderStats();
   await saveToDb(snapshot);
   toast(`Скасовано: ${desc}`,'ok');
 };
-
 document.addEventListener('keydown',e=>{
-  if ((e.ctrlKey||e.metaKey)&&e.key==='z'&&!e.shiftKey) { e.preventDefault(); doUndo(); }
-  if (e.key==='Escape') { closeModal(); closeIncoming(); closeUsers(); closeConfirm(); }
+  if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!e.shiftKey){e.preventDefault();doUndo();}
+  if(e.key==='Escape'){closeModal();closeIncoming();closeDsModal();closeUsers();closeSup();closeConfirm();}
 });
 
-// ─── RENDER ────────────────────────────────────────────
-function getFiltered() {
-  let d=[...allItems];
-  if (activeTab===1) d=d.filter(r=>Number(r.warehouse)===1);
-  else if (activeTab===2) d=d.filter(r=>Number(r.warehouse)===2);
-  if (searchQ) { const q=searchQ.toLowerCase(); d=d.filter(r=>(r.name||'').toLowerCase().includes(q)||(r.art||'').toLowerCase().includes(q)); }
-  if (activeFilter==='low') d=d.filter(r=>Number(r.qty)>0&&Number(r.qty)<=5);
-  else if (activeFilter==='zero') d=d.filter(r=>!Number(r.qty));
-  d.sort((a,b)=>{
-    // Нульові завжди вниз
-    const az=Number(a.qty)===0, bz=Number(b.qty)===0;
-    if(az&&!bz) return 1;
-    if(!az&&bz) return -1;
-    if(sortBy==='name') return (a.name||'').localeCompare(b.name||'','uk');
-    if(sortBy==='qty') return Number(b.qty)-Number(a.qty);
-    if(sortBy==='price_buy') return Number(b.price_buy)-Number(a.price_buy);
-    if(sortBy==='total') return (Number(b.qty)*Number(b.price_buy))-(Number(a.qty)*Number(a.price_buy));
-    return 0;
+// ─── TABS ──────────────────────────────────────────────
+function renderTabs(){
+  const el=document.getElementById('tabsEl');
+  const whs=allWarehouses.map(wh=>{
+    const isActive=activeTab===wh.id;
+    return`<div class="tab${isActive?' active':''}" data-id="${wh.id}" onclick="switchTab('${wh.id}')" ondblclick="startRenameTab('${wh.id}',this)">${wh.name}</div>`;
   });
-  return d;
+  const dsActive=activeTab==='dropship';
+  whs.push(`<div class="tab${dsActive?' active':''}" onclick="switchTab('dropship')">🔗 Дропшипінг</div>`);
+  el.innerHTML=whs.join('');
 }
 
-function fmtM(n){if(!n&&n!==0)return'—';return'₴'+Number(n).toLocaleString('uk-UA',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function fmtN(n){return Number(n).toLocaleString('uk-UA');}
+window.switchTab=function(id){
+  activeTab=id;
+  activeFilter='all';
+  dsSupFilter='all';
+  document.getElementById('addBtn').textContent=id==='dropship'?'+ Товар дропшип':'+ Додати товар';
+  document.getElementById('addBtn').onclick=id==='dropship'?()=>openDsModal():()=>openModal();
+  renderTabs();renderPage();
+};
 
+window.startRenameTab=function(id,el){
+  const wh=allWarehouses.find(w=>w.id===id);if(!wh)return;
+  const input=document.createElement('input');
+  input.className='tab-rename-input';input.value=wh.name;
+  input.onclick=e=>e.stopPropagation();
+  input.onkeydown=async e=>{
+    if(e.key==='Enter'){await setDoc(doc(db,'warehouses',id),{...wh,name:input.value.trim()||wh.name});renderTabs();}
+    if(e.key==='Escape')renderTabs();
+    e.stopPropagation();
+  };
+  input.onblur=async()=>{await setDoc(doc(db,'warehouses',id),{...wh,name:input.value.trim()||wh.name});renderTabs();};
+  el.replaceWith(input);input.focus();input.select();
+};
+
+window.addWarehouse=async function(){
+  const name=prompt('Назва нового складу:');
+  if(!name)return;
+  const id='wh_'+Date.now();
+  await setDoc(doc(db,'warehouses',id),{name,order:allWarehouses.length+1});
+  switchTab(id);
+};
+
+// ─── PAGE RENDER ───────────────────────────────────────
+function renderPage(){
+  if(activeTab==='dropship')renderDropship();
+  else renderWarehouse();
+}
+
+// ─── STATS ─────────────────────────────────────────────
 function renderStats(){
-  const s1=allItems.filter(r=>Number(r.warehouse)===1);
-  const s2=allItems.filter(r=>Number(r.warehouse)===2);
+  const totWh=allItems.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
+  const zero=allItems.filter(r=>!Number(r.qty)).length;
+  const low=allItems.filter(r=>Number(r.qty)>0&&Number(r.qty)<=5).length;
+  const dsCount=allDsItems.length;
   document.getElementById('statsBar').innerHTML=`
-    <div class="stat"><div class="stat-label">Склад №1</div><div class="stat-val g">${fmtM(s1.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0))}</div></div>
-    <div class="stat"><div class="stat-label">Склад №2</div><div class="stat-val g">${fmtM(s2.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0))}</div></div>
+    <div class="stat"><div class="stat-label">Вартість складів</div><div class="stat-val g">${fmtM(totWh)}</div></div>
     <div class="stat"><div class="stat-label">Позицій</div><div class="stat-val">${allItems.length}</div></div>
-    <div class="stat"><div class="stat-label">Мало залишків</div><div class="stat-val a">${allItems.filter(r=>Number(r.qty)>0&&Number(r.qty)<=5).length}</div></div>
-    <div class="stat"><div class="stat-label">Нульові</div><div class="stat-val r">${allItems.filter(r=>!Number(r.qty)).length}</div></div>
+    <div class="stat"><div class="stat-label">Мало залишків</div><div class="stat-val a">${low}</div></div>
+    <div class="stat"><div class="stat-label">Нульові</div><div class="stat-val r">${zero}</div></div>
+    <div class="stat"><div class="stat-label">Дропшипінг</div><div class="stat-val b">${dsCount}</div></div>
   `;
 }
 
-function renderTable(){
-  const rows=getFiltered();
-  const tbody=document.getElementById('tbody'), tfoot=document.getElementById('tfoot');
-  if (!rows.length){tbody.innerHTML=`<tr><td colspan="7"><div class="empty">Нічого не знайдено</div></td></tr>`;tfoot.innerHTML='';return;}
-  tbody.innerHTML=rows.map(r=>{
+// ─── WAREHOUSE ─────────────────────────────────────────
+function renderWarehouse(){
+  let d=allItems.filter(r=>r.warehouse===activeTab);
+  if(searchQ){const q=searchQ.toLowerCase();d=d.filter(r=>(r.name||'').toLowerCase().includes(q)||(r.art||'').toLowerCase().includes(q));}
+  if(activeFilter==='low')d=d.filter(r=>Number(r.qty)>0&&Number(r.qty)<=5);
+  else if(activeFilter==='zero')d=d.filter(r=>!Number(r.qty));
+
+  // Sort: zeros to bottom
+  d.sort((a,b)=>{
+    const az=Number(a.qty)===0,bz=Number(b.qty)===0;
+    if(az&&!bz)return 1;if(!az&&bz)return -1;
+    if(sortBy==='order')return(Number(a.order)||0)-(Number(b.order)||0);
+    if(sortBy==='name')return(a.name||'').localeCompare(b.name||'','uk');
+    if(sortBy==='qty')return Number(b.qty)-Number(a.qty);
+    if(sortBy==='price_buy')return Number(b.price_buy)-Number(a.price_buy);
+    if(sortBy==='total')return(Number(b.qty)*Number(b.price_buy))-(Number(a.qty)*Number(a.price_buy));
+    return 0;
+  });
+
+  const toolbar=`<div class="toolbar">
+    <div class="filter-chips">
+      <button class="chip${activeFilter==='all'?' active':''}" onclick="setFilter('all',this)">Всі</button>
+      <button class="chip${activeFilter==='low'?' active-amber':''}" onclick="setFilter('low',this)">⚠ Мало (≤5)</button>
+      <button class="chip${activeFilter==='zero'?' active-red':''}" onclick="setFilter('zero',this)">✕ Нульові</button>
+    </div>
+    <div class="ml-auto">
+      <select id="sortSelect" onchange="sortBy=this.value;renderPage()" style="height:30px;font-size:12px;padding:0 8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted);font-family:inherit">
+        <option value="order"${sortBy==='order'?' selected':''}>Свій порядок</option>
+        <option value="name"${sortBy==='name'?' selected':''}>За назвою</option>
+        <option value="qty"${sortBy==='qty'?' selected':''}>За кількістю</option>
+        <option value="price_buy"${sortBy==='price_buy'?' selected':''}>За ціною</option>
+        <option value="total"${sortBy==='total'?' selected':''}>За сумою</option>
+      </select>
+    </div>
+  </div>`;
+
+  const rows=d.map(r=>{
     const qty=Number(r.qty)||0;
     const qc=qty===0?'qty-zero':qty<=5?'qty-low':'qty-ok';
     const photo=r.photo?`<img class="product-img" src="${r.photo}" alt="" onerror="this.style.display='none'">`:`<div class="product-img-placeholder">📦</div>`;
-    const wBadge=Number(r.warehouse)===1?'<span class="wh-badge wh1">№1 Продаж</span>':'<span class="wh-badge wh2">№2 Резерв</span>';
-    return`<tr id="row-${r.id}" class="${qty===0?'row-zero':''}">
+    return`<tr id="row-${r.id}" class="${qty===0?'row-zero':''}" draggable="true"
+      ondragstart="dragStart(event,'${r.id}')"
+      ondragover="dragOver(event,'${r.id}')"
+      ondragleave="dragLeave(event)"
+      ondrop="dragDrop(event,'${r.id}')">
+      <td><span class="drag-handle" title="Перетягни для сортування">⠿</span></td>
       <td class="td-photo" onclick="openModal('${r.id}')" style="cursor:pointer">${photo}</td>
       <td class="td-name">
         <div class="p-name cell-view" onclick="startEdit('${r.id}','name',this)">${escHtml(r.name||'—')}</div>
         <div class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art||'артикул')}</div>
       </td>
-      <td>${wBadge}</td>
       <td class="r">
         <div class="qty-ctrl">
-          <button class="qty-btn minus" onclick="changeQty('${r.id}',-1)" title="−1">−</button>
+          <button class="qty-btn minus" onclick="changeQty('${r.id}',-1)">−</button>
           <span class="qty ${qc} cell-view" onclick="startEdit('${r.id}','qty',this)">${fmtN(qty)}</span>
-          <button class="qty-btn" onclick="changeQty('${r.id}',1)" title="+1">+</button>
+          <button class="qty-btn" onclick="changeQty('${r.id}',1)">+</button>
         </div>
       </td>
       <td class="r"><span class="price cell-view" onclick="startEdit('${r.id}','price_buy',this)">${fmtM(r.price_buy)}</span></td>
@@ -552,158 +723,210 @@ function renderTable(){
       </div></td>
     </tr>`;
   }).join('');
-  const totBuy=rows.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
-  tfoot.innerHTML=`<tr class="tbl-footer"><td colspan="3">Разом: ${rows.length} поз.</td><td class="r">${fmtN(rows.reduce((a,r)=>a+Number(r.qty),0))} шт.</td><td></td><td class="r total-sum">${fmtM(totBuy)}</td><td></td></tr>`;
+
+  const totBuy=d.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
+  const footer=`<tr class="tbl-footer"><td colspan="3">Разом: ${d.length} поз.</td><td class="r">${fmtN(d.reduce((a,r)=>a+Number(r.qty),0))} шт.</td><td></td><td class="r total-sum">${fmtM(totBuy)}</td><td></td></tr>`;
+
+  document.getElementById('pageContent').innerHTML=toolbar+`<div class="tbl-wrap"><div class="tbl-scroll"><table>
+    <thead><tr>
+      <th style="width:28px"></th>
+      <th style="width:66px"></th>
+      <th>Назва / Артикул</th>
+      <th class="r" style="width:160px">К-сть</th>
+      <th class="r">Сер. ціна закупки</th>
+      <th class="r">Загальна сума</th>
+      <th style="width:160px"></th>
+    </tr></thead>
+    <tbody>${rows||`<tr><td colspan="7"><div class="empty">Нічого не знайдено</div></td></tr>`}</tbody>
+    <tfoot>${footer}</tfoot>
+  </table></div></div>`;
 }
 
-// ─── ±1 ────────────────────────────────────────────────
-window.changeQty=async function(id,delta){
-  const item=allItems.find(r=>r.id===id);
-  if (!item) return;
-  const oldQty=Number(item.qty)||0;
-  const newQty=Math.max(0,oldQty+delta);
-  if (newQty===oldQty) return;
-  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`);
-  item.qty=newQty;
-  renderTable(); renderStats();
-  await saveToDb(item);
+// ─── DRAG & DROP ───────────────────────────────────────
+window.dragStart=function(e,id){
+  dragSrcId=id;
+  e.dataTransfer.effectAllowed='move';
+  setTimeout(()=>{const el=document.getElementById('row-'+id);if(el)el.classList.add('dragging');},0);
+};
+window.dragOver=function(e,id){
+  e.preventDefault();e.dataTransfer.dropEffect='move';
+  document.querySelectorAll('tr.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  const el=document.getElementById('row-'+id);if(el&&id!==dragSrcId)el.classList.add('drag-over');
+};
+window.dragLeave=function(e){e.currentTarget.classList.remove('drag-over');};
+window.dragDrop=async function(e,targetId){
+  e.preventDefault();
+  document.querySelectorAll('tr.drag-over,tr.dragging').forEach(el=>el.classList.remove('drag-over','dragging'));
+  if(!dragSrcId||dragSrcId===targetId)return;
+  // Reorder
+  const whItems=allItems.filter(r=>r.warehouse===activeTab);
+  whItems.sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
+  const srcIdx=whItems.findIndex(r=>r.id===dragSrcId);
+  const tgtIdx=whItems.findIndex(r=>r.id===targetId);
+  if(srcIdx<0||tgtIdx<0)return;
+  const [moved]=whItems.splice(srcIdx,1);
+  whItems.splice(tgtIdx,0,moved);
+  whItems.forEach((item,i)=>{item.order=i;});
+  renderPage();
+  for(const item of whItems)await saveToDb(item);
+  dragSrcId=null;
 };
 
-// ─── INLINE EDIT ───────────────────────────────────────
-window.startEdit=function(id,field,el){
-  if (editingCell) cancelEdit();
-  const item=allItems.find(r=>r.id===id);
-  editingCell={id,field,prevItem:{...item}};
-  const val=item?(item[field]??''):'';
-  const isNum=['qty','price_buy'].includes(field);
-  const input=document.createElement('input');
-  input.className='cell-input'; input.type=isNum?'number':'text'; input.value=val;
-  input.step=field==='price_buy'?'0.01':'1'; input.min=isNum?'0':undefined;
-  input.style.width=isNum?'100px':'100%';
-  input.onkeydown=e=>{if(e.key==='Enter')commitEdit(input,id,field);if(e.key==='Escape')cancelEdit();e.stopPropagation();};
-  input.onblur=()=>commitEdit(input,id,field);
-  el.replaceWith(input); input.focus(); input.select();
-  const row=document.getElementById('row-'+id); if(row)row.classList.add('editing');
-};
+// ─── DROPSHIPPING ──────────────────────────────────────
+function renderDropship(){
+  let items=[...allDsItems];
+  if(searchQ){const q=searchQ.toLowerCase();items=items.filter(r=>(r.name||'').toLowerCase().includes(q)||(r.art||'').toLowerCase().includes(q));}
+  if(dsSupFilter!=='all')items=items.filter(r=>r.supplier===dsSupFilter);
 
-async function commitEdit(input,id,field){
-  if (!editingCell) return;
-  const prev=editingCell.prevItem; editingCell=null;
-  const item=allItems.find(r=>r.id===id); if(!item)return;
-  const isNum=['qty','price_buy'].includes(field);
-  const newVal=isNum?(parseFloat(input.value)||0):input.value.trim();
-  if (String(newVal)===String(item[field])){renderTable();return;}
-  pushUndo(prev,`Зміна ${field==='qty'?'кількості':'ціни'} · ${item.name}`);
-  item[field]=newVal;
-  renderTable(); renderStats();
-  await saveToDb(item);
-  toast('Збережено','ok');
+  const supBar=`<div class="sup-bar">
+    <div class="sup-item${dsSupFilter==='all'?' active':''}" onclick="setDsSupFilter('all')">
+      <div class="sup-dot" style="background:var(--muted2)"></div>
+      <div class="sup-label">Всі</div>
+      <div class="sup-count">${allDsItems.length}</div>
+    </div>
+    ${allSuppliers.map(s=>`<div class="sup-item${dsSupFilter===s.id?' active':''}" onclick="setDsSupFilter('${s.id}')">
+      <div class="sup-dot" style="background:${s.color||'#888'}"></div>
+      <div class="sup-label">${escHtml(s.name)}</div>
+      <div class="sup-count">${allDsItems.filter(r=>r.supplier===s.id).length}</div>
+    </div>`).join('<div class="sup-sep"></div>')}
+    <button class="sup-manage" onclick="openSup()">⚙ Постачальники</button>
+  </div>`;
+
+  const toolbar=`<div class="toolbar">
+    <div class="search-box" style="max-width:260px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Пошук товару..." oninput="searchQ=this.value;renderPage()" value="${escHtml(searchQ)}" style="background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;width:100%">
+    </div>
+  </div>`;
+
+  const cards=items.map(r=>{
+    const sup=allSuppliers.find(s=>s.id===r.supplier);
+    const supColor=sup?.color||'#888';
+    const supBg=supColor+'22';
+    const photo=r.photo?`<img src="${r.photo}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+    return`<div class="ds-card">
+      <div class="ds-card-img" style="background:var(--surface2)">${photo}</div>
+      <div class="ds-card-body">
+        ${sup?`<div class="ds-sup-badge" style="background:${supBg};color:${supColor}">${escHtml(sup.name)}</div>`:''}
+        <div class="ds-name cell-view" onclick="openDsModal('${r.id}')">${escHtml(r.name||'—')}</div>
+        <div class="ds-art">${escHtml(r.art||'')}</div>
+        <div class="ds-price">${fmtM(r.price)}</div>
+        ${r.note?`<div class="ds-note">${escHtml(r.note)}</div>`:''}
+        <div class="ds-footer">
+          ${r.link?`<a class="ds-link" href="${r.link}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Відкрити</a>`:'<span></span>'}
+          <div class="ds-acts">
+            <button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:11px" onclick="openDsModal('${r.id}')">✏️</button>
+            <button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:11px" onclick="confirmDelDs('${r.id}','${escHtml(r.name||'')}')">🗑</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const addCard=`<div class="ds-add-card" onclick="openDsModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span>Додати товар</span>
+  </div>`;
+
+  document.getElementById('pageContent').innerHTML=supBar+toolbar+`<div class="ds-grid">${cards}${addCard}</div>`;
 }
 
-function cancelEdit(){if(!editingCell)return;editingCell=null;renderTable();}
+window.setDsSupFilter=function(id){dsSupFilter=id;renderPage();};
 
-// ─── INCOMING ──────────────────────────────────────────
-window.openIncoming=function(id){
-  incomingItemId=id;
-  const r=allItems.find(x=>x.id===id); if(!r)return;
-  document.getElementById('incName').textContent=r.name||'—';
-  document.getElementById('incCurQty').textContent=fmtN(r.qty||0);
-  document.getElementById('incCurPrice').textContent=fmtM(r.price_buy||0);
-  ['incQty1','incPrice1','incQty2','incTotal2'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('calcResult').style.display='none';
-  switchIncTab(1);
-  document.getElementById('incomingOverlay').classList.add('open');
+// ─── DS MODAL ──────────────────────────────────────────
+window.openDsModal=function(id){
+  const isEdit=!!id;
+  document.getElementById('dsModalTitle').textContent=isEdit?'Редагувати товар':'Новий товар дропшипінгу';
+  document.getElementById('dsDBtn').style.display=isEdit?'inline-flex':'none';
+  document.getElementById('dsEditId').value=id||'';
+  const r=isEdit?allDsItems.find(x=>x.id===id):{};
+  document.getElementById('dsFName').value=r?.name||'';
+  document.getElementById('dsFArt').value=r?.art||'';
+  document.getElementById('dsFPrice').value=r?.price||'';
+  document.getElementById('dsFLink').value=r?.link||'';
+  document.getElementById('dsFNote').value=r?.note||'';
+  document.getElementById('dsFPhoto').value=r?.photo||'';
+  // Fill supplier select
+  const sel=document.getElementById('dsFSupplier');
+  sel.innerHTML='<option value="">— без постачальника —</option>'+allSuppliers.map(s=>`<option value="${s.id}"${r?.supplier===s.id?' selected':''}>${escHtml(s.name)}</option>`).join('');
+  previewDsPhotoVal(r?.photo||'');
+  document.getElementById('dsOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('dsFName').focus(),100);
 };
-window.closeIncoming=()=>document.getElementById('incomingOverlay').classList.remove('open');
-window.closeIncomingOut=e=>{if(e.target===document.getElementById('incomingOverlay'))closeIncoming();};
+window.closeDsModal=()=>document.getElementById('dsOverlay').classList.remove('open');
+window.closeDsModalOut=e=>{if(e.target===document.getElementById('dsOverlay'))closeDsModal();};
 
-window.switchIncTab=function(mode){
-  incMode=mode;
-  document.getElementById('incMode1').style.display=mode===1?'block':'none';
-  document.getElementById('incMode2').style.display=mode===2?'block':'none';
-  document.getElementById('incTab1').className='inc-tab'+(mode===1?' active':'');
-  document.getElementById('incTab2').className='inc-tab'+(mode===2?' active':'');
-  document.getElementById('calcResult').style.display='none';
+window.previewDsPhotoVal=function(url){
+  const dz=document.getElementById('dsPDZ');
+  const ex=dz.querySelector('img');if(ex)ex.remove();
+  if(url){const img=document.createElement('img');img.src=url;img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px';dz.appendChild(img);}
 };
+window.handleDsFile=function(input){const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=e=>{document.getElementById('dsFPhoto').value=e.target.result;previewDsPhotoVal(e.target.result);};r.readAsDataURL(file);};
+window.handleDsFileDrop=function(e){e.preventDefault();const file=e.dataTransfer.files[0];if(!file||!file.type.startsWith('image/'))return;const r=new FileReader();r.onload=ev=>{document.getElementById('dsFPhoto').value=ev.target.result;previewDsPhotoVal(ev.target.result);};r.readAsDataURL(file);};
 
-window.calcIncoming=function(){
-  const r=allItems.find(x=>x.id===incomingItemId); if(!r)return;
-  const curQty=Number(r.qty)||0, curPrice=Number(r.price_buy)||0;
-  let newQty=0,newPrice=0;
-  if(incMode===1){newQty=parseFloat(document.getElementById('incQty1').value)||0;newPrice=parseFloat(document.getElementById('incPrice1').value)||0;}
-  else{newQty=parseFloat(document.getElementById('incQty2').value)||0;const t=parseFloat(document.getElementById('incTotal2').value)||0;newPrice=newQty>0?t/newQty:0;}
-  if(newQty<=0){document.getElementById('calcResult').style.display='none';return;}
-  const totalQty=curQty+newQty;
-  const avgPrice=((curQty*curPrice)+(newQty*newPrice))/totalQty;
-  document.getElementById('calcResult').style.display='block';
-  document.getElementById('crQty').textContent=fmtN(newQty)+' шт.';
-  document.getElementById('crPrice').textContent=fmtM(newPrice);
-  document.getElementById('crNewQty').textContent=fmtN(totalQty)+' шт.';
-  document.getElementById('crNewPrice').textContent=fmtM(avgPrice);
-  document.getElementById('crNewTotal').textContent=fmtM(totalQty*avgPrice);
+window.saveDsItem=async function(){
+  const name=document.getElementById('dsFName').value.trim();
+  if(!name){toast('Введи назву','err');return;}
+  const id=document.getElementById('dsEditId').value||undefined;
+  const item={id,name,art:document.getElementById('dsFArt').value.trim(),supplier:document.getElementById('dsFSupplier').value,price:parseFloat(document.getElementById('dsFPrice').value)||0,link:document.getElementById('dsFLink').value.trim(),note:document.getElementById('dsFNote').value.trim(),photo:document.getElementById('dsFPhoto').value.trim()};
+  closeDsModal();await saveDsToDb(item);toast(id?'Оновлено':'Додано','ok');
 };
 
-window.applyIncoming=async function(){
-  const r=allItems.find(x=>x.id===incomingItemId); if(!r)return;
-  const curQty=Number(r.qty)||0, curPrice=Number(r.price_buy)||0;
-  let newQty=0,newPrice=0;
-  if(incMode===1){newQty=parseFloat(document.getElementById('incQty1').value)||0;newPrice=parseFloat(document.getElementById('incPrice1').value)||0;}
-  else{newQty=parseFloat(document.getElementById('incQty2').value)||0;const t=parseFloat(document.getElementById('incTotal2').value)||0;newPrice=newQty>0?t/newQty:0;}
-  if(newQty<=0){toast('Введи кількість','err');return;}
-  const totalQty=curQty+newQty;
-  const avgPrice=((curQty*curPrice)+(newQty*newPrice))/totalQty;
-  pushUndo({...r},`Прихід +${fmtN(newQty)} шт. · ${r.name}`);
-  r.qty=totalQty; r.price_buy=Math.round(avgPrice*100)/100;
-  closeIncoming(); renderTable(); renderStats();
-  await saveToDb(r);
-  toast(`Прихід: +${fmtN(newQty)} шт.`,'ok');
+window.confirmDelDs=function(id,name){
+  confirmCallback=async()=>{await deleteDsFromDb(id);toast('Видалено','ok');};
+  document.getElementById('confirmName').textContent=name;
+  document.getElementById('confirmMsg').textContent='Видалити товар дропшипінгу? Дію не можна скасувати.';
+  document.getElementById('confirmOverlay').classList.add('open');
+};
+window.confirmDeleteDs=function(){
+  const id=document.getElementById('dsEditId').value;
+  const r=allDsItems.find(x=>x.id===id);
+  confirmDelDs(id,r?.name||'');closeDsModal();
 };
 
-// ─── USERS ─────────────────────────────────────────────
-window.openUsers=async function(){
-  document.getElementById('usersOverlay').classList.add('open');
-  loadUsers();
+// ─── SUPPLIERS MANAGE ──────────────────────────────────
+window.openSup=function(){
+  renderSupMgr();
+  document.getElementById('supOverlay').classList.add('open');
 };
-window.closeUsers=()=>document.getElementById('usersOverlay').classList.remove('open');
-window.closeUsersOut=e=>{if(e.target===document.getElementById('usersOverlay'))closeUsers();};
+window.closeSup=()=>document.getElementById('supOverlay').classList.remove('open');
+window.closeSupOut=e=>{if(e.target===document.getElementById('supOverlay'))closeSup();};
 
-function loadUsers(){
-  const list=document.getElementById('usersList');
-  list.innerHTML='<div class="loading"><div class="spin"></div>Завантаження...</div>';
-  onSnapshot(collection(db,'users'), snap=>{
-    const users=snap.docs.map(d=>({id:d.id,...d.data()}));
-    list.innerHTML=`<div class="user-row">
-      <div class="user-avatar">A</div>
-      <div class="user-info"><div class="user-login">admin</div><div class="user-role">Адміністратор</div></div>
-    </div>`+users.map(u=>`<div class="user-row">
-      <div class="user-avatar">${u.id[0].toUpperCase()}</div>
-      <div class="user-info"><div class="user-login">${escHtml(u.id)}</div><div class="user-role">Менеджер</div></div>
-      <button class="user-del" onclick="removeUser('${u.id}')">×</button>
-    </div>`).join('');
-  },{once:true});
+function renderSupMgr(){
+  const list=document.getElementById('supMgrList');
+  list.innerHTML=allSuppliers.map(s=>`<div class="sup-mgr-row">
+    <div class="sup-color-dot" style="background:${s.color||'#888'}"></div>
+    <div class="sup-mgr-info">${escHtml(s.name)}<div style="font-size:11px;color:var(--muted);font-weight:400">${allDsItems.filter(r=>r.supplier===s.id).length} товарів</div></div>
+    <button class="user-del" onclick="deleteSupplier('${s.id}')">×</button>
+  </div>`).join('')||'<div style="color:var(--muted);font-size:13px;padding:8px">Постачальників ще немає</div>';
+  // Color picker
+  const picker=document.getElementById('newSupColorPicker');
+  picker.innerHTML=SUP_COLORS.map(c=>`<div class="color-swatch" style="background:${c}" data-color="${c}" onclick="selectSupColor('${c}')"></div>`).join('');
+  selectSupColor(SUP_COLORS[0]);
 }
 
-window.addUser=async function(){
-  const login=document.getElementById('newUserLogin').value.trim();
-  const pass=document.getElementById('newUserPass').value;
-  if(!login){toast('Введи логін','err');return;}
-  if(!pass){toast('Введи пароль','err');return;}
-  if(login==='admin'){toast('Логін зарезервовано','err');return;}
-  await setDoc(doc(db,'users',login),{password:pass,role:'manager',created:serverTimestamp()});
-  document.getElementById('newUserLogin').value='';
-  document.getElementById('newUserPass').value='';
-  toast(`Користувача "${login}" додано`,'ok');
-  loadUsers();
+let selectedSupColor=SUP_COLORS[0];
+window.selectSupColor=function(c){
+  selectedSupColor=c;
+  document.querySelectorAll('.color-swatch').forEach(el=>el.classList.toggle('selected',el.dataset.color===c));
 };
 
-window.removeUser=async function(login){
-  if(!confirm(`Видалити "${login}"?`))return;
-  await deleteDoc(doc(db,'users',login));
-  toast(`"${login}" видалено`,'ok');
-  loadUsers();
+window.addSupplier=async function(){
+  const name=document.getElementById('newSupName').value.trim();
+  if(!name){toast('Введи назву постачальника','err');return;}
+  const id='sup_'+Date.now();
+  await setDoc(doc(db,'suppliers',id),{name,color:selectedSupColor,created:serverTimestamp()});
+  document.getElementById('newSupName').value='';
+  toast(`Постачальника "${name}" додано`,'ok');
+  renderSupMgr();
+};
+window.deleteSupplier=async function(id){
+  if(!confirm('Видалити постачальника?'))return;
+  await deleteDoc(doc(db,'suppliers',id));
+  toast('Видалено','ok');renderSupMgr();
 };
 
-// ─── MODAL ТОВАР ───────────────────────────────────────
+// ─── WAREHOUSE MODAL ───────────────────────────────────
 window.openModal=function(id){
   const isEdit=!!id;
   document.getElementById('modalTitle').textContent=isEdit?'Редагувати товар':'Новий товар';
@@ -712,10 +935,12 @@ window.openModal=function(id){
   const r=isEdit?allItems.find(x=>x.id===id):{};
   document.getElementById('fName').value=r?.name||'';
   document.getElementById('fArt').value=r?.art||'';
-  document.getElementById('fWarehouse').value=r?.warehouse||1;
   document.getElementById('fPriceBuy').value=r?.price_buy||'';
   document.getElementById('fQty').value=r?.qty||'';
   document.getElementById('fPhoto').value=r?.photo||'';
+  // Fill warehouse select
+  const sel=document.getElementById('fWarehouse');
+  sel.innerHTML=allWarehouses.map(wh=>`<option value="${wh.id}"${(r?.warehouse||activeTab)===wh.id?' selected':''}>${wh.name}</option>`).join('');
   previewModalPhotoVal(r?.photo||'');
   document.getElementById('overlay').classList.add('open');
   setTimeout(()=>document.getElementById('fName').focus(),100);
@@ -723,8 +948,7 @@ window.openModal=function(id){
 window.closeModal=()=>document.getElementById('overlay').classList.remove('open');
 window.closeModalOut=e=>{if(e.target===document.getElementById('overlay'))closeModal();};
 window.previewModalPhotoVal=function(url){
-  const dz=document.getElementById('photoDropZone');
-  const ex=dz.querySelector('img');if(ex)ex.remove();
+  const dz=document.getElementById('photoDropZone');const ex=dz.querySelector('img');if(ex)ex.remove();
   if(url){const img=document.createElement('img');img.src=url;img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px';dz.appendChild(img);}
 };
 window.handleFile=function(input){const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=e=>{document.getElementById('fPhoto').value=e.target.result;previewModalPhotoVal(e.target.result);};r.readAsDataURL(file);};
@@ -733,23 +957,148 @@ window.saveItem=async function(){
   const name=document.getElementById('fName').value.trim();
   if(!name){toast('Введи назву','err');return;}
   const id=document.getElementById('editId').value||undefined;
-  const item={id,name,art:document.getElementById('fArt').value.trim(),warehouse:Number(document.getElementById('fWarehouse').value),price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim()};
-  closeModal(); await saveToDb(item); toast(id?'Оновлено':'Додано','ok');
+  const existing=id?allItems.find(x=>x.id===id):{};
+  const item={id,name,art:document.getElementById('fArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),order:existing.order||Date.now()};
+  closeModal();await saveToDb(item);toast(id?'Оновлено':'Додано','ok');
 };
 
 // ─── DELETE ────────────────────────────────────────────
-window.confirmDeleteCurrent=function(){const id=document.getElementById('editId').value;const item=allItems.find(r=>r.id===id);confirmDeleteItem(id,item?.name||'');closeModal();};
-window.confirmDeleteItem=function(id,name){deleteTargetId=id;document.getElementById('confirmName').textContent=name;document.getElementById('confirmOverlay').classList.add('open');};
-window.closeConfirm=function(){document.getElementById('confirmOverlay').classList.remove('open');deleteTargetId=null;};
-window.doDelete=async function(){if(!deleteTargetId)return;const id=deleteTargetId;closeConfirm();await deleteFromDb(id);toast('Видалено','ok');};
+window.confirmDeleteCurrent=function(){
+  const id=document.getElementById('editId').value;
+  const item=allItems.find(r=>r.id===id);
+  confirmDeleteItem(id,item?.name||'');closeModal();
+};
+window.confirmDeleteItem=function(id,name){
+  confirmCallback=async()=>{await deleteFromDb(id);toast('Видалено','ok');};
+  document.getElementById('confirmName').textContent=name;
+  document.getElementById('confirmMsg').textContent='Видалити цей товар? Дію не можна скасувати.';
+  document.getElementById('confirmOverlay').classList.add('open');
+};
+window.closeConfirm=function(){document.getElementById('confirmOverlay').classList.remove('open');confirmCallback=null;};
+window.doConfirm=async function(){if(!confirmCallback)return;const fn=confirmCallback;closeConfirm();await fn();};
+
+// ─── ±1 ────────────────────────────────────────────────
+window.changeQty=async function(id,delta){
+  const item=allItems.find(r=>r.id===id);if(!item)return;
+  const newQty=Math.max(0,(Number(item.qty)||0)+delta);
+  if(newQty===(Number(item.qty)||0))return;
+  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`);
+  item.qty=newQty;renderPage();renderStats();
+  await saveToDb(item);
+};
+
+// ─── INLINE EDIT ───────────────────────────────────────
+window.startEdit=function(id,field,el){
+  if(editingCell)cancelEdit();
+  const item=allItems.find(r=>r.id===id);
+  editingCell={id,field,prevItem:{...item}};
+  const val=item?(item[field]??''):'';
+  const isNum=['qty','price_buy'].includes(field);
+  const input=document.createElement('input');
+  input.className='cell-input';input.type=isNum?'number':'text';input.value=val;
+  input.step=field==='price_buy'?'0.01':'1';input.min=isNum?'0':undefined;
+  input.style.width=isNum?'100px':'100%';
+  input.onkeydown=e=>{if(e.key==='Enter')commitEdit(input,id,field);if(e.key==='Escape')cancelEdit();e.stopPropagation();};
+  input.onblur=()=>commitEdit(input,id,field);
+  el.replaceWith(input);input.focus();input.select();
+  const row=document.getElementById('row-'+id);if(row)row.classList.add('editing');
+};
+async function commitEdit(input,id,field){
+  if(!editingCell)return;const prev=editingCell.prevItem;editingCell=null;
+  const item=allItems.find(r=>r.id===id);if(!item)return;
+  const isNum=['qty','price_buy'].includes(field);
+  const newVal=isNum?(parseFloat(input.value)||0):input.value.trim();
+  if(String(newVal)===String(item[field])){renderPage();return;}
+  pushUndo(prev,`Зміна ${field==='qty'?'кількості':'ціни'} · ${item.name}`);
+  item[field]=newVal;renderPage();renderStats();
+  await saveToDb(item);toast('Збережено','ok');
+}
+function cancelEdit(){if(!editingCell)return;editingCell=null;renderPage();}
+
+// ─── INCOMING ──────────────────────────────────────────
+window.openIncoming=function(id){
+  incomingItemId=id;const r=allItems.find(x=>x.id===id);if(!r)return;
+  document.getElementById('incName').textContent=r.name||'—';
+  document.getElementById('incCurQty').textContent=fmtN(r.qty||0);
+  document.getElementById('incCurPrice').textContent=fmtM(r.price_buy||0);
+  ['incQty1','incPrice1','incQty2','incTotal2'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('calcResult').style.display='none';switchIncTab(1);
+  document.getElementById('incomingOverlay').classList.add('open');
+};
+window.closeIncoming=()=>document.getElementById('incomingOverlay').classList.remove('open');
+window.closeIncomingOut=e=>{if(e.target===document.getElementById('incomingOverlay'))closeIncoming();};
+window.switchIncTab=function(mode){
+  incMode=mode;
+  document.getElementById('incMode1').style.display=mode===1?'block':'none';
+  document.getElementById('incMode2').style.display=mode===2?'block':'none';
+  document.getElementById('incTab1').className='inc-tab'+(mode===1?' active':'');
+  document.getElementById('incTab2').className='inc-tab'+(mode===2?' active':'');
+  document.getElementById('calcResult').style.display='none';
+};
+window.calcIncoming=function(){
+  const r=allItems.find(x=>x.id===incomingItemId);if(!r)return;
+  const curQty=Number(r.qty)||0,curPrice=Number(r.price_buy)||0;
+  let newQty=0,newPrice=0;
+  if(incMode===1){newQty=parseFloat(document.getElementById('incQty1').value)||0;newPrice=parseFloat(document.getElementById('incPrice1').value)||0;}
+  else{newQty=parseFloat(document.getElementById('incQty2').value)||0;const t=parseFloat(document.getElementById('incTotal2').value)||0;newPrice=newQty>0?t/newQty:0;}
+  if(newQty<=0){document.getElementById('calcResult').style.display='none';return;}
+  const totalQty=curQty+newQty,avgPrice=((curQty*curPrice)+(newQty*newPrice))/totalQty;
+  document.getElementById('calcResult').style.display='block';
+  document.getElementById('crQty').textContent=fmtN(newQty)+' шт.';
+  document.getElementById('crPrice').textContent=fmtM(newPrice);
+  document.getElementById('crNewQty').textContent=fmtN(totalQty)+' шт.';
+  document.getElementById('crNewPrice').textContent=fmtM(avgPrice);
+  document.getElementById('crNewTotal').textContent=fmtM(totalQty*avgPrice);
+};
+window.applyIncoming=async function(){
+  const r=allItems.find(x=>x.id===incomingItemId);if(!r)return;
+  const curQty=Number(r.qty)||0,curPrice=Number(r.price_buy)||0;
+  let newQty=0,newPrice=0;
+  if(incMode===1){newQty=parseFloat(document.getElementById('incQty1').value)||0;newPrice=parseFloat(document.getElementById('incPrice1').value)||0;}
+  else{newQty=parseFloat(document.getElementById('incQty2').value)||0;const t=parseFloat(document.getElementById('incTotal2').value)||0;newPrice=newQty>0?t/newQty:0;}
+  if(newQty<=0){toast('Введи кількість','err');return;}
+  const totalQty=curQty+newQty,avgPrice=((curQty*curPrice)+(newQty*newPrice))/totalQty;
+  pushUndo({...r},`Прихід +${fmtN(newQty)} шт. · ${r.name}`);
+  r.qty=totalQty;r.price_buy=Math.round(avgPrice*100)/100;
+  closeIncoming();renderPage();renderStats();
+  await saveToDb(r);toast(`Прихід: +${fmtN(newQty)} шт.`,'ok');
+};
+
+// ─── USERS ─────────────────────────────────────────────
+window.openUsers=function(){document.getElementById('usersOverlay').classList.add('open');loadUsers();};
+window.closeUsers=()=>document.getElementById('usersOverlay').classList.remove('open');
+window.closeUsersOut=e=>{if(e.target===document.getElementById('usersOverlay'))closeUsers();};
+function loadUsers(){
+  const list=document.getElementById('usersList');
+  list.innerHTML='<div class="loading"><div class="spin"></div></div>';
+  onSnapshot(collection(db,'users'),snap=>{
+    const users=snap.docs.map(d=>({id:d.id,...d.data()}));
+    list.innerHTML=`<div class="user-row"><div class="user-avatar">A</div><div class="user-info"><div class="user-login">admin</div><div class="user-role">Адміністратор</div></div></div>`+
+    users.map(u=>`<div class="user-row"><div class="user-avatar">${u.id[0].toUpperCase()}</div><div class="user-info"><div class="user-login">${escHtml(u.id)}</div><div class="user-role">Менеджер</div></div><button class="user-del" onclick="removeUser('${u.id}')">×</button></div>`).join('');
+  },{once:true});
+}
+window.addUser=async function(){
+  const login=document.getElementById('newUserLogin').value.trim();
+  const pass=document.getElementById('newUserPass').value;
+  if(!login){toast('Введи логін','err');return;}if(!pass){toast('Введи пароль','err');return;}if(login==='admin'){toast('Зарезервовано','err');return;}
+  await setDoc(doc(db,'users',login),{password:pass,role:'manager',created:serverTimestamp()});
+  document.getElementById('newUserLogin').value='';document.getElementById('newUserPass').value='';
+  toast(`"${login}" додано`,'ok');loadUsers();
+};
+window.removeUser=async function(login){
+  if(!confirm(`Видалити "${login}"?`))return;
+  await deleteDoc(doc(db,'users',login));toast('Видалено','ok');loadUsers();
+};
 
 // ─── UI ────────────────────────────────────────────────
-window.switchTab=function(tab){activeTab=tab;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',Number(t.dataset.tab)===tab));renderTable();};
-window.setFilter=function(f,btn){activeFilter=f;document.querySelectorAll('.chip').forEach(c=>c.className='chip');if(f==='all')btn.className='chip active';else if(f==='low')btn.className='chip active-amber';else btn.className='chip active-red';renderTable();};
-document.getElementById('searchInput').addEventListener('input',e=>{searchQ=e.target.value;renderTable();});
-document.getElementById('sortSelect').addEventListener('change',e=>{sortBy=e.target.value;renderTable();});
+window.setFilter=function(f,btn){
+  activeFilter=f;renderPage();
+};
+document.getElementById('searchInput').addEventListener('input',e=>{searchQ=e.target.value;renderPage();});
 
 window.toast=function(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(type?' '+type:'');clearTimeout(t._to);t._to=setTimeout(()=>t.className='toast',2500);};
+function fmtM(n){if(!n&&n!==0)return'—';return'₴'+Number(n).toLocaleString('uk-UA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtN(n){return Number(n).toLocaleString('uk-UA');}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
