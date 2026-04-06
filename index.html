@@ -472,7 +472,6 @@ let deleteTargetId=null, deleteTargetType=null, confirmCallback=null;
 let editingCell=null, incomingItemId=null, incMode=1;
 let currentUser=null, undoStack=[], undoTimer=null;
 let dsSupFilter='all';
-let dragSrcId=null;
 
 // ─── LOGIN ─────────────────────────────────────────────
 window.doLogin=async function(){
@@ -643,17 +642,20 @@ function renderPage(){
 
 // ─── STATS ─────────────────────────────────────────────
 function renderStats(){
-  const totWh=allItems.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
-  const zero=allItems.filter(r=>!Number(r.qty)).length;
-  const low=allItems.filter(r=>Number(r.qty)>0&&Number(r.qty)<=5).length;
+  // Per-warehouse stats
+  const whStats=allWarehouses.map(wh=>{
+    const items=allItems.filter(r=>r.warehouse===wh.id);
+    const total=items.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
+    return`<div class="stat"><div class="stat-label">${escHtml(wh.name)}</div><div class="stat-val g">${fmtM(total)}</div></div>`;
+  }).join('');
+  const allTotal=allItems.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
   const dsCount=allDsItems.length;
-  document.getElementById('statsBar').innerHTML=`
-    <div class="stat"><div class="stat-label">Вартість складів</div><div class="stat-val g">${fmtM(totWh)}</div></div>
-    <div class="stat"><div class="stat-label">Позицій</div><div class="stat-val">${allItems.length}</div></div>
-    <div class="stat"><div class="stat-label">Мало залишків</div><div class="stat-val a">${low}</div></div>
-    <div class="stat"><div class="stat-label">Нульові</div><div class="stat-val r">${zero}</div></div>
-    <div class="stat"><div class="stat-label">Дропшипінг</div><div class="stat-val b">${dsCount}</div></div>
-  `;
+  const supCount=allSuppliers.length;
+  document.getElementById('statsBar').innerHTML=
+    whStats+
+    `<div class="stat"><div class="stat-label">Загальна вартість</div><div class="stat-val g">${fmtM(allTotal)}</div></div>`+
+    `<div class="stat"><div class="stat-label">Дропшипінг товарів</div><div class="stat-val b">${dsCount}</div></div>`+
+    `<div class="stat"><div class="stat-label">Постачальників</div><div class="stat-val">${supCount}</div></div>`;
 }
 
 // ─── WAREHOUSE ─────────────────────────────────────────
@@ -700,6 +702,7 @@ function renderWarehouse(){
       ondragstart="dragStart(event,'${r.id}')"
       ondragover="dragOver(event,'${r.id}')"
       ondragleave="dragLeave(event)"
+      ondragend="dragEnd(event)"
       ondrop="dragDrop(event,'${r.id}')">
       <td><span class="drag-handle" title="Перетягни для сортування">⠿</span></td>
       <td class="td-photo" onclick="openModal('${r.id}')" style="cursor:pointer">${photo}</td>
@@ -742,34 +745,75 @@ function renderWarehouse(){
   </table></div></div>`;
 }
 
-// ─── DRAG & DROP ───────────────────────────────────────
+// ─── DRAG & DROP (надійний) ────────────────────────────
+let dragSrcId=null, dragOverId=null;
+
 window.dragStart=function(e,id){
   dragSrcId=id;
   e.dataTransfer.effectAllowed='move';
-  setTimeout(()=>{const el=document.getElementById('row-'+id);if(el)el.classList.add('dragging');},0);
+  e.dataTransfer.setData('text/plain',id);
+  const el=document.getElementById('row-'+id);
+  if(el) setTimeout(()=>el.classList.add('dragging'),0);
 };
+
 window.dragOver=function(e,id){
-  e.preventDefault();e.dataTransfer.dropEffect='move';
-  document.querySelectorAll('tr.drag-over').forEach(el=>el.classList.remove('drag-over'));
-  const el=document.getElementById('row-'+id);if(el&&id!==dragSrcId)el.classList.add('drag-over');
-};
-window.dragLeave=function(e){e.currentTarget.classList.remove('drag-over');};
-window.dragDrop=async function(e,targetId){
   e.preventDefault();
+  e.stopPropagation();
+  e.dataTransfer.dropEffect='move';
+  if(id===dragSrcId)return;
+  if(dragOverId!==id){
+    document.querySelectorAll('tr.drag-over').forEach(el=>el.classList.remove('drag-over'));
+    const el=document.getElementById('row-'+id);
+    if(el)el.classList.add('drag-over');
+    dragOverId=id;
+  }
+};
+
+window.dragLeave=function(e){
+  const el=e.currentTarget;
+  if(!el.contains(e.relatedTarget)){
+    el.classList.remove('drag-over');
+    if(dragOverId===el.id?.replace('row-',''))dragOverId=null;
+  }
+};
+
+window.dragEnd=function(e){
   document.querySelectorAll('tr.drag-over,tr.dragging').forEach(el=>el.classList.remove('drag-over','dragging'));
-  if(!dragSrcId||dragSrcId===targetId)return;
-  // Reorder
-  const whItems=allItems.filter(r=>r.warehouse===activeTab);
+  dragSrcId=null;dragOverId=null;
+};
+
+window.dragDrop=async function(e,targetId){
+  e.preventDefault();e.stopPropagation();
+  document.querySelectorAll('tr.drag-over,tr.dragging').forEach(el=>el.classList.remove('drag-over','dragging'));
+  const srcId=dragSrcId;dragSrcId=null;dragOverId=null;
+  if(!srcId||srcId===targetId)return;
+
+  // Get current warehouse items sorted by order
+  let whItems=allItems.filter(r=>r.warehouse===activeTab);
   whItems.sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
-  const srcIdx=whItems.findIndex(r=>r.id===dragSrcId);
+
+  const srcIdx=whItems.findIndex(r=>r.id===srcId);
   const tgtIdx=whItems.findIndex(r=>r.id===targetId);
   if(srcIdx<0||tgtIdx<0)return;
+
+  // Move
   const [moved]=whItems.splice(srcIdx,1);
   whItems.splice(tgtIdx,0,moved);
-  whItems.forEach((item,i)=>{item.order=i;});
+
+  // Assign new order values
+  whItems.forEach((item,i)=>{
+    const global=allItems.find(r=>r.id===item.id);
+    if(global)global.order=i*10;
+  });
+
+  sortBy='order';
   renderPage();
-  for(const item of whItems)await saveToDb(item);
-  dragSrcId=null;
+
+  // Save to Firebase
+  for(const item of whItems){
+    await saveToDb(item);
+  }
+  toast('Порядок збережено','ok');
 };
 
 // ─── DROPSHIPPING ──────────────────────────────────────
