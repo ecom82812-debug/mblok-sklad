@@ -1100,6 +1100,18 @@ window.toast=function(msg,type=''){const t=document.getElementById('toast');t.te
 function fmtM(n){if(!n&&n!==0)return'—';return'₴'+Number(n).toLocaleString('uk-UA',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function fmtN(n){return Number(n).toLocaleString('uk-UA');}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// Міграція: конвертує старі числові warehouse (1,2) в нові (wh_1, wh_2)
+window.fixWarehouses=async function(){
+  let count=0;
+  for(const item of allItems){
+    const w=item.warehouse;
+    if(w===1||w==='1'){item.warehouse='wh_1';await saveToDb(item);count++;}
+    else if(w===2||w==='2'){item.warehouse='wh_2';await saveToDb(item);count++;}
+  }
+  toast(`Виправлено ${count} товарів`,'ok');
+  console.log('Міграція завершена:',count,'товарів оновлено');
+};
 </script>
 </body>
 </html>
