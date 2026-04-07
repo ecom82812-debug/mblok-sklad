@@ -338,9 +338,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
   .sup-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding:10px 14px}
 
   /* Undo bar */
-  .undo-bar{bottom:130px;width:calc(100% - 28px);border-radius:var(--r);font-size:12px;padding:8px 14px;gap:8px}
+  .undo-bar{bottom:140px;width:calc(100% - 28px);border-radius:var(--r);font-size:12px;padding:8px 14px;gap:8px}
   .undo-bar-btn{padding:4px 10px;font-size:11px}
-  .toast{bottom:130px;right:14px;left:14px;text-align:center;font-size:12px}
+  .toast{bottom:140px;right:14px;left:14px;text-align:center;font-size:12px}
 }
 
 /* Desktop — hide mobile-only elements */
@@ -1220,7 +1220,7 @@ window.changeQty=async function(id,delta){
   const item=allItems.find(r=>r.id===id);if(!item)return;
   const newQty=Math.max(0,(Number(item.qty)||0)+delta);
   if(newQty===(Number(item.qty)||0))return;
-  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`);
+  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`,true);
   item.qty=newQty;renderPage();renderStats();
   await saveToDb(item);
 };
