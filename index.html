@@ -234,8 +234,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
 .toast.err{border-color:var(--red-border);color:var(--red)}
 
 /* UNDO BAR */
-.undo-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;z-index:998;display:none;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-.undo-bar.show{display:flex}
+.undo-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--text);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;z-index:998;display:flex;align-items:center;gap:12px;transition:transform .25s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 20px rgba(0,0,0,.2);pointer-events:none;opacity:0}
+.undo-bar.show{transform:translateX(-50%) translateY(0);pointer-events:all;opacity:1}
 .undo-bar-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:4px 14px;font-size:12px;cursor:pointer;font-family:inherit}
 .undo-bar-btn:hover{background:rgba(255,255,255,.25)}
 
@@ -338,9 +338,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
   .sup-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding:10px 14px}
 
   /* Undo bar */
-  .undo-bar.show{bottom:140px;width:calc(100% - 28px);border-radius:var(--r);font-size:12px;padding:8px 14px;gap:8px;left:14px;transform:none}
+  .undo-bar{bottom:70px;width:calc(100% - 28px);border-radius:var(--r);font-size:12px;padding:8px 14px;gap:8px;left:14px;transform:translateX(0) translateY(120px)}
+  .undo-bar.show{transform:translateX(0) translateY(0)}
   .undo-bar-btn{padding:4px 10px;font-size:11px}
-  .toast{bottom:140px;right:14px;left:14px;text-align:center;font-size:12px}
+  .toast{bottom:130px;right:14px;left:14px;text-align:center;font-size:12px}
 }
 
 /* Desktop — hide mobile-only elements */
@@ -707,10 +708,17 @@ function pushUndo(item,desc,silent=false){
   document.getElementById('undoMsg').textContent=desc;
   bar.classList.add('show');
   clearTimeout(undoTimer);
-  undoTimer=setTimeout(()=>{
-    bar.classList.remove('show');
-  },3000);
+  undoTimer=setTimeout(()=>bar.classList.remove('show'),3000);
 }
+
+window.changeQty=async function(id,delta){
+  const item=allItems.find(r=>r.id===id);if(!item)return;
+  const newQty=Math.max(0,(Number(item.qty)||0)+delta);
+  if(newQty===(Number(item.qty)||0))return;
+  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`);
+  item.qty=newQty;renderPage();renderStats();
+  await saveToDb(item);
+};
 window.doUndo=async function(){
   if(!undoStack.length)return;
   const {id,snapshot,desc}=undoStack.pop();
@@ -1216,16 +1224,6 @@ window.confirmDeleteItem=function(id,name){
 };
 window.closeConfirm=function(){document.getElementById('confirmOverlay').classList.remove('open');confirmCallback=null;};
 window.doConfirm=async function(){if(!confirmCallback)return;const fn=confirmCallback;closeConfirm();await fn();};
-
-// ─── ±1 ────────────────────────────────────────────────
-window.changeQty=async function(id,delta){
-  const item=allItems.find(r=>r.id===id);if(!item)return;
-  const newQty=Math.max(0,(Number(item.qty)||0)+delta);
-  if(newQty===(Number(item.qty)||0))return;
-  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`,true);
-  item.qty=newQty;renderPage();renderStats();
-  await saveToDb(item);
-};
 
 // ─── INLINE EDIT ───────────────────────────────────────
 window.startEdit=function(id,field,el){
