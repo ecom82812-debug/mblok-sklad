@@ -595,6 +595,7 @@ let deleteTargetId=null, deleteTargetType=null, confirmCallback=null;
 let editingCell=null, incomingItemId=null, incMode=1;
 let currentUser=null, undoStack=[], undoTimer=null;
 let dsSupFilter='all';
+let _saving=false;
 
 // ─── LOGIN ─────────────────────────────────────────────
 window.doLogin=async function(){
@@ -647,7 +648,8 @@ function initApp(){
   onSnapshot(collection(db,'products'),snap=>{
     allItems=snap.docs.map(d=>({id:d.id,...d.data()}));
     allItems.sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
-    renderStats(); renderPage(); setSyncStatus('ok');
+    if(!_saving){renderStats();renderPage();}
+    setSyncStatus('ok');
   },()=>{setSyncStatus('error');toast('Помилка підключення','err');});
   // DS items
   onSnapshot(collection(db,'dropship'),snap=>{
@@ -665,6 +667,7 @@ function setSyncStatus(s){const d=document.getElementById('syncDot');d.className
 // ─── DB ────────────────────────────────────────────────
 async function saveToDb(item){
   setSyncStatus('syncing');
+  _saving=true;
   try{
     const id=item.id||crypto.randomUUID();
     await setDoc(doc(db,'products',id),{
@@ -672,8 +675,10 @@ async function saveToDb(item){
       qty:Number(item.qty)||0,price_buy:Number(item.price_buy)||0,
       photo:item.photo||'',order:item.order||0,updated:serverTimestamp()
     });
-    setSyncStatus('ok');return id;
-  }catch(e){setSyncStatus('error');toast('Помилка збереження','err');throw e;}
+    setSyncStatus('ok');
+    setTimeout(()=>_saving=false,500);
+    return id;
+  }catch(e){_saving=false;setSyncStatus('error');toast('Помилка збереження','err');throw e;}
 }
 async function deleteFromDb(id){
   try{await deleteDoc(doc(db,'products',id));setSyncStatus('ok');}
@@ -699,8 +704,10 @@ function pushUndo(item,desc,silent=false){
   if(undoStack.length>20)undoStack.shift();
   if(silent)return;
   document.getElementById('undoMsg').textContent=desc;
-  const bar=document.getElementById('undoBar');bar.classList.add('show');
-  clearTimeout(undoTimer);undoTimer=setTimeout(()=>bar.classList.remove('show'),5000);
+  const bar=document.getElementById('undoBar');
+  bar.classList.add('show');
+  clearTimeout(undoTimer);
+  undoTimer=setTimeout(()=>bar.classList.remove('show'),3000);
 }
 window.doUndo=async function(){
   if(!undoStack.length)return;
@@ -1213,7 +1220,7 @@ window.changeQty=async function(id,delta){
   const item=allItems.find(r=>r.id===id);if(!item)return;
   const newQty=Math.max(0,(Number(item.qty)||0)+delta);
   if(newQty===(Number(item.qty)||0))return;
-  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`,true);
+  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`);
   item.qty=newQty;renderPage();renderStats();
   await saveToDb(item);
 };
