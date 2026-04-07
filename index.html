@@ -638,11 +638,11 @@ function initApp(){
     allWarehouses=snap.docs.map(d=>({id:d.id,...d.data()}));
     allWarehouses.sort((a,b)=>(a.order||0)-(b.order||0));
     if(!allWarehouses.length){
-      // Create defaults
       setDoc(doc(db,'warehouses','wh_1'),{name:'Склад №1 Продаж',order:1});
       setDoc(doc(db,'warehouses','wh_2'),{name:'Склад №2 Резерв',order:2});
     }
-    renderTabs(); renderStats(); renderPage();
+    renderTabs(); renderPage();
+    setTimeout(()=>{renderStats();},100);
     if(typeof updateMobNav==='function') updateMobNav();
   });
   // Products
@@ -650,17 +650,20 @@ function initApp(){
     allItems=snap.docs.map(d=>({id:d.id,...d.data()}));
     allItems.sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
     if(!_saving){renderStats();renderPage();}
+    else renderStats();
     setSyncStatus('ok');
   },()=>{setSyncStatus('error');toast('Помилка підключення','err');});
   // DS items
   onSnapshot(collection(db,'dropship'),snap=>{
     allDsItems=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderPage(); renderStats();
+    renderStats();
+    if(!_saving) renderPage();
   });
   // Suppliers
   onSnapshot(collection(db,'suppliers'),snap=>{
     allSuppliers=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderPage();
+    renderStats();
+    if(!_saving) renderPage();
   });
 }
 function setSyncStatus(s){const d=document.getElementById('syncDot');d.className='sync-dot'+(s==='syncing'?' syncing':s==='error'?' error':'');}
