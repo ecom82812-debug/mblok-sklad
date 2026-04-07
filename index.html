@@ -694,9 +694,10 @@ async function saveDsToDb(item){
 async function deleteDsFromDb(id){await deleteDoc(doc(db,'dropship',id));}
 
 // ─── UNDO ──────────────────────────────────────────────
-function pushUndo(item,desc){
+function pushUndo(item,desc,silent=false){
   undoStack.push({id:item.id,snapshot:{...item},desc});
   if(undoStack.length>20)undoStack.shift();
+  if(silent)return;
   document.getElementById('undoMsg').textContent=desc;
   const bar=document.getElementById('undoBar');bar.classList.add('show');
   clearTimeout(undoTimer);undoTimer=setTimeout(()=>bar.classList.remove('show'),5000);
@@ -1212,7 +1213,7 @@ window.changeQty=async function(id,delta){
   const item=allItems.find(r=>r.id===id);if(!item)return;
   const newQty=Math.max(0,(Number(item.qty)||0)+delta);
   if(newQty===(Number(item.qty)||0))return;
-  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`);
+  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`,true);
   item.qty=newQty;renderPage();renderStats();
   await saveToDb(item);
 };
@@ -1241,7 +1242,7 @@ async function commitEdit(input,id,field){
   if(String(newVal)===String(item[field])){renderPage();return;}
   pushUndo(prev,`Зміна ${field==='qty'?'кількості':'ціни'} · ${item.name}`);
   item[field]=newVal;renderPage();renderStats();
-  await saveToDb(item);toast('Збережено','ok');
+  await saveToDb(item);
 }
 function cancelEdit(){if(!editingCell)return;editingCell=null;renderPage();}
 
