@@ -377,6 +377,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
   </div>
   <div class="header-right">
     <div class="sync-dot" id="syncDot"></div>
+    <button class="btn" id="undoBtn" onclick="doUndo()" style="opacity:.35;cursor:default" title="Скасувати останню дію">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+      Скасувати
+    </button>
     <button class="btn" id="usersBtn" onclick="openUsers()" style="display:none">👥 Доступ</button>
     <button class="btn btn-primary" id="addBtn" onclick="openModal()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -566,11 +570,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
   </div>
 </div>
 
-<div class="undo-bar" id="undoBar">
-  <span id="undoMsg">Зміну збережено</span>
-  <button class="undo-bar-btn" onclick="doUndo()">↩ Скасувати (Ctrl+Z)</button>
-</div>
 <div class="toast" id="toast"></div>
+<div id="undoBar" style="display:none"><span id="undoMsg"></span></div>
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -703,9 +704,17 @@ async function saveDsToDb(item){
 async function deleteDsFromDb(id){await deleteDoc(doc(db,'dropship',id));}
 
 // ─── UNDO ──────────────────────────────────────────────
+function setUndoBtn(active){
+  const btn=document.getElementById('undoBtn');
+  if(!btn)return;
+  btn.style.opacity=active?'1':'.35';
+  btn.style.cursor=active?'pointer':'default';
+}
+
 function pushUndo(item,desc,silent=false){
   undoStack.push({id:item.id,snapshot:{...item},desc});
   if(undoStack.length>20)undoStack.shift();
+  setUndoBtn(true);
   if(silent)return;
   const bar=document.getElementById('undoBar');
   document.getElementById('undoMsg').textContent=desc;
@@ -718,14 +727,16 @@ window.changeQty=async function(id,delta){
   const item=allItems.find(r=>r.id===id);if(!item)return;
   const newQty=Math.max(0,(Number(item.qty)||0)+delta);
   if(newQty===(Number(item.qty)||0))return;
-  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`);
+  pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`,true);
   item.qty=newQty;renderPage();renderStats();
   await saveToDb(item);
 };
+
 window.doUndo=async function(){
   if(!undoStack.length)return;
   const {id,snapshot,desc}=undoStack.pop();
   document.getElementById('undoBar').classList.remove('show');
+  if(!undoStack.length)setUndoBtn(false);
   const idx=allItems.findIndex(r=>r.id===id);
   if(idx>=0)allItems[idx]={...snapshot};
   renderPage();renderStats();
