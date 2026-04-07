@@ -729,10 +729,7 @@ window.doUndo=async function(){
   await saveToDb(snapshot);
   toast(`Скасовано: ${desc}`,'ok');
 };
-document.addEventListener('keydown',e=>{
-  if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!e.shiftKey){e.preventDefault();doUndo();}
-  if(e.key==='Escape'){closeModal();closeIncoming();closeDsModal();closeUsers();closeSup();closeConfirm();}
-});
+
 
 // ─── TABS ──────────────────────────────────────────────
 function renderTabs(){
@@ -1356,6 +1353,20 @@ window.fixWarehouses=async function(){
   toast(`Виправлено ${count} товарів`,'ok');
   console.log('Міграція завершена:',count,'товарів оновлено');
 };
+</script>
+
+<script>
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!e.shiftKey){
+    e.preventDefault();
+    if(typeof window.doUndo==='function') window.doUndo();
+  }
+  if(e.key==='Escape'){
+    ['closeModal','closeIncoming','closeDsModal','closeUsers','closeSup','closeConfirm'].forEach(fn=>{
+      if(typeof window[fn]==='function') window[fn]();
+    });
+  }
+});
 </script>
 </body>
 </html>
