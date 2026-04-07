@@ -250,6 +250,105 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
 .confirm-box p{margin-bottom:20px;color:var(--muted);font-size:13px}
 .confirm-box strong{display:block;margin-bottom:6px;font-size:15px}
 .confirm-actions{display:flex;gap:8px;justify-content:center}
+
+/* ── MOBILE ────────────────────────────────── */
+@media(max-width:700px){
+  /* Header */
+  .header{padding:0 14px;height:50px;gap:8px}
+  .logo{font-size:14px}
+  .header-mid{display:none}
+  .header-right{gap:6px}
+  #usersBtn{display:none!important}
+  .logout-btn{font-size:11px;padding:4px 6px}
+  .btn-primary{height:34px;padding:0 12px;font-size:12px}
+
+  /* Stats */
+  .stats{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .stat{padding:10px 12px}
+  .stat-label{font-size:10px}
+  .stat-val{font-size:16px}
+
+  /* Tabs */
+  .tabs-wrap{gap:4px;margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .tabs{gap:2px;padding:2px}
+  .tab{height:28px;padding:0 10px;font-size:12px}
+  .add-tab-btn{height:28px;padding:0 10px;font-size:11px;flex-shrink:0}
+
+  /* Main padding */
+  .main{padding:12px 14px;padding-bottom:80px}
+
+  /* Toolbar */
+  .toolbar{gap:6px;margin-bottom:10px}
+  .filter-chips{gap:4px}
+  .chip{height:26px;padding:0 10px;font-size:11px}
+
+  /* Hide desktop table — show mobile cards */
+  .tbl-wrap{display:none}
+
+  /* Mobile search bar (shown only on mobile) */
+  .mob-search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:0 12px;height:36px;margin-bottom:10px}
+  .mob-search svg{width:14px;height:14px;color:var(--muted);flex-shrink:0}
+  .mob-search input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;width:100%}
+  .mob-search input::placeholder{color:var(--muted2)}
+
+  /* Product cards */
+  .mob-cards{display:flex;flex-direction:column;gap:8px}
+  .mob-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;display:flex;gap:12px;align-items:flex-start;position:relative}
+  .mob-card.zero-card{opacity:.55}
+  .mob-card.zero-card .mob-card-name{text-decoration:line-through;color:var(--muted)}
+  .mob-card-img{width:54px;height:54px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .mob-card-body{flex:1;min-width:0}
+  .mob-card-name{font-size:13px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mob-card-art{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+  .mob-card-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .mob-card-price{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .mob-card-total{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--text)}
+  .mob-qty-ctrl{display:flex;align-items:center;gap:6px;margin-top:8px}
+  .mob-qty-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);transition:all .12s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+  .mob-qty-btn:active{transform:scale(.92)}
+  .mob-qty-btn.minus:active{background:var(--red-bg);border-color:var(--red)}
+  .mob-qty-btn.plus:active{background:var(--green-bg);border-color:var(--green)}
+  .mob-qty-badge{flex:1;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;font-family:'JetBrains Mono',monospace}
+  .mob-card-actions{position:absolute;top:10px;right:10px;display:flex;gap:4px}
+  .mob-action-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .mob-action-btn:active{background:var(--border2)}
+
+  /* Bottom nav */
+  .mob-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding:0 0 env(safe-area-inset-bottom,0)}
+  .mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:56px;cursor:pointer;-webkit-tap-highlight-color:transparent;gap:3px;transition:background .12s}
+  .mob-nav-item:active{background:var(--surface2)}
+  .mob-nav-item.active .mob-nav-icon{color:var(--green)}
+  .mob-nav-item.active .mob-nav-label{color:var(--green)}
+  .mob-nav-icon{font-size:18px;line-height:1}
+  .mob-nav-label{font-size:9px;font-weight:500;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+  .mob-nav-item.active .mob-nav-label{color:var(--green)}
+
+  /* FAB add button */
+  .mob-fab{display:flex;position:fixed;bottom:66px;right:16px;width:52px;height:52px;border-radius:50%;background:var(--green);color:#fff;border:none;font-size:26px;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(30,110,53,.35);cursor:pointer;z-index:99;-webkit-tap-highlight-color:transparent;transition:transform .12s}
+  .mob-fab:active{transform:scale(.93)}
+
+  /* Modal full screen on mobile */
+  .overlay{padding:0;align-items:flex-end}
+  .modal{max-width:100%;border-radius:var(--r) var(--r) 0 0;max-height:92vh}
+
+  /* Dropship grid — 1 col on mobile */
+  .ds-grid{grid-template-columns:1fr}
+
+  /* Sup bar scroll */
+  .sup-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding:10px 14px}
+
+  /* Undo bar */
+  .undo-bar{bottom:72px;width:calc(100% - 32px);border-radius:var(--r)}
+  .toast{bottom:72px;right:14px;left:14px;text-align:center}
+}
+
+/* Desktop — hide mobile-only elements */
+@media(min-width:701px){
+  .mob-search{display:none}
+  .mob-cards{display:none}
+  .mob-bottom-nav{display:none}
+  .mob-fab{display:none}
+}
 </style>
 </head>
 <body>
@@ -284,6 +383,29 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
     <button class="logout-btn" onclick="doLogout()">Вийти</button>
   </div>
 </header>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mob-bottom-nav" id="mobNav">
+  <div class="mob-nav-item active" id="mobNav0" onclick="mobSwitchTab(0)">
+    <div class="mob-nav-icon">📦</div>
+    <div class="mob-nav-label">Склад №1</div>
+  </div>
+  <div class="mob-nav-item" id="mobNav1" onclick="mobSwitchTab(1)">
+    <div class="mob-nav-icon">🏭</div>
+    <div class="mob-nav-label">Склад №2</div>
+  </div>
+  <div class="mob-nav-item" id="mobNav2" onclick="mobSwitchTab(2)">
+    <div class="mob-nav-icon">🔗</div>
+    <div class="mob-nav-label">Дропшип</div>
+  </div>
+  <div class="mob-nav-item" id="mobNav3" onclick="mobSwitchTab(3)">
+    <div class="mob-nav-icon">⚙️</div>
+    <div class="mob-nav-label">Більше</div>
+  </div>
+</nav>
+
+<!-- MOBILE FAB -->
+<button class="mob-fab" id="mobFab" onclick="openModal()">+</button>
 
 <main class="main">
   <div class="stats" id="statsBar"></div>
@@ -518,6 +640,7 @@ function initApp(){
       setDoc(doc(db,'warehouses','wh_2'),{name:'Склад №2 Резерв',order:2});
     }
     renderTabs(); renderStats(); renderPage();
+    if(typeof updateMobNav==='function') updateMobNav();
   });
   // Products
   onSnapshot(collection(db,'products'),snap=>{
@@ -610,8 +733,34 @@ window.switchTab=function(id){
   dsSupFilter='all';
   document.getElementById('addBtn').textContent=id==='dropship'?'+ Товар дропшип':'+ Додати товар';
   document.getElementById('addBtn').onclick=id==='dropship'?()=>openDsModal():()=>openModal();
-  renderTabs();renderPage();
+  document.getElementById('mobFab').onclick=id==='dropship'?()=>openDsModal():()=>openModal();
+  renderTabs();renderPage();updateMobNav();
 };
+
+window.mobSwitchTab=function(idx){
+  const tabs=['wh_1','wh_2','dropship'];
+  if(idx===3){
+    // More menu — open users or settings
+    if(currentUser?.role==='admin') openUsers();
+    return;
+  }
+  const id=allWarehouses[idx]?.id||tabs[idx]||'wh_1';
+  switchTab(id);
+};
+
+function updateMobNav(){
+  const navItems=document.querySelectorAll('.mob-nav-item');
+  navItems.forEach(el=>el.classList.remove('active'));
+  if(activeTab==='dropship'){document.getElementById('mobNav2')?.classList.add('active');}
+  else{
+    const idx=allWarehouses.findIndex(w=>w.id===activeTab);
+    if(idx===0)document.getElementById('mobNav0')?.classList.add('active');
+    else if(idx===1)document.getElementById('mobNav1')?.classList.add('active');
+  }
+  // Update labels dynamically
+  if(allWarehouses[0])document.querySelector('#mobNav0 .mob-nav-label').textContent=allWarehouses[0].name.replace('Склад №1 ','').slice(0,8)||'Склад №1';
+  if(allWarehouses[1])document.querySelector('#mobNav1 .mob-nav-label').textContent=allWarehouses[1].name.replace('Склад №2 ','').slice(0,8)||'Склад №2';
+}
 
 window.startRenameTab=function(id,el){
   const wh=allWarehouses.find(w=>w.id===id);if(!wh)return;
@@ -695,6 +844,38 @@ function renderWarehouse(){
     </div>
   </div>`;
 
+  // MOBILE CARDS
+  const mobCards=`<div class="mob-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" placeholder="Пошук товару..." oninput="searchQ=this.value;renderPage()" value="${escHtml(searchQ)}">
+  </div>
+  <div class="mob-cards">${d.map(r=>{
+    const qty=Number(r.qty)||0;
+    const qc=qty===0?'qty-zero':qty<=5?'qty-low':'qty-ok';
+    const photo=r.photo?`<img src="${r.photo}" style="width:54px;height:54px;border-radius:8px;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'">`:`<div class="mob-card-img">📦</div>`;
+    const total=qty*(Number(r.price_buy)||0);
+    return`<div class="mob-card${qty===0?' zero-card':''}">
+      ${photo}
+      <div class="mob-card-body">
+        <div class="mob-card-name">${escHtml(r.name||'—')}</div>
+        <div class="mob-card-art">${escHtml(r.art||'')}</div>
+        <div class="mob-card-row">
+          <span class="mob-card-price">Ціна: ${fmtM(r.price_buy)}</span>
+          <span class="mob-card-total">${fmtM(total)}</span>
+        </div>
+        <div class="mob-qty-ctrl">
+          <button class="mob-qty-btn minus" onclick="changeQty('${r.id}',-1)">−</button>
+          <div class="mob-qty-badge ${qc}">${fmtN(qty)}</div>
+          <button class="mob-qty-btn plus" onclick="changeQty('${r.id}',1)">+</button>
+          <button class="mob-action-btn" onclick="openIncoming('${r.id}')" title="Прихід" style="margin-left:4px">📥</button>
+        </div>
+      </div>
+      <div class="mob-card-actions">
+        <div class="mob-action-btn" onclick="openModal('${r.id}')">✏️</div>
+      </div>
+    </div>`;
+  }).join('')||`<div class="empty">Нічого не знайдено</div>`}</div>`;
+
   const rows=d.map(r=>{
     const qty=Number(r.qty)||0;
     const qc=qty===0?'qty-zero':qty<=5?'qty-low':'qty-ok';
@@ -731,7 +912,7 @@ function renderWarehouse(){
   const totBuy=d.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
   const footer=`<tr class="tbl-footer"><td colspan="3">Разом: ${d.length} поз.</td><td class="r">${fmtN(d.reduce((a,r)=>a+Number(r.qty),0))} шт.</td><td></td><td class="r total-sum">${fmtM(totBuy)}</td><td></td></tr>`;
 
-  document.getElementById('pageContent').innerHTML=toolbar+`<div class="tbl-wrap"><div class="tbl-scroll"><table>
+  document.getElementById('pageContent').innerHTML=toolbar+mobCards+`<div class="tbl-wrap"><div class="tbl-scroll"><table>
     <thead><tr>
       <th style="width:28px"></th>
       <th style="width:66px"></th>
