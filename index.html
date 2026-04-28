@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mblok · Склад</title>
-<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -16,7 +16,7 @@
   --blue:#1a5a9a;--blue-bg:#edf3fc;--blue-border:#b8d0f0;
   --r:10px;--r-sm:6px;
 }
-body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:'cv02','cv03','cv04','cv11'}
 
 /* LOGIN */
 .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
@@ -25,10 +25,10 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 .login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
 .login-group{margin-bottom:14px}
 .login-group label{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
-.login-group input{width:100%;height:38px;padding:0 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border .15s}
+.login-group input{width:100%;height:38px;padding:0 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:14px;font-family:'Inter',system-ui,sans-serif;outline:none;transition:border .15s}
 .login-group input:focus{border-color:var(--green);background:var(--surface)}
 .login-err{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);padding:8px 12px;border-radius:var(--r-sm);font-size:13px;margin-bottom:14px;display:none}
-.login-btn{width:100%;height:40px;background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:6px}
+.login-btn{width:100%;height:40px;background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);font-size:14px;font-weight:600;font-family:'Inter',system-ui,sans-serif;cursor:pointer;margin-top:6px}
 .login-btn:hover{background:#165a2a}.login-btn:active{transform:scale(.98)}
 
 .app{display:none}
@@ -39,7 +39,7 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 .header-mid{flex:1;display:flex;align-items:center}
 .search-box{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:0 12px;height:34px;flex:1;max-width:340px}
 .search-box svg{width:14px;height:14px;color:var(--muted);flex-shrink:0}
-.search-box input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;width:100%}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:'Inter',system-ui,sans-serif;width:100%}
 .search-box input::placeholder{color:var(--muted2)}
 .header-right{display:flex;gap:8px;align-items:center}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
@@ -50,7 +50,7 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 .logout-btn:hover{background:var(--surface2);color:var(--text)}
 
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:var(--r-sm);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:var(--r-sm);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:12px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
 .btn:hover{background:var(--surface2)}.btn:active{transform:scale(.97)}
 .btn-primary{background:var(--green);color:#fff;border-color:var(--green);font-weight:600}
 .btn-primary:hover{background:#165a2a;border-color:#165a2a}
@@ -80,17 +80,17 @@ body{font-family:'Geologica',sans-serif;background:var(--bg);color:var(--text);f
 /* TABS */
 .tabs-wrap{display:flex;align-items:center;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
 .tabs{display:flex;gap:3px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:3px;flex-shrink:0}
-.tab{height:30px;padding:0 14px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:13px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:500;white-space:nowrap;position:relative}
+.tab{height:30px;padding:0 14px;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:13px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;transition:all .15s;font-weight:500;white-space:nowrap;position:relative}
 .tab.active{background:var(--surface2);color:var(--text);border:1px solid var(--border2)}
 .tab:hover:not(.active){color:var(--text)}
-.tab-rename-input{height:26px;padding:0 6px;border:1.5px solid var(--green);border-radius:4px;font-size:13px;font-family:inherit;outline:none;background:var(--surface);color:var(--text);min-width:80px}
-.add-tab-btn{height:30px;padding:0 12px;border-radius:6px;border:1px dashed var(--border2);background:transparent;color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab-rename-input{height:26px;padding:0 6px;border:1.5px solid var(--green);border-radius:4px;font-size:13px;font-family:'Inter',system-ui,sans-serif;outline:none;background:var(--surface);color:var(--text);min-width:80px}
+.add-tab-btn{height:30px;padding:0 12px;border-radius:6px;border:1px dashed var(--border2);background:transparent;color:var(--muted);font-size:12px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
 .add-tab-btn:hover{border-color:var(--green);color:var(--green)}
 
 /* TOOLBAR */
 .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .filter-chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{height:28px;padding:0 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s}
+.chip{height:28px;padding:0 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;transition:all .15s}
 .chip:hover{color:var(--text);border-color:var(--border2)}
 .chip.active{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
 .chip.active-amber{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber)}
@@ -119,7 +119,7 @@ tr.dragging{opacity:.4}
 
 .cell-view{cursor:pointer;border-radius:4px;padding:2px 5px;margin:-2px -5px;transition:background .12s;display:inline-block}
 .cell-view:hover{background:var(--surface2)}
-.cell-input{background:var(--surface);border:1.5px solid var(--green);border-radius:4px;padding:3px 7px;color:var(--text);font-size:13px;font-family:inherit;outline:none}
+.cell-input{background:var(--surface);border:1.5px solid var(--green);border-radius:4px;padding:3px 7px;color:var(--text);font-size:13px;font-family:'Inter',system-ui,sans-serif;outline:none}
 
 .td-photo{width:66px}
 .product-img{width:58px;height:58px;border-radius:6px;object-fit:cover;border:1px solid var(--border);cursor:pointer}
@@ -143,10 +143,10 @@ tr:hover .row-acts-hidden{opacity:1}
 
 /* GROUPS */
 .chip-sep{width:1px;height:18px;background:var(--border2);margin:0 2px;display:inline-block;vertical-align:middle}
-.chip-group{height:28px;padding:0 11px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.chip-group{height:28px;padding:0 11px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
 .chip-group:hover{color:var(--text);border-color:var(--border2)}
 .chip-group.active-group{border-color:currentColor;font-weight:500}
-.chip-add-group{height:28px;padding:0 10px;border-radius:20px;border:1px dashed var(--border2);background:transparent;color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s}
+.chip-add-group{height:28px;padding:0 10px;border-radius:20px;border:1px dashed var(--border2);background:transparent;color:var(--muted);font-size:12px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;transition:all .15s}
 .chip-add-group:hover{border-color:var(--green);color:var(--green)}
 .group-row-header td{background:var(--surface2);padding:6px 12px;border-bottom:1px solid var(--border);border-top:2px solid var(--border2)}
 .group-row-header:first-child td{border-top:none}
@@ -202,7 +202,7 @@ tr:hover .row-acts-hidden{opacity:1}
 .sup-label{font-size:12px;color:var(--muted)}
 .sup-count{font-size:10px;padding:1px 6px;border-radius:10px;background:var(--surface2);color:var(--muted)}
 .sup-sep{width:1px;height:16px;background:var(--border)}
-.sup-manage{font-size:12px;color:var(--blue);cursor:pointer;margin-left:auto;background:none;border:none;font-family:inherit}
+.sup-manage{font-size:12px;color:var(--blue);cursor:pointer;margin-left:auto;background:none;border:none;font-family:'Inter',system-ui,sans-serif}
 .sup-manage:hover{text-decoration:underline}
 
 /* MODAL */
@@ -218,7 +218,7 @@ tr:hover .row-acts-hidden{opacity:1}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 label{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
-input[type=text],input[type=number],input[type=password],input[type=url],select,textarea{width:100%;height:36px;padding:0 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border .15s}
+input[type=text],input[type=number],input[type=password],input[type=url],select,textarea{width:100%;height:36px;padding:0 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:13px;font-family:'Inter',system-ui,sans-serif;outline:none;transition:border .15s}
 textarea{height:auto;padding:8px 10px;resize:vertical;min-height:60px}
 input:focus,select:focus,textarea:focus{border-color:var(--green);background:var(--surface)}
 .photo-drop{border:1.5px dashed var(--border2);border-radius:var(--r-sm);height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;margin-top:6px;overflow:hidden;position:relative;background:var(--surface2)}
@@ -230,7 +230,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
 .incoming-info strong{display:block;font-weight:600;margin-bottom:2px;font-size:14px;color:var(--text)}
 .incoming-info span{color:var(--blue)}
 .incoming-tabs{display:flex;gap:4px;margin-bottom:14px;background:var(--surface2);border-radius:var(--r-sm);padding:3px}
-.inc-tab{flex:1;height:28px;border:none;background:transparent;border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;color:var(--muted);font-weight:500;transition:all .15s}
+.inc-tab{flex:1;height:28px;border:none;background:transparent;border-radius:6px;font-size:12px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;color:var(--muted);font-weight:500;transition:all .15s}
 .inc-tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .calc-result{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r-sm);padding:12px 14px;margin-top:14px;font-size:13px}
 .calc-result-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
@@ -266,7 +266,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
 /* UNDO BAR */
 .undo-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--text);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;z-index:998;display:flex;align-items:center;gap:12px;transition:transform .25s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 20px rgba(0,0,0,.2);pointer-events:none;opacity:0}
 .undo-bar.show{transform:translateX(-50%) translateY(0);pointer-events:all;opacity:1}
-.undo-bar-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:4px 14px;font-size:12px;cursor:pointer;font-family:inherit}
+.undo-bar-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:4px 14px;font-size:12px;cursor:pointer;font-family:'Inter',system-ui,sans-serif}
 .undo-bar-btn:hover{background:rgba(255,255,255,.25)}
 
 .loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px;color:var(--muted);font-size:13px}
@@ -318,7 +318,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
   /* Mobile search bar (shown only on mobile) */
   .mob-search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:0 12px;height:36px;margin-bottom:10px}
   .mob-search svg{width:14px;height:14px;color:var(--muted);flex-shrink:0}
-  .mob-search input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;width:100%}
+  .mob-search input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:'Inter',system-ui,sans-serif;width:100%}
   .mob-search input::placeholder{color:var(--muted2)}
 
   /* Product cards */
@@ -936,7 +936,7 @@ function renderWarehouse(){
       <button class="chip-add-group" onclick="openGrp()" title="Керування групами">🗂 Групи</button>
     </div>
     <div class="ml-auto">
-      <select id="sortSelect" onchange="sortBy=this.value;localStorage.setItem('mblok_sort',this.value);renderPage()" style="height:30px;font-size:12px;padding:0 8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted);font-family:inherit">
+      <select id="sortSelect" onchange="sortBy=this.value;localStorage.setItem('mblok_sort',this.value);renderPage()" style="height:30px;font-size:12px;padding:0 8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted);font-family:'Inter',system-ui,sans-serif">
         <option value="order"${sortBy==='order'?' selected':''}>Свій порядок</option>
         <option value="name"${sortBy==='name'?' selected':''}>За назвою</option>
         <option value="qty"${sortBy==='qty'?' selected':''}>За кількістю</option>
@@ -1171,7 +1171,7 @@ function renderDropship(){
   const toolbar=`<div class="toolbar">
     <div class="search-box" style="max-width:260px">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" placeholder="Пошук товару..." oninput="searchQ=this.value;renderPage()" value="${escHtml(searchQ)}" style="background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;width:100%">
+      <input type="text" placeholder="Пошук товару..." oninput="searchQ=this.value;renderPage()" value="${escHtml(searchQ)}" style="background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:'Inter',system-ui,sans-serif;width:100%">
     </div>
   </div>`;
 
