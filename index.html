@@ -141,6 +141,36 @@ tr:hover .row-acts-hidden{opacity:1}
 .tbl-footer td{background:var(--surface2);font-weight:600;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);padding:9px 12px;border-top:1px solid var(--border2)}
 .tbl-footer .total-sum{color:var(--green);font-size:13px}
 
+/* GROUPS */
+.chip-sep{width:1px;height:18px;background:var(--border2);margin:0 2px;display:inline-block;vertical-align:middle}
+.chip-group{height:28px;padding:0 11px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.chip-group:hover{color:var(--text);border-color:var(--border2)}
+.chip-group.active-group{border-color:currentColor;font-weight:500}
+.chip-add-group{height:28px;padding:0 10px;border-radius:20px;border:1px dashed var(--border2);background:transparent;color:var(--muted);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s}
+.chip-add-group:hover{border-color:var(--green);color:var(--green)}
+.group-row-header td{background:var(--surface2);padding:6px 12px;border-bottom:1px solid var(--border);border-top:2px solid var(--border2)}
+.group-row-header:first-child td{border-top:none}
+.group-hdr-inner{display:flex;align-items:center;gap:8px}
+.group-hdr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.group-hdr-name{font-size:12px;font-weight:500;color:var(--text)}
+.group-hdr-count{font-size:11px;color:var(--muted)}
+.group-hdr-sum{font-size:12px;font-weight:500;font-family:'JetBrains Mono',monospace;margin-left:auto}
+.group-hdr-toggle{font-size:11px;color:var(--muted);padding:2px 7px;border:1px solid var(--border);border-radius:4px;background:var(--surface);cursor:pointer;margin-left:8px;flex-shrink:0}
+.group-hdr-toggle:hover{background:var(--surface2)}
+
+/* GROUP MANAGE MODAL */
+.grp-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.grp-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 12px}
+.grp-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;cursor:pointer;border:2px solid transparent}
+.grp-name{font-size:13px;font-weight:500;flex:1}
+.grp-count{font-size:11px;color:var(--muted)}
+.grp-del{background:none;border:none;cursor:pointer;color:var(--muted2);font-size:16px;padding:2px 5px;border-radius:4px}
+.grp-del:hover{color:var(--red);background:var(--red-bg)}
+.color-swatches{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.cswatch{width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .12s}
+.cswatch:hover{transform:scale(1.2)}
+.cswatch.sel{border-color:var(--text)}
+
 /* DROPSHIPPING GRID */
 .ds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .ds-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .15s}
@@ -439,6 +469,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
         <div class="form-group"><label>Кількість</label><input type="number" id="fQty" placeholder="0" min="0"></div>
       </div>
       <div class="form-group">
+        <label>Група</label>
+        <select id="fGroup"><option value="">— без групи —</option></select>
+      </div>
+      <div class="form-group">
         <label>Фото (URL або завантаж)</label>
         <input type="text" id="fPhoto" placeholder="https://..." oninput="previewModalPhotoVal(this.value)">
         <div class="photo-drop" id="photoDropZone" onclick="document.getElementById('fPhotoFile').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
@@ -558,6 +592,25 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
   </div>
 </div>
 
+<!-- MODAL КЕРУВАННЯ ГРУПАМИ -->
+<div class="overlay" id="grpOverlay" onclick="closeGrpOut(event)">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">🗂 Групи · <span id="grpWhName"></span></div><button class="modal-x" onclick="closeGrp()">×</button></div>
+    <div class="modal-body">
+      <div class="grp-list" id="grpList"></div>
+      <div class="add-user-form">
+        <div class="add-user-title">Нова група</div>
+        <div class="form-group"><label>Назва групи</label><input type="text" id="newGrpName" placeholder="🚗 Конструктори авто"></div>
+        <div class="form-group">
+          <label>Колір</label>
+          <div class="color-swatches" id="grpColorPicker"></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="addGroup()">+ Додати групу</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIRM -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
@@ -591,8 +644,8 @@ const db = getFirestore(app);
 
 const SUP_COLORS = ['#1a5a9a','#1e6e35','#92610a','#8b3a8b','#b83232','#1a7a7a','#5a4a1a','#3a3a8b'];
 
-let allItems=[], allWarehouses=[], allDsItems=[], allSuppliers=[];
-let activeTab='wh_1', activeFilter='all', searchQ='', sortBy=localStorage.getItem('mblok_sort')||'order';
+let allItems=[], allWarehouses=[], allDsItems=[], allSuppliers=[], allGroups=[];
+let activeTab='wh_1', activeFilter='all', activeGroup='all', searchQ='', sortBy=localStorage.getItem('mblok_sort')||'order';
 let deleteTargetId=null, deleteTargetType=null, confirmCallback=null;
 let editingCell=null, incomingItemId=null, incMode=1;
 let currentUser=null, undoStack=[], undoTimer=null;
@@ -666,6 +719,11 @@ function initApp(){
     renderStats();
     if(!_saving) renderPage();
   });
+  // Groups (per warehouse)
+  onSnapshot(collection(db,'groups'),snap=>{
+    allGroups=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!_saving) renderPage();
+  });
 }
 function setSyncStatus(s){const d=document.getElementById('syncDot');d.className='sync-dot'+(s==='syncing'?' syncing':s==='error'?' error':'');}
 
@@ -678,7 +736,7 @@ async function saveToDb(item){
     await setDoc(doc(db,'products',id),{
       name:item.name||'',art:item.art||'',warehouse:item.warehouse||'wh_1',
       qty:Number(item.qty)||0,price_buy:Number(item.price_buy)||0,
-      photo:item.photo||'',order:item.order||0,updated:serverTimestamp()
+      photo:item.photo||'',order:item.order||0,group:item.group||'',updated:serverTimestamp()
     });
     setSyncStatus('ok');
     setTimeout(()=>_saving=false,500);
@@ -760,6 +818,7 @@ function renderTabs(){
 window.switchTab=function(id){
   activeTab=id;
   activeFilter='all';
+  activeGroup='all';
   dsSupFilter='all';
   document.getElementById('addBtn').textContent=id==='dropship'?'+ Товар дропшип':'+ Додати товар';
   document.getElementById('addBtn').onclick=id==='dropship'?()=>openDsModal():()=>openModal();
@@ -840,12 +899,13 @@ function renderStats(){
 
 // ─── WAREHOUSE ─────────────────────────────────────────
 function renderWarehouse(){
+  const whGroups=allGroups.filter(g=>g.warehouse===activeTab);
   let d=allItems.filter(r=>r.warehouse===activeTab);
   if(searchQ){const q=searchQ.toLowerCase();d=d.filter(r=>(r.name||'').toLowerCase().includes(q)||(r.art||'').toLowerCase().includes(q));}
   if(activeFilter==='low')d=d.filter(r=>Number(r.qty)>0&&Number(r.qty)<=5);
   else if(activeFilter==='zero')d=d.filter(r=>!Number(r.qty));
+  if(activeGroup!=='all')d=d.filter(r=>r.group===activeGroup);
 
-  // Sort: zeros to bottom
   d.sort((a,b)=>{
     const az=Number(a.qty)===0,bz=Number(b.qty)===0;
     if(az&&!bz)return 1;if(!az&&bz)return -1;
@@ -857,11 +917,23 @@ function renderWarehouse(){
     return 0;
   });
 
-  const toolbar=`<div class="toolbar">
+  // Group chips
+  const grpChips=whGroups.map(g=>{
+    const isActive=activeGroup===g.id;
+    const col=g.color||'#888';
+    return`<button class="chip-group${isActive?' active-group':''}" style="${isActive?`color:${col};border-color:${col};background:${col}18`:''}" onclick="setGroupFilter('${g.id}')">
+      <span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>
+      ${escHtml(g.name)}
+    </button>`;
+  }).join('');
+
+  const toolbar=`<div class="toolbar" style="flex-wrap:wrap;gap:6px">
     <div class="filter-chips">
-      <button class="chip${activeFilter==='all'?' active':''}" onclick="setFilter('all',this)">Всі</button>
+      <button class="chip${activeFilter==='all'&&activeGroup==='all'?' active':''}" onclick="setFilter('all',this)">Всі</button>
       <button class="chip${activeFilter==='low'?' active-amber':''}" onclick="setFilter('low',this)">⚠ Мало (≤5)</button>
       <button class="chip${activeFilter==='zero'?' active-red':''}" onclick="setFilter('zero',this)">✕ Нульові</button>
+      ${whGroups.length?`<span class="chip-sep"></span>${grpChips}`:''}
+      <button class="chip-add-group" onclick="openGrp()" title="Керування групами">🗂 Групи</button>
     </div>
     <div class="ml-auto">
       <select id="sortSelect" onchange="sortBy=this.value;localStorage.setItem('mblok_sort',this.value);renderPage()" style="height:30px;font-size:12px;padding:0 8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--muted);font-family:inherit">
@@ -874,7 +946,7 @@ function renderWarehouse(){
     </div>
   </div>`;
 
-  // MOBILE CARDS
+  // Mobile cards
   const mobCards=`<div class="mob-search">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" placeholder="Пошук товару..." oninput="searchQ=this.value;renderPage()" value="${escHtml(searchQ)}">
@@ -884,11 +956,12 @@ function renderWarehouse(){
     const qc=qty===0?'qty-zero':qty<=5?'qty-low':'qty-ok';
     const photo=r.photo?`<img src="${r.photo}" style="width:54px;height:54px;border-radius:8px;object-fit:cover;border:1px solid var(--border)" onerror="this.style.display='none'">`:`<div class="mob-card-img">📦</div>`;
     const total=qty*(Number(r.price_buy)||0);
+    const grp=whGroups.find(g=>g.id===r.group);
     return`<div class="mob-card${qty===0?' zero-card':''}">
       ${photo}
       <div class="mob-card-body">
         <div class="mob-card-name">${escHtml(r.name||'—')}</div>
-        <div class="mob-card-art">${escHtml(r.art||'')}</div>
+        <div class="mob-card-art">${escHtml(r.art||'')}${grp?` · <span style="color:${grp.color||'#888'};font-size:10px">${escHtml(grp.name)}</span>`:''}</div>
         <div class="mob-card-row">
           <span class="mob-card-price">Ціна: ${fmtM(r.price_buy)}</span>
           <span class="mob-card-total">${fmtM(total)}</span>
@@ -897,47 +970,56 @@ function renderWarehouse(){
           <button class="mob-qty-btn minus" onclick="changeQty('${r.id}',-1)">−</button>
           <div class="mob-qty-badge ${qc}">${fmtN(qty)}</div>
           <button class="mob-qty-btn plus" onclick="changeQty('${r.id}',1)">+</button>
-          <button class="mob-action-btn" onclick="openIncoming('${r.id}')" title="Прихід" style="margin-left:4px">📥</button>
+          <button class="mob-action-btn" onclick="openIncoming('${r.id}')" style="margin-left:4px">📥</button>
         </div>
       </div>
-      <div class="mob-card-actions">
-        <div class="mob-action-btn" onclick="openModal('${r.id}')">✏️</div>
-      </div>
+      <div class="mob-card-actions"><div class="mob-action-btn" onclick="openModal('${r.id}')">✏️</div></div>
     </div>`;
   }).join('')||`<div class="empty">Нічого не знайдено</div>`}</div>`;
 
-  const rows=d.map(r=>{
-    const qty=Number(r.qty)||0;
-    const qc=qty===0?'qty-zero':qty<=5?'qty-low':'qty-ok';
-    const photo=r.photo?`<img class="product-img" src="${r.photo}" alt="" onerror="this.style.display='none'">`:`<div class="product-img-placeholder">📦</div>`;
-    return`<tr id="row-${r.id}" class="${qty===0?'row-zero':''}" draggable="true"
-      ondragstart="dragStart(event,'${r.id}')"
-      ondragover="dragOver(event,'${r.id}')"
-      ondragleave="dragLeave(event)"
-      ondragend="dragEnd(event)"
-      ondrop="dragDrop(event,'${r.id}')">
-      <td><span class="drag-handle" title="Перетягни для сортування">⠿</span></td>
-      <td class="td-photo" onclick="openModal('${r.id}')" style="cursor:pointer">${photo}</td>
-      <td class="td-name">
-        <div class="p-name cell-view" onclick="startEdit('${r.id}','name',this)">${escHtml(r.name||'—')}</div>
-        <div class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art||'артикул')}</div>
-      </td>
-      <td class="r">
-        <div class="qty-ctrl">
-          <button class="qty-btn minus" onclick="changeQty('${r.id}',-1)">−</button>
-          <span class="qty ${qc} cell-view" onclick="startEdit('${r.id}','qty',this)">${fmtN(qty)}</span>
-          <button class="qty-btn" onclick="changeQty('${r.id}',1)">+</button>
-        </div>
-      </td>
-      <td class="r"><span class="price cell-view" onclick="startEdit('${r.id}','price_buy',this)">${fmtM(r.price_buy)}</span></td>
-      <td class="r"><span class="total-val">${fmtM(qty*(Number(r.price_buy)||0))}</span></td>
-      <td><div class="row-acts">
-        <button class="btn btn-incoming row-acts-hidden" style="height:26px;padding:0 10px;font-size:11px" onclick="openIncoming('${r.id}')">📥 Прихід</button>
-        <button class="btn btn-ghost row-acts-hidden" style="height:26px;padding:0 8px;font-size:11px" onclick="openModal('${r.id}')">✏️</button>
-        <button class="btn btn-ghost row-acts-hidden" style="height:26px;padding:0 8px;font-size:11px" onclick="confirmDeleteItem('${r.id}','${escHtml(r.name||'')}')">🗑</button>
-      </div></td>
-    </tr>`;
-  }).join('');
+  // Build table rows — grouped if no group filter active
+  let tableBody='';
+  if(activeGroup==='all'&&whGroups.length&&activeFilter==='all'&&!searchQ){
+    // Show grouped view
+    const groupedRows=[];
+    // Groups with items
+    whGroups.forEach(g=>{
+      const gItems=d.filter(r=>r.group===g.id);
+      if(!gItems.length)return;
+      const gTotal=gItems.reduce((a,r)=>a+Number(r.qty)*(Number(r.price_buy)||0),0);
+      const col=g.color||'#888';
+      groupedRows.push(`<tr class="group-row-header">
+        <td colspan="5">
+          <div class="group-hdr-inner">
+            <div class="group-hdr-dot" style="background:${col}"></div>
+            <div class="group-hdr-name">${escHtml(g.name)}</div>
+            <div class="group-hdr-count">${gItems.length} поз.</div>
+            <div class="group-hdr-sum" style="color:${col}">${fmtM(gTotal)}</div>
+          </div>
+        </td>
+        <td></td><td></td>
+      </tr>`);
+      groupedRows.push(...gItems.map(r=>makeRow(r)));
+    });
+    // Ungrouped items
+    const ungrouped=d.filter(r=>!r.group||!whGroups.find(g=>g.id===r.group));
+    if(ungrouped.length){
+      const uTotal=ungrouped.reduce((a,r)=>a+Number(r.qty)*(Number(r.price_buy)||0),0);
+      groupedRows.push(`<tr class="group-row-header">
+        <td colspan="5"><div class="group-hdr-inner">
+          <div class="group-hdr-dot" style="background:var(--muted2)"></div>
+          <div class="group-hdr-name" style="color:var(--muted)">Без групи</div>
+          <div class="group-hdr-count">${ungrouped.length} поз.</div>
+          <div class="group-hdr-sum" style="color:var(--muted)">${fmtM(uTotal)}</div>
+        </div></td>
+        <td></td><td></td>
+      </tr>`);
+      groupedRows.push(...ungrouped.map(r=>makeRow(r)));
+    }
+    tableBody=groupedRows.join('');
+  }else{
+    tableBody=d.map(r=>makeRow(r)).join('');
+  }
 
   const totBuy=d.reduce((a,r)=>a+Number(r.qty)*Number(r.price_buy),0);
   const footer=`<tr class="tbl-footer"><td colspan="3">Разом: ${d.length} поз.</td><td class="r">${fmtN(d.reduce((a,r)=>a+Number(r.qty),0))} шт.</td><td></td><td class="r total-sum">${fmtM(totBuy)}</td><td></td></tr>`;
@@ -952,10 +1034,46 @@ function renderWarehouse(){
       <th class="r">Загальна сума</th>
       <th style="width:160px"></th>
     </tr></thead>
-    <tbody>${rows||`<tr><td colspan="7"><div class="empty">Нічого не знайдено</div></td></tr>`}</tbody>
+    <tbody>${tableBody||`<tr><td colspan="7"><div class="empty">Нічого не знайдено</div></td></tr>`}</tbody>
     <tfoot>${footer}</tfoot>
   </table></div></div>`;
 }
+
+function makeRow(r){
+  const qty=Number(r.qty)||0;
+  const qc=qty===0?'qty-zero':qty<=5?'qty-low':'qty-ok';
+  const photo=r.photo?`<img class="product-img" src="${r.photo}" alt="" onerror="this.style.display='none'">`:`<div class="product-img-placeholder">📦</div>`;
+  return`<tr id="row-${r.id}" class="${qty===0?'row-zero':''}" draggable="true"
+    ondragstart="dragStart(event,'${r.id}')"
+    ondragover="dragOver(event,'${r.id}')"
+    ondragleave="dragLeave(event)"
+    ondragend="dragEnd(event)"
+    ondrop="dragDrop(event,'${r.id}')">
+    <td><span class="drag-handle">⠿</span></td>
+    <td class="td-photo" onclick="openModal('${r.id}')" style="cursor:pointer">${photo}</td>
+    <td class="td-name">
+      <div class="p-name cell-view" onclick="startEdit('${r.id}','name',this)">${escHtml(r.name||'—')}</div>
+      <div class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art||'артикул')}</div>
+    </td>
+    <td class="r"><div class="qty-ctrl">
+      <button class="qty-btn minus" onclick="changeQty('${r.id}',-1)">−</button>
+      <span class="qty ${qc} cell-view" onclick="startEdit('${r.id}','qty',this)">${fmtN(qty)}</span>
+      <button class="qty-btn" onclick="changeQty('${r.id}',1)">+</button>
+    </div></td>
+    <td class="r"><span class="price cell-view" onclick="startEdit('${r.id}','price_buy',this)">${fmtM(r.price_buy)}</span></td>
+    <td class="r"><span class="total-val">${fmtM(qty*(Number(r.price_buy)||0))}</span></td>
+    <td><div class="row-acts">
+      <button class="btn btn-incoming row-acts-hidden" style="height:26px;padding:0 10px;font-size:11px" onclick="openIncoming('${r.id}')">📥 Прихід</button>
+      <button class="btn btn-ghost row-acts-hidden" style="height:26px;padding:0 8px;font-size:11px" onclick="openModal('${r.id}')">✏️</button>
+      <button class="btn btn-ghost row-acts-hidden" style="height:26px;padding:0 8px;font-size:11px" onclick="confirmDeleteItem('${r.id}','${escHtml(r.name||'')}')">🗑</button>
+    </div></td>
+  </tr>`;
+}
+
+window.setGroupFilter=function(id){
+  activeGroup=activeGroup===id?'all':id;
+  renderPage();
+};
 
 // ─── DRAG & DROP (надійний) ────────────────────────────
 let dragSrcId=null, dragOverId=null;
@@ -1199,6 +1317,11 @@ window.openModal=function(id){
   // Fill warehouse select
   const sel=document.getElementById('fWarehouse');
   sel.innerHTML=allWarehouses.map(wh=>`<option value="${wh.id}"${(r?.warehouse||activeTab)===wh.id?' selected':''}>${wh.name}</option>`).join('');
+  // Fill group select
+  const whId=r?.warehouse||activeTab;
+  const grpSel=document.getElementById('fGroup');
+  const whGrps=allGroups.filter(g=>g.warehouse===whId);
+  grpSel.innerHTML='<option value="">— без групи —</option>'+whGrps.map(g=>`<option value="${g.id}"${r?.group===g.id?' selected':''}>${escHtml(g.name)}</option>`).join('');
   previewModalPhotoVal(r?.photo||'');
   document.getElementById('overlay').classList.add('open');
   setTimeout(()=>document.getElementById('fName').focus(),100);
@@ -1217,7 +1340,7 @@ window.saveItem=async function(){
   const id=document.getElementById('editId').value||undefined;
   const existing=id?allItems.find(x=>x.id===id):{};
   const maxOrder=allItems.filter(r=>r.warehouse===document.getElementById('fWarehouse').value).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
-  const item={id,name,art:document.getElementById('fArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),order:existing.order!==undefined?existing.order:maxOrder+10};
+  const item={id,name,art:document.getElementById('fArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),group:document.getElementById('fGroup').value||'',order:existing.order!==undefined?existing.order:maxOrder+10};
   closeModal();await saveToDb(item);toast(id?'Оновлено':'Додано','ok');
 };
 
@@ -1337,6 +1460,59 @@ window.addUser=async function(){
 window.removeUser=async function(login){
   if(!confirm(`Видалити "${login}"?`))return;
   await deleteDoc(doc(db,'users',login));toast('Видалено','ok');loadUsers();
+};
+
+// ─── GROUPS ────────────────────────────────────────────
+const GRP_COLORS=['#1e6e35','#1a5a9a','#92610a','#8b3a8b','#b83232','#1a7a7a','#5a4a1a','#e67e22'];
+let selectedGrpColor=GRP_COLORS[0];
+
+window.openGrp=function(){
+  const wh=allWarehouses.find(w=>w.id===activeTab);
+  document.getElementById('grpWhName').textContent=wh?.name||'';
+  renderGrpList();
+  // Color picker
+  const picker=document.getElementById('grpColorPicker');
+  picker.innerHTML=GRP_COLORS.map(c=>`<div class="cswatch${c===selectedGrpColor?' sel':''}" style="background:${c}" onclick="selectGrpColor('${c}')"></div>`).join('');
+  document.getElementById('grpOverlay').classList.add('open');
+};
+window.closeGrp=()=>document.getElementById('grpOverlay').classList.remove('open');
+window.closeGrpOut=e=>{if(e.target===document.getElementById('grpOverlay'))closeGrp();};
+
+window.selectGrpColor=function(c){
+  selectedGrpColor=c;
+  document.querySelectorAll('.cswatch').forEach(el=>el.classList.toggle('sel',el.style.background===c));
+};
+
+function renderGrpList(){
+  const whGrps=allGroups.filter(g=>g.warehouse===activeTab);
+  document.getElementById('grpList').innerHTML=whGrps.length
+    ?whGrps.map(g=>`<div class="grp-row">
+        <div class="grp-dot" style="background:${g.color||'#888'}"></div>
+        <div class="grp-name">${escHtml(g.name)}</div>
+        <div class="grp-count">${allItems.filter(r=>r.group===g.id).length} тов.</div>
+        <button class="grp-del" onclick="deleteGroup('${g.id}')">×</button>
+      </div>`).join('')
+    :'<div style="color:var(--muted);font-size:13px;padding:8px">Груп ще немає — додай першу</div>';
+}
+
+window.addGroup=async function(){
+  const name=document.getElementById('newGrpName').value.trim();
+  if(!name){toast('Введи назву групи','err');return;}
+  const id='grp_'+Date.now();
+  await setDoc(doc(db,'groups',id),{name,color:selectedGrpColor,warehouse:activeTab,created:serverTimestamp()});
+  document.getElementById('newGrpName').value='';
+  toast(`Групу "${name}" додано`,'ok');
+  renderGrpList();
+};
+
+window.deleteGroup=async function(id){
+  if(!confirm('Видалити групу? Товари залишаться, просто без групи.'))return;
+  // Remove group from all items
+  const grouped=allItems.filter(r=>r.group===id);
+  for(const item of grouped){item.group='';await saveToDb(item);}
+  await deleteDoc(doc(db,'groups',id));
+  toast('Групу видалено','ok');
+  renderGrpList();
 };
 
 // ─── UI ────────────────────────────────────────────────
