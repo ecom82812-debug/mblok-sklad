@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mBlok — Каталог для дропшиперів</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0b0b;
+  --surface:#141414;
+  --surface2:#1c1c1c;
+  --border:#2a2a2a;
+  --border2:#383838;
+  --text:#f0ede8;
+  --muted:#6b6b6b;
+  --accent:#b8f53c;
+  --accent2:#8fc42a;
+  --red:#ff4d4d;
+  --amber:#f5a623;
+  --green:#b8f53c;
+}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.header{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.logo{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.5px}
+.logo span{color:var(--accent)}
+.live-badge{
+  display:flex;align-items:center;gap:8px;
+  background:#1a2a0a;border:1px solid var(--accent);
+  color:var(--accent);font-size:11px;font-weight:600;
+  padding:5px 12px;border-radius:20px;letter-spacing:0.5px;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* HERO */
+.hero{
+  padding:48px 32px 32px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,#131a07 0%,var(--bg) 100%);
+}
+.hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:700;line-height:1.1;margin-bottom:12px}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);font-size:14px;max-width:480px;line-height:1.7;margin-bottom:24px}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:3px}
+.stat-num{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:700;color:var(--accent)}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+
+/* FILTERS */
+.filters{padding:20px 32px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--surface)}
+.search-wrap{flex:1;min-width:200px;max-width:340px;position:relative}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);width:16px;height:16px}
+.search-wrap input{width:100%;height:38px;padding:0 12px 0 38px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;font-family:'Manrope',sans-serif;outline:none;transition:border 0.15s}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-wrap input::placeholder{color:var(--muted)}
+.chip{height:34px;padding:0 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-size:12px;font-family:'Manrope',sans-serif;cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:var(--border2)}
+.chip.on{background:#1a2a0a;border-color:var(--accent);color:var(--accent)}
+.filter-ml{margin-left:auto;display:flex;gap:8px;align-items:center}
+.stock-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
+.stock-toggle input{accent-color:var(--accent);width:14px;height:14px}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:24px 32px}
+
+/* CARD */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  transition:transform 0.2s,border-color 0.2s;
+  display:flex;flex-direction:column;
+}
+.card:hover{transform:translateY(-2px);border-color:var(--border2)}
+.card.out-of-stock{opacity:0.5}
+.card-img{
+  width:100%;height:180px;object-fit:cover;
+  background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;color:var(--border2);
+}
+.card-img img{width:100%;height:180px;object-fit:cover}
+.card-body{padding:14px;flex:1;display:flex;flex-direction:column;gap:8px}
+.card-name{font-size:13px;font-weight:600;line-height:1.4;color:var(--text)}
+.card-art{font-size:11px;color:var(--muted);font-family:'Courier New',monospace}
+.card-prices{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:10px;border-top:1px solid var(--border)}
+.price-block{display:flex;flex-direction:column;gap:2px}
+.price-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px}
+.price-buy{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;color:var(--text)}
+.price-rrp{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;color:var(--accent)}
+.profit-badge{
+  background:#1a2a0a;border:1px solid var(--accent);
+  color:var(--accent);font-size:10px;font-weight:600;
+  padding:3px 8px;border-radius:6px;white-space:nowrap;
+}
+.stock-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:600;padding:3px 10px;
+  border-radius:6px;width:fit-content;
+}
+.stock-ok{background:#1a2a0a;color:var(--green);border:1px solid #2a4a0a}
+.stock-low{background:#2a1f05;color:var(--amber);border:1px solid #4a3a0a}
+.stock-out{background:#2a0a0a;color:var(--red);border:1px solid #4a1a1a}
+.stock-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* GROUP HEADER */
+.group-header{
+  grid-column:1/-1;
+  display:flex;align-items:center;gap:12px;
+  padding:8px 0;
+}
+.group-name{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;color:var(--text)}
+.group-line{flex:1;height:1px;background:var(--border)}
+.group-count{font-size:11px;color:var(--muted)}
+
+/* EMPTY / LOADING */
+.center{display:flex;align-items:center;justify-content:center;min-height:300px;flex-direction:column;gap:12px;color:var(--muted)}
+.spinner{width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+.footer{padding:24px 32px;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:12px;line-height:2}
+.footer a{color:var(--accent);text-decoration:none}
+
+/* RRP MARGIN */
+.margin-bar{height:3px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}
+.margin-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s}
+
+/* CONTACT BAR */
+.contact-bar{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:16px 32px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+}
+.contact-bar span{font-size:12px;color:var(--muted)}
+.contact-btn{
+  height:34px;padding:0 16px;border-radius:8px;
+  border:1px solid var(--border2);background:transparent;
+  color:var(--text);font-size:12px;font-family:'Manrope',sans-serif;
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  transition:all 0.15s;
+}
+.contact-btn:hover{border-color:var(--accent);color:var(--accent)}
+.contact-btn.primary{background:var(--accent);color:#0b0b0b;border-color:var(--accent);font-weight:600}
+.contact-btn.primary:hover{background:var(--accent2)}
+
+@media(max-width:600px){
+  .header{padding:0 16px}
+  .hero{padding:32px 16px 24px}
+  .filters{padding:14px 16px}
+  .grid{padding:16px;gap:12px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .card-img,.card-img img{height:140px}
+  .footer,.contact-bar{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">mb<span>lok</span></div>
+  <div class="live-badge">
+    <span class="live-dot"></span>
+    LIVE КАТАЛОГ
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Каталог<br>для <span>дропшиперів</span></h1>
+  <p>Актуальні ціни та наявність оновлюються в реальному часі. Замовляйте — відправляємо від вашого імені.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num" id="stat-total">—</span><span class="stat-label">Позицій</span></div>
+    <div class="stat"><span class="stat-num" id="stat-instock">—</span><span class="stat-label">В наявності</span></div>
+    <div class="stat"><span class="stat-num" id="stat-groups">—</span><span class="stat-label">Категорій</span></div>
+  </div>
+</section>
+
+<div class="filters">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="searchInput" placeholder="Пошук товару або артикулу...">
+  </div>
+  <div id="chipContainer" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  <div class="filter-ml">
+    <label class="stock-toggle">
+      <input type="checkbox" id="inStockOnly"> Тільки в наявності
+    </label>
+  </div>
+</div>
+
+<div class="grid" id="grid">
+  <div class="center" style="grid-column:1/-1">
+    <div class="spinner"></div>
+    <span>Завантаження каталогу...</span>
+  </div>
+</div>
+
+<div class="contact-bar">
+  <span>Готові почати? Зв'яжіться з нами:</span>
+  <a href="https://t.me/m_Blok1" class="contact-btn primary" target="_blank">Telegram</a>
+  <a href="viber://add?number=380930866306" class="contact-btn">Viber</a>
+  <a href="https://mblok.shop" class="contact-btn" target="_blank">mblok.shop</a>
+</div>
+
+<footer class="footer">
+  © 2026 <a href="https://mblok.shop">mBlok</a> · Конструктори для дорослих та дітей · Дропшипінг по всій Україні<br>
+  Ціни та наявність оновлюються в реальному часі
+</footer>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const app = initializeApp({
+  apiKey: "AIzaSyBWy6VhhuYFyUWBJ4vpaBFWaO6BWhc2G2E",
+  authDomain: "mblok-sklad.firebaseapp.com",
+  projectId: "mblok-sklad"
+});
+const db = getFirestore(app);
+
+// RRP = buy * 1.6 (налаштуйте коефіцієнт)
+const RRP_MULT = 1.6;
+
+const GROUP_NAMES = {
+  'grp_1777386865801': '🚗 Конструктори авто',
+  'grp_1777386961967': '🌸 Конструктори квіти',
+  'grp_1777386973066': '🎯 Тактичні',
+  'grp_1777386988721': '🔫 Зброєві',
+  'grp_1777987456517': '🚀 Преміум (RK)',
+  'grp_1779814107442': '🏎 Формула 1',
+  'grp_1777386981114': '🤖 Інше',
+};
+
+let allProducts = [];
+let activeGroup = 'all';
+let searchQ = '';
+let inStockOnly = false;
+
+function groupLabel(gid) {
+  return GROUP_NAMES[gid] || (gid ? '📦 Інше' : '📦 Без категорії');
+}
+
+function stockBadge(qty) {
+  if (qty <= 0) return `<span class="stock-badge stock-out"><span class="stock-dot"></span>Немає</span>`;
+  if (qty <= 3) return `<span class="stock-badge stock-low"><span class="stock-dot"></span>Закінчується (${qty} шт)</span>`;
+  return `<span class="stock-badge stock-ok"><span class="stock-dot"></span>В наявності</span>`;
+}
+
+function imgHtml(photo, name) {
+  if (photo && !photo.startsWith('data:')) {
+    return `<div class="card-img"><img src="${photo}" alt="${name}" loading="lazy" onerror="this.parentNode.innerHTML='📦'"></div>`;
+  }
+  return `<div class="card-img">📦</div>`;
+}
+
+function render() {
+  const grid = document.getElementById('grid');
+  let items = allProducts.filter(p => p.warehouse === 'wh_1');
+
+  if (inStockOnly) items = items.filter(p => p.qty > 0);
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    items = items.filter(p => p.name?.toLowerCase().includes(q) || p.art?.toLowerCase().includes(q));
+  }
+  if (activeGroup !== 'all') items = items.filter(p => p.group === activeGroup);
+
+  if (!items.length) {
+    grid.innerHTML = `<div class="center" style="grid-column:1/-1"><span>Нічого не знайдено</span></div>`;
+    return;
+  }
+
+  // group by group
+  const byGroup = {};
+  items.forEach(p => {
+    const g = p.group || '';
+    if (!byGroup[g]) byGroup[g] = [];
+    byGroup[g].push(p);
+  });
+
+  let html = '';
+  for (const [gid, prods] of Object.entries(byGroup)) {
+    html += `<div class="group-header">
+      <span class="group-name">${groupLabel(gid)}</span>
+      <div class="group-line"></div>
+      <span class="group-count">${prods.length} позицій</span>
+    </div>`;
+
+    prods.sort((a,b) => (a.order||0)-(b.order||0)).forEach(p => {
+      const rrp = Math.round(p.price_buy * RRP_MULT);
+      const profit = rrp - p.price_buy;
+      const margin = Math.round((profit / rrp) * 100);
+      const oos = p.qty <= 0;
+      html += `<div class="card ${oos ? 'out-of-stock' : ''}">
+        ${imgHtml(p.photo, p.name)}
+        <div class="card-body">
+          <div class="card-name">${p.name || 'Без назви'}</div>
+          ${p.art ? `<div class="card-art">Арт: ${p.art}</div>` : ''}
+          ${stockBadge(p.qty)}
+          <div class="card-prices">
+            <div class="price-block">
+              <span class="price-label">Ваша ціна</span>
+              <span class="price-buy">${Math.round(p.price_buy)} ₴</span>
+            </div>
+            <div class="price-block" style="text-align:right">
+              <span class="price-label">РРЦ</span>
+              <span class="price-rrp">${rrp} ₴</span>
+            </div>
+          </div>
+          <div class="margin-bar"><div class="margin-fill" style="width:${margin}%"></div></div>
+          <div style="display:flex;justify-content:flex-end;margin-top:4px">
+            <span class="profit-badge">+${Math.round(profit)} ₴ прибуток</span>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+
+  grid.innerHTML = html;
+}
+
+function updateStats(products) {
+  const wh1 = products.filter(p => p.warehouse === 'wh_1');
+  const instock = wh1.filter(p => p.qty > 0).length;
+  const groups = new Set(wh1.map(p => p.group)).size;
+  document.getElementById('stat-total').textContent = wh1.length;
+  document.getElementById('stat-instock').textContent = instock;
+  document.getElementById('stat-groups').textContent = groups;
+}
+
+function updateChips(products) {
+  const wh1 = products.filter(p => p.warehouse === 'wh_1');
+  const groups = [...new Set(wh1.map(p => p.group))].filter(Boolean);
+  const container = document.getElementById('chipContainer');
+  container.innerHTML = `<button class="chip ${activeGroup==='all'?'on':''}" onclick="setGroup('all')">Всі</button>` +
+    groups.map(g => `<button class="chip ${activeGroup===g?'on':''}" onclick="setGroup('${g}')">${groupLabel(g)}</button>`).join('');
+}
+
+window.setGroup = function(g) {
+  activeGroup = g;
+  updateChips(allProducts);
+  render();
+};
+
+document.getElementById('searchInput').addEventListener('input', e => { searchQ = e.target.value; render(); });
+document.getElementById('inStockOnly').addEventListener('change', e => { inStockOnly = e.target.checked; render(); });
+
+// Real-time listener
+onSnapshot(collection(db, 'products'), snapshot => {
+  allProducts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  updateStats(allProducts);
+  updateChips(allProducts);
+  render();
+});
+</script>
+</body>
+</html>
