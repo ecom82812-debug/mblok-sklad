@@ -127,11 +127,14 @@ tr.dragging{opacity:.4}
 .td-name{min-width:180px}
 .p-name{font-weight:500;margin-bottom:1px}
 .p-art{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.p-sup-art{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;color:var(--blue);font-family:'JetBrains Mono',monospace;cursor:pointer;margin-top:2px;padding:1px 6px;border-radius:3px;border:1px solid var(--blue-border);background:var(--blue-bg);transition:all .12s;user-select:none}
+.p-sup-art:hover{background:#ddeafc}
+.p-sup-art.copied{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
 .qty{display:inline-flex;align-items:center;justify-content:center;min-width:36px;padding:3px 8px;border-radius:20px;font-weight:600;font-size:12px;font-family:'JetBrains Mono',monospace}
 .qty-zero{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
 .qty-low{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
 .qty-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.price{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);letter-spacing:-.3px;line-height:1.2}
+.price{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.3px;line-height:1.2}
 .total-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;color:var(--muted);letter-spacing:-.1px;margin-top:2px}
 .wh-badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px}
 
@@ -461,16 +464,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
       <input type="hidden" id="editId">
       <div class="form-group"><label>Назва товару</label><input type="text" id="fName" placeholder="Конструктор..."></div>
       <div class="form-row">
-        <div class="form-group"><label>Артикул</label><input type="text" id="fArt" placeholder="LB-001"></div>
-        <div class="form-group"><label>Склад</label><select id="fWarehouse"></select></div>
+        <div class="form-group"><label>Артикул (твій)</label><input type="text" id="fArt" placeholder="LB-001"></div>
+        <div class="form-group"><label>Артикул постачальника</label><input type="text" id="fSupArt" placeholder="0056/87"></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Ціна закупки (грн)</label><input type="number" id="fPriceBuy" placeholder="0.00" step="0.01" min="0"></div>
         <div class="form-group"><label>Кількість</label><input type="number" id="fQty" placeholder="0" min="0"></div>
-      </div>
-      <div class="form-group">
-        <label>Група</label>
-        <select id="fGroup"><option value="">— без групи —</option></select>
       </div>
       <div class="form-group">
         <label>Фото (URL або завантаж)</label>
@@ -734,7 +733,7 @@ async function saveToDb(item){
   try{
     const id=item.id||crypto.randomUUID();
     await setDoc(doc(db,'products',id),{
-      name:item.name||'',art:item.art||'',warehouse:item.warehouse||'wh_1',
+      name:item.name||'',art:item.art||'',sup_art:item.sup_art||'',warehouse:item.warehouse||'wh_1',
       qty:Number(item.qty)||0,price_buy:Number(item.price_buy)||0,
       photo:item.photo||'',order:item.order||0,group:item.group||'',updated:serverTimestamp()
     });
@@ -1053,7 +1052,10 @@ function makeRow(r){
     <td class="td-photo" onclick="openModal('${r.id}')" style="cursor:pointer">${photo}</td>
     <td class="td-name">
       <div class="p-name cell-view" onclick="startEdit('${r.id}','name',this)">${escHtml(r.name||'—')}</div>
-      <div class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art||'артикул')}</div>
+      <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:2px">
+        ${r.art?`<span class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art)}</span>`:''}
+        ${r.sup_art?`<span class="p-sup-art" onclick="copySupArt('${escHtml(r.sup_art)}',this)" title="Клікни щоб скопіювати артикул постачальника">📦 ${escHtml(r.sup_art)}</span>`:''}
+      </div>
     </td>
     <td class="r"><div class="qty-ctrl">
       <button class="qty-btn minus" onclick="changeQty('${r.id}',-1)">−</button>
@@ -1311,6 +1313,7 @@ window.openModal=function(id){
   const r=isEdit?allItems.find(x=>x.id===id):{};
   document.getElementById('fName').value=r?.name||'';
   document.getElementById('fArt').value=r?.art||'';
+  document.getElementById('fSupArt').value=r?.sup_art||'';
   document.getElementById('fPriceBuy').value=r?.price_buy||'';
   document.getElementById('fQty').value=r?.qty||'';
   document.getElementById('fPhoto').value=r?.photo||'';
@@ -1340,7 +1343,7 @@ window.saveItem=async function(){
   const id=document.getElementById('editId').value||undefined;
   const existing=id?allItems.find(x=>x.id===id):{};
   const maxOrder=allItems.filter(r=>r.warehouse===document.getElementById('fWarehouse').value).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
-  const item={id,name,art:document.getElementById('fArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),group:document.getElementById('fGroup').value||'',order:existing.order!==undefined?existing.order:maxOrder+10};
+  const item={id,name,art:document.getElementById('fArt').value.trim(),sup_art:document.getElementById('fSupArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),group:document.getElementById('fGroup').value||'',order:existing.order!==undefined?existing.order:maxOrder+10};
   closeModal();await saveToDb(item);toast(id?'Оновлено':'Додано','ok');
 };
 
@@ -1521,6 +1524,13 @@ window.setFilter=function(f,btn){
 };
 document.getElementById('searchInput').addEventListener('input',e=>{searchQ=e.target.value;renderPage();});
 
+window.copySupArt=function(text,el){
+  navigator.clipboard.writeText(text).then(()=>{
+    el.classList.add('copied');
+    el.textContent='✓ '+text;
+    setTimeout(()=>{el.classList.remove('copied');el.innerHTML='📦 '+text;},1500);
+  });
+};
 window.toast=function(msg,type=''){
   const t=document.getElementById('toast');
   clearTimeout(t._to);
