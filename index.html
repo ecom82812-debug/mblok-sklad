@@ -465,7 +465,11 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
       <div class="form-group"><label>Назва товару</label><input type="text" id="fName" placeholder="Конструктор..."></div>
       <div class="form-row">
         <div class="form-group"><label>Артикул (твій)</label><input type="text" id="fArt" placeholder="LB-001"></div>
-        <div class="form-group"><label>Артикул постачальника</label><input type="text" id="fSupArt" placeholder="0056/87"></div>
+        <div class="form-group"><label>Артикул постачальника</label><input type="text" id="fSupArt" placeholder="0056/87" style="font-family:'JetBrains Mono',monospace"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Склад</label><select id="fWarehouse"></select></div>
+        <div class="form-group"><label>Група</label><select id="fGroup"><option value="">— без групи —</option></select></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Ціна закупки (грн)</label><input type="number" id="fPriceBuy" placeholder="0.00" step="0.01" min="0"></div>
