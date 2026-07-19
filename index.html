@@ -1975,8 +1975,7 @@ window.updateCnSummary=function(){
   const pay1=Number(document.getElementById('cnPay1').value)||0;
   const pay2=Number(document.getElementById('cnPay2').value)||0;
   const total=pay1+pay2;
-  const prods=cnProdItems.filter(p=>p.name&&p.qty&&p.price);
-  const prodTotal=prods.reduce((a,p)=>a+Number(p.qty)*Number(p.price),0);
+  const prods=cnProdItems.filter(p=>p.name&&p.qty);
 
   // Summary table
   const sumList=document.getElementById('cnSummaryList');
