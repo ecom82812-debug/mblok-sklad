@@ -284,6 +284,74 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
 .confirm-box strong{display:block;margin-bottom:6px;font-size:15px}
 .confirm-actions{display:flex;gap:8px;justify-content:center}
 
+/* ── CHINA ORDERS ──────────────────────── */
+.cn-chip{height:26px;padding:0 11px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
+.cn-chip:hover{color:var(--text);border-color:var(--border2)}
+.cn-chip.cn-all{background:var(--surface2);font-weight:500;color:var(--text)}
+.cn-chip.cn-s1{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue)}
+.cn-chip.cn-s2{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber)}
+.cn-chip.cn-s3{background:#f3edf9;border-color:#d0b0f0;color:#6a2a9a}
+.cn-chip.cn-s4{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+
+.cn-tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cn-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent;cursor:pointer}
+.cn-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.cn-b1{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)}
+.cn-b2{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+.cn-b3{background:#f3edf9;color:#6a2a9a;border-color:#d0b0f0}
+.cn-b4{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.cn-prod-list{display:flex;flex-direction:column;gap:3px}
+.cn-prod-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text)}
+.cn-prod-img{width:26px;height:26px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;overflow:hidden}
+.cn-prod-img img{width:100%;height:100%;object-fit:cover}
+.cn-prod-qty{font-size:10px;background:var(--surface2);padding:1px 6px;border-radius:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.cn-pay-col{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.cn-pay-main{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--text)}
+.cn-pay-main.na{color:var(--muted2);font-size:12px;font-weight:400}
+.cn-pay-sub{font-size:10px;color:var(--muted)}
+.cn-pbadge-done{font-size:9px;background:var(--green-bg);color:var(--green);padding:1px 5px;border-radius:3px;font-weight:500}
+.cn-pbadge-wait{font-size:9px;background:var(--amber-bg);color:var(--amber);padding:1px 5px;border-radius:3px;font-weight:500}
+.cn-unit-col{display:flex;flex-direction:column;align-items:flex-end}
+.cn-unit-val{font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--green);letter-spacing:-.3px}
+.cn-unit-val.na{font-size:11px;color:var(--muted2);font-weight:400}
+.cn-unit-sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.cn-date-col{font-size:11px;color:var(--muted)}
+.cn-date-main{font-size:12px;font-weight:500;color:var(--text);margin-bottom:1px}
+.cn-date-days{font-size:10px;color:var(--green);font-weight:500}
+
+/* CN MODAL */
+.cn-prod-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;margin-bottom:6px}
+.cn-prod-card-grid{display:grid;grid-template-columns:42px 1fr 68px 68px 24px;gap:8px;align-items:center}
+.cn-photo-box{width:42px;height:42px;border-radius:6px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;overflow:hidden;flex-shrink:0;transition:border .12s}
+.cn-photo-box:hover{border-color:var(--green)}
+.cn-photo-box img{width:100%;height:100%;object-fit:cover}
+.cn-field-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px;font-weight:500}
+.cn-key-price{font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--green)}
+.cn-key-total{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:1px}
+.cn-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;margin-bottom:10px}
+.cn-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cn-section-title{font-size:12px;font-weight:600;color:var(--text)}
+.cn-delivery-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.cn-summary-list{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r-sm);overflow:hidden;margin-bottom:10px}
+.cn-sum-hdr{background:#d8f0e4;display:grid;grid-template-columns:1fr 60px 100px;gap:8px;padding:7px 10px;font-size:10px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.4px}
+.cn-sum-row{display:grid;grid-template-columns:1fr 60px 100px;gap:8px;padding:8px 10px;border-top:1px solid #d8f0e4;align-items:center}
+.cn-sum-name{font-size:12px;font-weight:500}
+.cn-sum-qty{font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);text-align:center}
+.cn-sum-price{text-align:right}
+.cn-sum-price-val{font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--green)}
+.cn-sum-price-total{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.cn-totals{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;margin-bottom:10px}
+.cn-total-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;align-items:center}
+.cn-total-row:last-child{margin-bottom:0;padding-top:8px;border-top:1px solid var(--border2);font-weight:600;font-size:14px}
+.cn-total-val{font-family:'JetBrains Mono',monospace;font-weight:500}
+.cn-import-note{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--r-sm);padding:10px 14px;font-size:12px;color:var(--amber);display:flex;gap:8px;line-height:1.5;margin-bottom:12px}
+.cn-status-row{display:flex;gap:5px;flex-wrap:wrap}
+.cn-ss{height:28px;padding:0 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;transition:all .12s;color:var(--muted)}
+.cn-ss:hover{border-color:var(--blue);color:var(--blue)}
+.cn-ss.sel{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500}
+.cn-add-prod-btn{height:30px;width:100%;border:1px dashed var(--border2);border-radius:var(--r-sm);background:transparent;font-size:12px;color:var(--muted);cursor:pointer;font-family:'Inter',system-ui,sans-serif;transition:all .12s;margin-bottom:12px}
+.cn-add-prod-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+
 /* ── MOBILE ────────────────────────────────── */
 @media(max-width:700px){
   /* Header */
@@ -614,6 +682,97 @@ input:focus,select:focus,textarea:focus{border-color:var(--green);background:var
   </div>
 </div>
 
+<!-- MODAL КИТАЙ -->
+<div class="overlay" id="cnOverlay" onclick="closeCnOut(event)">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-hdr"><div class="modal-title" id="cnModalTitle">🇨🇳 Нове замовлення</div><button class="modal-x" onclick="closeCnModal()">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="cnEditId">
+      <div class="form-row">
+        <div class="form-group"><label>Імпортер</label><input type="text" id="cnImporter" placeholder="Смарт-трек"></div>
+        <div class="form-group"><label>Дата замовлення</label><input type="date" id="cnDate"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:4px"><label>Товари — назва, кількість, ціна під ключ / шт (₴)</label></div>
+      <div id="cnProdList"></div>
+      <button class="cn-add-prod-btn" onclick="addCnProd()">+ Додати товар</button>
+      <div class="form-group" style="font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:12px">Ціна під ключ — це вже фінальна ціна від імпортера за 1 шт в Україні</div>
+
+      <div class="cn-section">
+        <div class="cn-section-hdr">
+          <div class="cn-section-title">💳 Платіж 1 — Викуп товарів</div>
+          <span class="cn-pbadge-done" id="cnPay1Badge" style="display:none">Сплачено ✓</span>
+          <span class="cn-pbadge-wait" id="cnPay1Wait">Очікує</span>
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <div class="form-group" style="margin-bottom:0"><label>Сума викупу (₴)</label><input type="number" id="cnPay1" placeholder="0" min="0" step="0.01" oninput="updateCnSummary()"></div>
+          <div class="form-group" style="margin-bottom:0"><label>Дата оплати</label><input type="date" id="cnPay1Date" onchange="cnTogglePay1()"></div>
+        </div>
+      </div>
+
+      <div class="cn-section">
+        <div class="cn-section-hdr">
+          <div class="cn-section-title">🚢 Платіж 2 — Доставка + розмитнення</div>
+          <span class="cn-pbadge-done" id="cnPay2Badge" style="display:none">Сплачено ✓</span>
+          <span class="cn-pbadge-wait" id="cnPay2Wait">Очікує</span>
+        </div>
+        <div class="cn-delivery-grid" style="margin-bottom:8px">
+          <div><div class="cn-field-label">Вага (кг)</div><input type="number" id="cnWeight" class="finput" placeholder="0" min="0" oninput="calcCnDelivery()"></div>
+          <div><div class="cn-field-label">Тариф ($/кг)</div><input type="number" id="cnRate" class="finput" placeholder="4.3" min="0" step="0.01" oninput="calcCnDelivery()"></div>
+          <div><div class="cn-field-label">Сума ($)</div><input type="number" id="cnUsd" class="finput" placeholder="0" min="0" oninput="calcCnDeliveryFromUsd()"></div>
+          <div><div class="cn-field-label">Сума (₴)</div><input type="number" id="cnPay2" class="finput" placeholder="0" min="0" step="0.01" oninput="updateCnSummary()"></div>
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <div class="form-group" style="margin-bottom:0"><label>Курс USD/UAH</label><input type="number" id="cnUsdRate" class="finput" value="41.5" min="1" oninput="calcCnDelivery()"></div>
+          <div class="form-group" style="margin-bottom:0"><label>Дата оплати</label><input type="date" id="cnPay2Date" onchange="cnTogglePay2()"></div>
+        </div>
+      </div>
+
+      <div class="cn-summary-list" id="cnSummaryList" style="display:none"></div>
+      <div class="cn-totals" id="cnTotals"></div>
+
+      <div class="form-group"><label>Статус</label>
+        <div class="cn-status-row">
+          <div class="cn-ss" onclick="setCnStatus('pending',this)">📋 Запит</div>
+          <div class="cn-ss" onclick="setCnStatus('paid',this)">💳 Викуплено</div>
+          <div class="cn-ss" onclick="setCnStatus('shipping',this)">🚢 В дорозі</div>
+          <div class="cn-ss" onclick="setCnStatus('received',this)">✅ Отримано</div>
+        </div>
+      </div>
+      <input type="hidden" id="cnStatus" value="pending">
+
+      <div class="form-row">
+        <div class="form-group"><label>Дата доставки (факт)</label><input type="date" id="cnDeliveryDate"></div>
+        <div class="form-group"><label>Нотатки</label><input type="text" id="cnNotes" placeholder="Будь-які нотатки..."></div>
+      </div>
+
+      <div class="cn-import-note" id="cnImportNote" style="display:none">
+        📦 <span>Натисни <b>"Перенести на склад"</b> — вибери склад і кожен товар автоматично додасться з ціною під ключ як ціна закупки.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="cnDeleteBtn" onclick="deleteCnOrder()" style="display:none;margin-right:auto">Видалити</button>
+      <button class="btn btn-ghost" onclick="closeCnModal()">Скасувати</button>
+      <button class="btn btn-incoming" id="cnImportBtn" onclick="openCnImport()" style="display:none">📦 На склад</button>
+      <button class="btn btn-primary" onclick="saveCnOrder()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ІМПОРТ НА СКЛАД -->
+<div class="overlay" id="cnImportOverlay" onclick="if(event.target===this)closeCnImport()">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-hdr"><div class="modal-title">📦 Перенести на склад</div><button class="modal-x" onclick="closeCnImport()">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Оберіть склад</label><select id="cnImportWh" class="finput finput-t"></select></div>
+      <div id="cnImportPreview" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;margin-top:4px;font-size:12px;color:var(--muted)"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeCnImport()">Скасувати</button>
+      <button class="btn btn-primary" onclick="doCnImport()">✓ Перенести</button>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIRM -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
@@ -647,7 +806,7 @@ const db = getFirestore(app);
 
 const SUP_COLORS = ['#1a5a9a','#1e6e35','#92610a','#8b3a8b','#b83232','#1a7a7a','#5a4a1a','#3a3a8b'];
 
-let allItems=[], allWarehouses=[], allDsItems=[], allSuppliers=[], allGroups=[];
+let allItems=[], allWarehouses=[], allDsItems=[], allSuppliers=[], allGroups=[], allOrders=[];
 let activeTab='wh_1', activeFilter='all', activeGroup='all', searchQ='', sortBy=localStorage.getItem('mblok_sort')||'order';
 let deleteTargetId=null, deleteTargetType=null, confirmCallback=null;
 let editingCell=null, incomingItemId=null, incMode=1;
@@ -725,6 +884,12 @@ function initApp(){
   // Groups (per warehouse)
   onSnapshot(collection(db,'groups'),snap=>{
     allGroups=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!_saving) renderPage();
+  });
+  // China orders
+  onSnapshot(collection(db,'orders'),snap=>{
+    allOrders=snap.docs.map(d=>({id:d.id,...d.data()}));
+    allOrders.sort((a,b)=>((b.date||'') > (a.date||''))?1:-1);
     if(!_saving) renderPage();
   });
 }
@@ -814,7 +979,9 @@ function renderTabs(){
     return`<div class="tab${isActive?' active':''}" data-id="${wh.id}" onclick="switchTab('${wh.id}')" ondblclick="startRenameTab('${wh.id}',this)">${wh.name}</div>`;
   });
   const dsActive=activeTab==='dropship';
+  const cnActive=activeTab==='china';
   whs.push(`<div class="tab${dsActive?' active':''}" onclick="switchTab('dropship')">🔗 Дропшипінг</div>`);
+  whs.push(`<div class="tab${cnActive?' active':''}" onclick="switchTab('china')">🇨🇳 Китай</div>`);
   el.innerHTML=whs.join('');
 }
 
@@ -823,9 +990,11 @@ window.switchTab=function(id){
   activeFilter='all';
   activeGroup='all';
   dsSupFilter='all';
-  document.getElementById('addBtn').textContent=id==='dropship'?'+ Товар дропшип':'+ Додати товар';
-  document.getElementById('addBtn').onclick=id==='dropship'?()=>openDsModal():()=>openModal();
-  document.getElementById('mobFab').onclick=id==='dropship'?()=>openDsModal():()=>openModal();
+  const isChina=id==='china';
+  const isDs=id==='dropship';
+  document.getElementById('addBtn').textContent=isDs?'+ Товар дропшип':isChina?'+ Замовлення':'+ Додати товар';
+  document.getElementById('addBtn').onclick=isDs?()=>openDsModal():isChina?()=>openCnModal():()=>openModal();
+  document.getElementById('mobFab').onclick=isDs?()=>openDsModal():isChina?()=>openCnModal():()=>openModal();
   renderTabs();renderPage();updateMobNav();
 };
 
@@ -879,6 +1048,7 @@ window.addWarehouse=async function(){
 // ─── PAGE RENDER ───────────────────────────────────────
 function renderPage(){
   if(activeTab==='dropship')renderDropship();
+  else if(activeTab==='china')renderChina();
   else renderWarehouse();
 }
 
@@ -1546,7 +1716,386 @@ function fmtM(n){if(!n&&n!==0)return'—';return'₴'+Number(n).toLocaleString('
 function fmtN(n){return Number(n).toLocaleString('uk-UA');}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// Міграція: конвертує старі числові warehouse (1,2) в нові (wh_1, wh_2)
+// ─── CHINA ORDERS ──────────────────────────────────────
+const CN_STATUSES={
+  pending:{label:'📋 Запит',cls:'cn-b1'},
+  paid:{label:'💳 Викуплено',cls:'cn-b2'},
+  shipping:{label:'🚢 В дорозі',cls:'cn-b3'},
+  received:{label:'✅ Отримано',cls:'cn-b4'}
+};
+let cnStatusFilter='all', cnProdItems=[], cnCurrentOrderId=null;
+
+// RENDER CHINA PAGE
+function renderChina(){
+  let orders=[...allOrders];
+  if(cnStatusFilter!=='all') orders=orders.filter(o=>o.status===cnStatusFilter);
+
+  const totalSpent=allOrders.reduce((a,o)=>a+(Number(o.pay1)||0)+(Number(o.pay2)||0),0);
+  const inTransit=allOrders.filter(o=>o.status==='shipping').reduce((a,o)=>a+(Number(o.pay1)||0)+(Number(o.pay2)||0),0);
+  const pending=allOrders.filter(o=>o.status==='pending'||o.status==='paid').reduce((a,o)=>a+(Number(o.pay1)||0),0);
+
+  const statsHtml=`
+    <div class="stat"><div class="stat-label">Всього замовлень</div><div class="stat-val">${allOrders.length}</div></div>
+    <div class="stat"><div class="stat-label">В дорозі</div><div class="stat-val" style="color:#6a2a9a">${fmtM(inTransit)}</div></div>
+    <div class="stat"><div class="stat-label">Очікує оплати</div><div class="stat-val a">${fmtM(pending)}</div></div>
+    <div class="stat"><div class="stat-label">Витрачено всього</div><div class="stat-val g">${fmtM(totalSpent)}</div></div>
+  `;
+
+  const filterHtml=`<div class="toolbar" style="margin-bottom:12px">
+    <div class="filter-chips">
+      <button class="cn-chip${cnStatusFilter==='all'?' cn-all':''}" onclick="setCnFilter('all')">Всі · ${allOrders.length}</button>
+      <button class="cn-chip${cnStatusFilter==='pending'?' cn-s1':''}" onclick="setCnFilter('pending')">📋 Запит · ${allOrders.filter(o=>o.status==='pending').length}</button>
+      <button class="cn-chip${cnStatusFilter==='paid'?' cn-s2':''}" onclick="setCnFilter('paid')">💳 Викуплено · ${allOrders.filter(o=>o.status==='paid').length}</button>
+      <button class="cn-chip${cnStatusFilter==='shipping'?' cn-s3':''}" onclick="setCnFilter('shipping')">🚢 В дорозі · ${allOrders.filter(o=>o.status==='shipping').length}</button>
+      <button class="cn-chip${cnStatusFilter==='received'?' cn-s4':''}" onclick="setCnFilter('received')">✅ Отримано · ${allOrders.filter(o=>o.status==='received').length}</button>
+    </div>
+  </div>`;
+
+  if(!orders.length){
+    document.getElementById('statsBar').innerHTML=statsHtml;
+    document.getElementById('pageContent').innerHTML=filterHtml+`<div class="cn-tbl-wrap"><div class="empty">Замовлень ще немає — натисни "+ Замовлення"</div></div>`;
+    return;
+  }
+
+  const rows=orders.map(o=>{
+    const prods=o.products||[];
+    const st=CN_STATUSES[o.status]||CN_STATUSES.pending;
+    const pay1=Number(o.pay1)||0;
+    const pay2=Number(o.pay2)||0;
+    const total=pay1+pay2;
+    const totalQty=prods.reduce((a,p)=>a+Number(p.qty||0),0);
+
+    // Delivery date + days
+    let deliveryHtml='';
+    if(o.deliveryDate){
+      const days=Math.round((new Date(o.deliveryDate)-new Date(o.date||o.deliveryDate))/(1000*60*60*24));
+      deliveryHtml=`<div class="cn-date-days">за ${days} днів</div>`;
+    }
+
+    const prodListHtml=prods.slice(0,3).map(p=>`<div class="cn-prod-item">
+      <div class="cn-prod-img">${p.photo?`<img src="${p.photo}" onerror="this.style.display='none'">`:'📦'}</div>
+      <span>${escHtml(p.name||'')}</span>
+      <span class="cn-prod-qty">×${p.qty}</span>
+      ${p.price?`<span style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace">₴${Number(p.price).toLocaleString('uk-UA')}/шт</span>`:''}
+    </div>`).join('');
+    const moreHtml=prods.length>3?`<div style="font-size:10px;color:var(--muted2);padding-left:32px">+${prods.length-3} товари</div>`:'';
+
+    return`<tr>
+      <td>
+        <div class="cn-date-main">#${escHtml(o.id.slice(-4).toUpperCase())}</div>
+        <div class="cn-date-col">${o.date||'—'}</div>
+        <div class="cn-date-col" style="margin-top:2px;font-weight:500">${escHtml(o.importer||'')}</div>
+      </td>
+      <td><div class="cn-prod-list">${prodListHtml}${moreHtml}</div></td>
+      <td class="r">
+        <div class="cn-pay-col">
+          ${pay1?`<div class="cn-pay-main">${fmtM(pay1)}</div><div class="cn-pay-sub">${o.pay1Date?`<span class="cn-pbadge-done">✓ ${o.pay1Date}</span>`:'<span class="cn-pbadge-wait">очікує</span>'}</div>`:'<div class="cn-pay-main na">—</div>'}
+        </div>
+      </td>
+      <td class="r">
+        <div class="cn-pay-col">
+          ${pay2?`<div class="cn-pay-main">${fmtM(pay2)}</div><div class="cn-pay-sub">${o.pay2Date?`<span class="cn-pbadge-done">✓ ${o.pay2Date}</span>`:'<span class="cn-pbadge-wait">очікує</span>'}</div>`:'<div class="cn-pay-main na">—</div>'}
+        </div>
+      </td>
+      <td class="r">
+        <div class="cn-pay-col">
+          ${total?`<div class="cn-pay-main" style="color:var(--green)">${fmtM(total)}</div>`:'<div class="cn-pay-main na">—</div>'}
+        </div>
+      </td>
+      <td>
+        <span class="cn-badge ${st.cls}" onclick="openCnModal('${o.id}')">${st.label}</span>
+        ${o.deliveryDate?`<div class="cn-date-col" style="margin-top:4px">${o.deliveryDate}</div>${deliveryHtml}`:''}
+      </td>
+      <td>
+        <div class="row-acts">
+          ${o.status==='received'?`<button class="btn btn-incoming row-acts-hidden" style="height:26px;padding:0 8px;font-size:11px" onclick="openCnImportFor('${o.id}')">📦 На склад</button>`:''}
+          <button class="btn btn-ghost row-acts-hidden" style="height:26px;padding:0 8px;font-size:11px" onclick="openCnModal('${o.id}')">✏️</button>
+          <button class="btn btn-ghost row-acts-hidden" style="height:26px;padding:0 8px;font-size:11px" onclick="confirmDeleteCnOrder('${o.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('statsBar').innerHTML=statsHtml;
+  document.getElementById('pageContent').innerHTML=filterHtml+`<div class="cn-tbl-wrap"><div class="tbl-scroll"><table>
+    <thead><tr>
+      <th style="width:130px">Замовлення</th>
+      <th>Товари</th>
+      <th class="r" style="width:150px">Платіж 1 · Викуп</th>
+      <th class="r" style="width:150px">Платіж 2 · Доставка</th>
+      <th class="r" style="width:130px">Разом</th>
+      <th style="width:140px">Статус</th>
+      <th style="width:120px"></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div></div>`;
+}
+
+window.setCnFilter=function(f){cnStatusFilter=f;renderPage();};
+
+// CN MODAL
+window.openCnModal=function(id){
+  cnCurrentOrderId=id||null;
+  const isEdit=!!id;
+  const o=isEdit?allOrders.find(x=>x.id===id):{};
+  document.getElementById('cnModalTitle').textContent=isEdit?'🇨🇳 Редагувати замовлення':'🇨🇳 Нове замовлення';
+  document.getElementById('cnDeleteBtn').style.display=isEdit?'inline-flex':'none';
+  document.getElementById('cnImportBtn').style.display=(isEdit&&o.status==='received')?'inline-flex':'none';
+  document.getElementById('cnImportNote').style.display=(isEdit&&o.status==='received')?'flex':'none';
+  document.getElementById('cnEditId').value=id||'';
+  document.getElementById('cnImporter').value=o.importer||'Смарт-трек';
+  document.getElementById('cnDate').value=o.date||new Date().toISOString().split('T')[0];
+  document.getElementById('cnPay1').value=o.pay1||'';
+  document.getElementById('cnPay1Date').value=o.pay1Date||'';
+  document.getElementById('cnPay2').value=o.pay2||'';
+  document.getElementById('cnPay2Date').value=o.pay2Date||'';
+  document.getElementById('cnWeight').value=o.weight||'';
+  document.getElementById('cnRate').value=o.rate||'';
+  document.getElementById('cnUsd').value=o.usd||'';
+  document.getElementById('cnUsdRate').value=o.usdRate||41.5;
+  document.getElementById('cnDeliveryDate').value=o.deliveryDate||'';
+  document.getElementById('cnNotes').value=o.notes||'';
+  document.getElementById('cnStatus').value=o.status||'pending';
+  // Set status buttons
+  document.querySelectorAll('.cn-ss').forEach(el=>el.classList.remove('sel'));
+  const activeBtn=[...document.querySelectorAll('.cn-ss')].find(el=>el.getAttribute('onclick')?.includes(o.status||'pending'));
+  if(activeBtn)activeBtn.classList.add('sel');
+  // Load products
+  cnProdItems=(o.products||[]).map(p=>({...p,_id:crypto.randomUUID()}));
+  if(!cnProdItems.length)cnProdItems=[{_id:crypto.randomUUID(),name:'',qty:'',price:'',photo:''}];
+  renderCnProds();
+  cnTogglePay1();cnTogglePay2();updateCnSummary();
+  document.getElementById('cnOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('cnImporter').focus(),100);
+};
+window.closeCnModal=()=>document.getElementById('cnOverlay').classList.remove('open');
+window.closeCnOut=e=>{if(e.target===document.getElementById('cnOverlay'))closeCnModal();};
+
+window.setCnStatus=function(s,el){
+  document.getElementById('cnStatus').value=s;
+  document.querySelectorAll('.cn-ss').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('cnImportBtn').style.display=s==='received'?'inline-flex':'none';
+  document.getElementById('cnImportNote').style.display=s==='received'?'flex':'none';
+};
+
+window.cnTogglePay1=function(){
+  const hasDate=!!document.getElementById('cnPay1Date').value;
+  document.getElementById('cnPay1Badge').style.display=hasDate?'inline':'none';
+  document.getElementById('cnPay1Wait').style.display=hasDate?'none':'inline';
+};
+window.cnTogglePay2=function(){
+  const hasDate=!!document.getElementById('cnPay2Date').value;
+  document.getElementById('cnPay2Badge').style.display=hasDate?'inline':'none';
+  document.getElementById('cnPay2Wait').style.display=hasDate?'none':'inline';
+};
+
+window.calcCnDelivery=function(){
+  const w=parseFloat(document.getElementById('cnWeight').value)||0;
+  const r=parseFloat(document.getElementById('cnRate').value)||0;
+  const usdRate=parseFloat(document.getElementById('cnUsdRate').value)||41.5;
+  const usd=w*r;
+  if(usd>0){
+    document.getElementById('cnUsd').value=usd.toFixed(0);
+    document.getElementById('cnPay2').value=(usd*usdRate).toFixed(0);
+  }
+  updateCnSummary();
+};
+
+window.calcCnDeliveryFromUsd=function(){
+  const usd=parseFloat(document.getElementById('cnUsd').value)||0;
+  const usdRate=parseFloat(document.getElementById('cnUsdRate').value)||41.5;
+  if(usd>0) document.getElementById('cnPay2').value=(usd*usdRate).toFixed(0);
+  updateCnSummary();
+};
+
+// PRODUCTS IN CN MODAL
+function renderCnProds(){
+  const html=cnProdItems.map((p,i)=>`<div class="cn-prod-card">
+    <div class="cn-prod-card-grid">
+      <div class="cn-photo-box" onclick="triggerCnPhoto('${p._id}')" title="Фото">
+        ${p.photo?`<img src="${p.photo}" onerror="this.innerHTML='📷'">`:'📷'}
+        <input type="file" id="cnPhotoFile_${p._id}" accept="image/*" style="display:none" onchange="handleCnPhoto(this,'${p._id}')">
+      </div>
+      <div>
+        <div class="cn-field-label">Назва товару</div>
+        <input type="text" class="finput finput-t" style="height:30px;font-size:12px" placeholder="Lamborghini Sian..." value="${escHtml(p.name||'')}" oninput="updateCnProd('${p._id}','name',this.value)">
+      </div>
+      <div>
+        <div class="cn-field-label">К-сть</div>
+        <input type="number" class="finput" style="height:30px;font-size:12px;text-align:center" placeholder="0" min="0" value="${p.qty||''}" oninput="updateCnProd('${p._id}','qty',this.value)">
+      </div>
+      <div>
+        <div class="cn-field-label">Ціна під ключ ₴</div>
+        <input type="number" class="finput" style="height:30px;font-size:12px;text-align:right" placeholder="0" min="0" step="0.01" value="${p.price||''}" oninput="updateCnProd('${p._id}','price',this.value)">
+      </div>
+      <button class="del-btn" onclick="removeCnProd('${p._id}')">×</button>
+    </div>
+    ${(p.qty&&p.price)?`<div style="text-align:right;font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-top:4px;font-weight:600">= ₴${(Number(p.qty)*Number(p.price)).toLocaleString('uk-UA',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`:''}
+  </div>`).join('');
+  document.getElementById('cnProdList').innerHTML=html;
+  updateCnSummary();
+}
+
+window.triggerCnPhoto=function(pid){document.getElementById('cnPhotoFile_'+pid)?.click();};
+window.handleCnPhoto=function(input,pid){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{updateCnProd(pid,'photo',e.target.result);renderCnProds();};
+  r.readAsDataURL(file);
+};
+window.updateCnProd=function(pid,field,val){
+  const p=cnProdItems.find(x=>x._id===pid);if(p)p[field]=val;
+  updateCnSummary();
+};
+window.removeCnProd=function(pid){
+  cnProdItems=cnProdItems.filter(x=>x._id!==pid);
+  renderCnProds();
+};
+window.addCnProd=function(){
+  cnProdItems.push({_id:crypto.randomUUID(),name:'',qty:'',price:'',photo:''});
+  renderCnProds();
+  setTimeout(()=>{const inputs=document.querySelectorAll('#cnProdList input[type=text]');inputs[inputs.length-1]?.focus();},50);
+};
+
+window.updateCnSummary=function(){
+  const pay1=Number(document.getElementById('cnPay1').value)||0;
+  const pay2=Number(document.getElementById('cnPay2').value)||0;
+  const total=pay1+pay2;
+  const prods=cnProdItems.filter(p=>p.name&&p.qty&&p.price);
+  const prodTotal=prods.reduce((a,p)=>a+Number(p.qty)*Number(p.price),0);
+
+  // Summary table
+  const sumList=document.getElementById('cnSummaryList');
+  if(prods.length){
+    sumList.style.display='block';
+    sumList.innerHTML=`<div class="cn-sum-hdr"><div>Товар</div><div style="text-align:center">К-сть</div><div style="text-align:right">Ціна під ключ / шт</div></div>`+
+    prods.map(p=>`<div class="cn-sum-row">
+      <div class="cn-sum-name">${escHtml(p.name)}</div>
+      <div class="cn-sum-qty">${p.qty} шт</div>
+      <div class="cn-sum-price">
+        <div class="cn-sum-price-val">₴${Number(p.price).toLocaleString('uk-UA',{minimumFractionDigits:2})}</div>
+        <div class="cn-sum-price-total">₴${(Number(p.qty)*Number(p.price)).toLocaleString('uk-UA',{minimumFractionDigits:2})} разом</div>
+      </div>
+    </div>`).join('');
+  } else sumList.style.display='none';
+
+  // Totals
+  document.getElementById('cnTotals').innerHTML=`
+    <div class="cn-total-row"><span style="color:var(--muted)">Сума товарів під ключ</span><span class="cn-total-val">${fmtM(prodTotal)}</span></div>
+    <div class="cn-total-row"><span style="color:var(--muted)">Платіж 1 · Викуп</span><span class="cn-total-val">${pay1?fmtM(pay1):'—'}</span></div>
+    <div class="cn-total-row"><span style="color:var(--muted)">Платіж 2 · Доставка</span><span class="cn-total-val">${pay2?fmtM(pay2):'—'}</span></div>
+    <div class="cn-total-row"><span>Всього витрат</span><span class="cn-total-val" style="color:var(--green)">${fmtM(total||prodTotal)}</span></div>
+  `;
+};
+
+// SAVE CN ORDER
+window.saveCnOrder=async function(){
+  const id=document.getElementById('cnEditId').value||crypto.randomUUID();
+  const prods=cnProdItems.filter(p=>p.name).map(p=>({name:p.name,qty:Number(p.qty)||0,price:Number(p.price)||0,photo:p.photo||''}));
+  if(!prods.length){toast('Додай хоча б один товар','err');return;}
+  const order={
+    id,
+    importer:document.getElementById('cnImporter').value.trim(),
+    date:document.getElementById('cnDate').value,
+    products:prods,
+    pay1:parseFloat(document.getElementById('cnPay1').value)||0,
+    pay1Date:document.getElementById('cnPay1Date').value,
+    pay2:parseFloat(document.getElementById('cnPay2').value)||0,
+    pay2Date:document.getElementById('cnPay2Date').value,
+    weight:parseFloat(document.getElementById('cnWeight').value)||0,
+    rate:parseFloat(document.getElementById('cnRate').value)||0,
+    usd:parseFloat(document.getElementById('cnUsd').value)||0,
+    usdRate:parseFloat(document.getElementById('cnUsdRate').value)||41.5,
+    status:document.getElementById('cnStatus').value||'pending',
+    deliveryDate:document.getElementById('cnDeliveryDate').value,
+    notes:document.getElementById('cnNotes').value.trim(),
+    updated:serverTimestamp()
+  };
+  closeCnModal();
+  setSyncStatus('syncing');
+  try{
+    await setDoc(doc(db,'orders',id),order);
+    setSyncStatus('ok');
+    toast('Замовлення збережено','ok');
+  }catch(e){setSyncStatus('error');toast('Помилка збереження','err');}
+};
+
+window.confirmDeleteCnOrder=function(id){
+  const o=allOrders.find(x=>x.id===id);
+  confirmCallback=async()=>{await deleteDoc(doc(db,'orders',id));toast('Видалено','ok');};
+  document.getElementById('confirmName').textContent=`Замовлення від ${o?.date||id}`;
+  document.getElementById('confirmMsg').textContent='Видалити замовлення? Дію не можна скасувати.';
+  document.getElementById('confirmOverlay').classList.add('open');
+};
+
+window.deleteCnOrder=function(){
+  const id=document.getElementById('cnEditId').value;
+  if(!id)return;
+  confirmDeleteCnOrder(id);
+  closeCnModal();
+};
+
+// IMPORT TO WAREHOUSE
+window.openCnImport=function(){
+  openCnImportFor(document.getElementById('cnEditId').value);
+  closeCnModal();
+};
+window.openCnImportFor=function(id){
+  cnCurrentOrderId=id;
+  const o=allOrders.find(x=>x.id===id);
+  const sel=document.getElementById('cnImportWh');
+  sel.innerHTML=allWarehouses.map(wh=>`<option value="${wh.id}">${wh.name}</option>`).join('');
+  const prods=(o?.products||[]).filter(p=>p.name&&p.qty);
+  document.getElementById('cnImportPreview').innerHTML=prods.map(p=>
+    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
+      <span>${escHtml(p.name)} ×${p.qty}</span>
+      <span style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:600">${p.price?fmtM(p.price)+'/шт':''}</span>
+    </div>`
+  ).join('')+'<div style="font-size:11px;color:var(--muted);margin-top:8px">Товари додадуться з ціною під ключ як ціна закупки. Якщо товар вже є на складі — кількість додасться і перерахується середня ціна.</div>';
+  document.getElementById('cnImportOverlay').classList.add('open');
+};
+window.closeCnImport=()=>document.getElementById('cnImportOverlay').classList.remove('open');
+
+window.doCnImport=async function(){
+  const o=allOrders.find(x=>x.id===cnCurrentOrderId);
+  if(!o)return;
+  const whId=document.getElementById('cnImportWh').value;
+  const prods=(o.products||[]).filter(p=>p.name&&p.qty&&p.price);
+  closeCnImport();
+  setSyncStatus('syncing');
+  for(const p of prods){
+    // Check if product exists on warehouse (by name match)
+    const existing=allItems.find(r=>r.warehouse===whId&&(r.name||'').toLowerCase()===p.name.toLowerCase());
+    if(existing){
+      // Update qty and recalc avg price
+      const oldQty=Number(existing.qty)||0;
+      const newQty=oldQty+Number(p.qty);
+      const avgPrice=((oldQty*(Number(existing.price_buy)||0))+(Number(p.qty)*Number(p.price)))/newQty;
+      existing.qty=newQty;
+      existing.price_buy=Math.round(avgPrice*100)/100;
+      await saveToDb(existing);
+    }else{
+      // Create new
+      const maxOrder=allItems.filter(r=>r.warehouse===whId).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
+      const newItem={
+        id:crypto.randomUUID(),
+        name:p.name,art:'',sup_art:'',
+        warehouse:whId,
+        qty:Number(p.qty),
+        price_buy:Number(p.price),
+        photo:p.photo||'',
+        group:'',
+        order:maxOrder+10
+      };
+      await saveToDb(newItem);
+    }
+  }
+  setSyncStatus('ok');
+  toast(`${prods.length} товарів перенесено на склад ✓`,'ok');
+};
+
+// ─── MIGRATE ───────────────────────────────────────────
 window.fixWarehouses=async function(){
   let count=0;
   for(const item of allItems){
@@ -1566,7 +2115,7 @@ document.addEventListener('keydown',function(e){
     if(typeof window.doUndo==='function') window.doUndo();
   }
   if(e.key==='Escape'){
-    ['closeModal','closeIncoming','closeDsModal','closeUsers','closeSup','closeConfirm'].forEach(fn=>{
+    ['closeModal','closeIncoming','closeDsModal','closeUsers','closeSup','closeConfirm','closeCnModal','closeCnImport'].forEach(fn=>{
       if(typeof window[fn]==='function') window[fn]();
     });
   }
