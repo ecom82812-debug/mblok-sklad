@@ -904,7 +904,7 @@ function renderStats(){
 function renderWarehouse(){
   const whGroups=allGroups.filter(g=>g.warehouse===activeTab);
   let d=allItems.filter(r=>r.warehouse===activeTab);
-  if(searchQ){const q=searchQ.toLowerCase();d=d.filter(r=>(r.name||'').toLowerCase().includes(q)||(r.art||'').toLowerCase().includes(q));}
+  if(searchQ){const q=searchQ.toLowerCase();d=d.filter(r=>(r.name||'').toLowerCase().includes(q)||(r.art||'').toLowerCase().includes(q)||(r.sup_art||'').toLowerCase().includes(q));}
   if(activeFilter==='low')d=d.filter(r=>Number(r.qty)>0&&Number(r.qty)<=5);
   else if(activeFilter==='zero')d=d.filter(r=>!Number(r.qty));
   if(activeGroup!=='all')d=d.filter(r=>r.group===activeGroup);
