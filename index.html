@@ -1772,13 +1772,17 @@ function renderChina(){
       deliveryHtml=`<div class="cn-date-days">за ${days} днів</div>`;
     }
 
-    const prodListHtml=prods.slice(0,3).map(p=>`<div class="cn-prod-item">
-      <div class="cn-prod-img">${p.photo?`<img src="${p.photo}" onerror="this.style.display='none'">`:'📦'}</div>
-      <span>${escHtml(p.name||'')}</span>
-      <span class="cn-prod-qty">×${p.qty}</span>
-      ${p.price?`<span style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace">₴${Number(p.price).toLocaleString('uk-UA')}/шт</span>`:''}
-    </div>`).join('');
-    const moreHtml=prods.length>3?`<div style="font-size:10px;color:var(--muted2);padding-left:32px">+${prods.length-3} товари</div>`:'';
+    const prodListHtml=prods.map(p=>{
+      const displayPrice=p.actualPrice||p.price;
+      const isActual=!!p.actualPrice;
+      return`<div class="cn-prod-item">
+        <div class="cn-prod-img">${p.photo?`<img src="${p.photo}" onerror="this.style.display='none'">`:'📦'}</div>
+        <span>${escHtml(p.name||'')}</span>
+        <span class="cn-prod-qty">×${p.qty}</span>
+        ${displayPrice?`<span style="font-size:10px;font-family:'JetBrains Mono',monospace;${isActual?'color:var(--green);font-weight:600':'color:var(--muted)'}">₴${Number(displayPrice).toLocaleString('uk-UA')}/шт${isActual?' ✓':' ~'}</span>`:''}
+      </div>`;
+    }).join('');
+    const moreHtml='';
 
     return`<tr>
       <td>
@@ -1862,7 +1866,7 @@ window.openCnModal=function(id){
   if(activeBtn)activeBtn.classList.add('sel');
   // Load products
   cnProdItems=(o.products||[]).map(p=>({...p,_id:crypto.randomUUID()}));
-  if(!cnProdItems.length)cnProdItems=[{_id:crypto.randomUUID(),name:'',qty:'',price:'',photo:''}];
+  if(!cnProdItems.length)cnProdItems=[{_id:crypto.randomUUID(),name:'',qty:'',price:'',actualPrice:'',photo:''}];
   renderCnProds();
   cnTogglePay1();cnTogglePay2();updateCnSummary();
   document.getElementById('cnOverlay').classList.add('open');
@@ -1926,12 +1930,21 @@ function renderCnProds(){
         <input type="number" class="finput" style="height:30px;font-size:12px;text-align:center" placeholder="0" min="0" value="${p.qty||''}" oninput="updateCnProd('${p._id}','qty',this.value)">
       </div>
       <div>
-        <div class="cn-field-label">Ціна під ключ ₴</div>
+        <div class="cn-field-label">~ Очікувана ₴/шт</div>
         <input type="number" class="finput" style="height:30px;font-size:12px;text-align:right" placeholder="0" min="0" step="0.01" value="${p.price||''}" oninput="updateCnProd('${p._id}','price',this.value)">
       </div>
       <button class="del-btn" onclick="removeCnProd('${p._id}')">×</button>
     </div>
-    ${(p.qty&&p.price)?`<div style="text-align:right;font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-top:4px;font-weight:600">= ₴${(Number(p.qty)*Number(p.price)).toLocaleString('uk-UA',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>`:''}
+    <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
+      <div>
+        <div class="cn-field-label" style="color:var(--green)">✓ Фактична ₴/шт (після розмитнення)</div>
+        <input type="number" class="finput" style="height:28px;font-size:12px;text-align:right;border-color:${p.actualPrice?'var(--green)':'var(--border2)'}" placeholder="якщо відрізняється від очікуваної" min="0" step="0.01" value="${p.actualPrice||''}" oninput="updateCnProd('${p._id}','actualPrice',this.value)">
+      </div>
+      <div style="text-align:right;font-size:11px;color:var(--muted)">
+        ${p.price&&p.qty?`Очік. сума: <span style="font-family:'JetBrains Mono',monospace">₴${(Number(p.qty)*Number(p.price)).toLocaleString('uk-UA',{minimumFractionDigits:2})}</span>`:''}
+        ${p.actualPrice&&p.qty?`<br>Факт. сума: <span style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:600">₴${(Number(p.qty)*Number(p.actualPrice)).toLocaleString('uk-UA',{minimumFractionDigits:2})}</span>`:''}
+      </div>
+    </div>
   </div>`).join('');
   document.getElementById('cnProdList').innerHTML=html;
   updateCnSummary();
@@ -1953,7 +1966,7 @@ window.removeCnProd=function(pid){
   renderCnProds();
 };
 window.addCnProd=function(){
-  cnProdItems.push({_id:crypto.randomUUID(),name:'',qty:'',price:'',photo:''});
+  cnProdItems.push({_id:crypto.randomUUID(),name:'',qty:'',price:'',actualPrice:'',photo:''});
   renderCnProds();
   setTimeout(()=>{const inputs=document.querySelectorAll('#cnProdList input[type=text]');inputs[inputs.length-1]?.focus();},50);
 };
@@ -1969,20 +1982,32 @@ window.updateCnSummary=function(){
   const sumList=document.getElementById('cnSummaryList');
   if(prods.length){
     sumList.style.display='block';
-    sumList.innerHTML=`<div class="cn-sum-hdr"><div>Товар</div><div style="text-align:center">К-сть</div><div style="text-align:right">Ціна під ключ / шт</div></div>`+
-    prods.map(p=>`<div class="cn-sum-row">
-      <div class="cn-sum-name">${escHtml(p.name)}</div>
-      <div class="cn-sum-qty">${p.qty} шт</div>
-      <div class="cn-sum-price">
-        <div class="cn-sum-price-val">₴${Number(p.price).toLocaleString('uk-UA',{minimumFractionDigits:2})}</div>
-        <div class="cn-sum-price-total">₴${(Number(p.qty)*Number(p.price)).toLocaleString('uk-UA',{minimumFractionDigits:2})} разом</div>
-      </div>
-    </div>`).join('');
+    const actualTotal=prods.reduce((a,p)=>a+Number(p.qty)*(Number(p.actualPrice)||Number(p.price)||0),0);
+    const expectedTotal=prods.reduce((a,p)=>a+Number(p.qty)*(Number(p.price)||0),0);
+    const hasAnyActual=prods.some(p=>p.actualPrice);
+    sumList.innerHTML=`<div class="cn-sum-hdr"><div>Товар</div><div style="text-align:center">К-сть</div><div style="text-align:right">${hasAnyActual?'Очік. → Факт. / шт':'Очік. ціна / шт'}</div></div>`+
+    prods.map(p=>{
+      const hasActual=!!Number(p.actualPrice);
+      return`<div class="cn-sum-row">
+        <div class="cn-sum-name">${escHtml(p.name)}</div>
+        <div class="cn-sum-qty">${p.qty} шт</div>
+        <div class="cn-sum-price">
+          ${hasActual
+            ?`<div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-decoration:line-through">₴${Number(p.price).toLocaleString('uk-UA',{minimumFractionDigits:2})}</div>
+              <div class="cn-sum-price-val">₴${Number(p.actualPrice).toLocaleString('uk-UA',{minimumFractionDigits:2})} ✓</div>
+              <div class="cn-sum-price-total">₴${(Number(p.qty)*Number(p.actualPrice)).toLocaleString('uk-UA',{minimumFractionDigits:2})} разом</div>`
+            :`<div class="cn-sum-price-val" style="color:var(--muted)">~ ₴${Number(p.price||0).toLocaleString('uk-UA',{minimumFractionDigits:2})}</div>
+              <div class="cn-sum-price-total">₴${(Number(p.qty)*Number(p.price||0)).toLocaleString('uk-UA',{minimumFractionDigits:2})} разом</div>`
+          }
+        </div>
+      </div>`;
+    }).join('');
   } else sumList.style.display='none';
 
   // Totals
+  const prodTotal=cnProdItems.filter(p=>p.name&&p.qty).reduce((a,p)=>a+Number(p.qty)*(Number(p.actualPrice)||Number(p.price)||0),0);
   document.getElementById('cnTotals').innerHTML=`
-    <div class="cn-total-row"><span style="color:var(--muted)">Сума товарів під ключ</span><span class="cn-total-val">${fmtM(prodTotal)}</span></div>
+    <div class="cn-total-row"><span style="color:var(--muted)">Сума товарів (${cnProdItems.some(p=>p.actualPrice)?'факт.':'очік.'})</span><span class="cn-total-val">${fmtM(prodTotal)}</span></div>
     <div class="cn-total-row"><span style="color:var(--muted)">Платіж 1 · Викуп</span><span class="cn-total-val">${pay1?fmtM(pay1):'—'}</span></div>
     <div class="cn-total-row"><span style="color:var(--muted)">Платіж 2 · Доставка</span><span class="cn-total-val">${pay2?fmtM(pay2):'—'}</span></div>
     <div class="cn-total-row"><span>Всього витрат</span><span class="cn-total-val" style="color:var(--green)">${fmtM(total||prodTotal)}</span></div>
@@ -1992,7 +2017,7 @@ window.updateCnSummary=function(){
 // SAVE CN ORDER
 window.saveCnOrder=async function(){
   const id=document.getElementById('cnEditId').value||crypto.randomUUID();
-  const prods=cnProdItems.filter(p=>p.name).map(p=>({name:p.name,qty:Number(p.qty)||0,price:Number(p.price)||0,photo:p.photo||''}));
+  const prods=cnProdItems.filter(p=>p.name).map(p=>({name:p.name,qty:Number(p.qty)||0,price:Number(p.price)||0,actualPrice:Number(p.actualPrice)||0,photo:p.photo||''}));
   if(!prods.length){toast('Додай хоча б один товар','err');return;}
   const order={
     id,
@@ -2065,25 +2090,23 @@ window.doCnImport=async function(){
   closeCnImport();
   setSyncStatus('syncing');
   for(const p of prods){
-    // Check if product exists on warehouse (by name match)
+    const importPrice=Number(p.actualPrice)||Number(p.price)||0;
     const existing=allItems.find(r=>r.warehouse===whId&&(r.name||'').toLowerCase()===p.name.toLowerCase());
     if(existing){
-      // Update qty and recalc avg price
       const oldQty=Number(existing.qty)||0;
       const newQty=oldQty+Number(p.qty);
-      const avgPrice=((oldQty*(Number(existing.price_buy)||0))+(Number(p.qty)*Number(p.price)))/newQty;
+      const avgPrice=((oldQty*(Number(existing.price_buy)||0))+(Number(p.qty)*importPrice))/newQty;
       existing.qty=newQty;
       existing.price_buy=Math.round(avgPrice*100)/100;
       await saveToDb(existing);
     }else{
-      // Create new
       const maxOrder=allItems.filter(r=>r.warehouse===whId).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
       const newItem={
         id:crypto.randomUUID(),
         name:p.name,art:'',sup_art:'',
         warehouse:whId,
         qty:Number(p.qty),
-        price_buy:Number(p.price),
+        price_buy:importPrice,
         photo:p.photo||'',
         group:'',
         order:maxOrder+10
