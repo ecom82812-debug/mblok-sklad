@@ -1732,7 +1732,10 @@ function renderChina(){
 
   const totalSpent=allOrders.reduce((a,o)=>a+(Number(o.pay1)||0)+(Number(o.pay2)||0),0);
   const inTransit=allOrders.filter(o=>o.status==='shipping').reduce((a,o)=>a+(Number(o.pay1)||0)+(Number(o.pay2)||0),0);
-  const pending=allOrders.filter(o=>o.status==='pending'||o.status==='paid').reduce((a,o)=>a+(Number(o.pay1)||0),0);
+  // Очікує оплати = pay1 без дати (всі статуси) + pay2 без дати (статус shipping)
+  const pendingPay1=allOrders.filter(o=>o.pay1&&!o.pay1Date).reduce((a,o)=>a+(Number(o.pay1)||0),0);
+  const pendingPay2=allOrders.filter(o=>o.status==='shipping'&&o.pay2&&!o.pay2Date).reduce((a,o)=>a+(Number(o.pay2)||0),0);
+  const pending=pendingPay1+pendingPay2;
 
   const statsHtml=`
     <div class="stat"><div class="stat-label">Всього замовлень</div><div class="stat-val">${allOrders.length}</div></div>
