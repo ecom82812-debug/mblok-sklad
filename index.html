@@ -1047,9 +1047,9 @@ window.addWarehouse=async function(){
 
 // ─── PAGE RENDER ───────────────────────────────────────
 function renderPage(){
-  if(activeTab==='dropship')renderDropship();
-  else if(activeTab==='china')renderChina();
-  else renderWarehouse();
+  if(activeTab==='dropship'){renderDropship();}
+  else if(activeTab==='china'){renderChina();}
+  else{renderStats();renderWarehouse();}
 }
 
 // ─── STATS ─────────────────────────────────────────────
