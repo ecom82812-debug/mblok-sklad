@@ -1730,8 +1730,8 @@ function renderChina(){
   let orders=[...allOrders];
   if(cnStatusFilter!=='all') orders=orders.filter(o=>o.status===cnStatusFilter);
 
-  const totalSpent=allOrders.reduce((a,o)=>a+(Number(o.pay1)||0)+(Number(o.pay2)||0),0);
-  const inTransit=allOrders.filter(o=>o.status==='shipping').reduce((a,o)=>a+(Number(o.pay1)||0)+(Number(o.pay2)||0),0);
+  const totalSpent=allOrders.reduce((a,o)=>a+(o.pay1Date?Number(o.pay1)||0:0)+(o.pay2Date?Number(o.pay2)||0:0),0);
+  const inTransit=allOrders.filter(o=>o.status==='shipping').reduce((a,o)=>a+(o.pay1Date?Number(o.pay1)||0:0)+(o.pay2Date?Number(o.pay2)||0:0),0);
   // Очікує оплати = pay1 без дати (всі статуси) + pay2 без дати (статус shipping)
   const pendingPay1=allOrders.filter(o=>o.pay1&&!o.pay1Date).reduce((a,o)=>a+(Number(o.pay1)||0),0);
   const pendingPay2=allOrders.filter(o=>o.status==='shipping'&&o.pay2&&!o.pay2Date).reduce((a,o)=>a+(Number(o.pay2)||0),0);
@@ -1792,6 +1792,7 @@ function renderChina(){
         <div class="cn-date-main">#${escHtml(o.id.slice(-4).toUpperCase())}</div>
         <div class="cn-date-col">${o.date||'—'}</div>
         <div class="cn-date-col" style="margin-top:2px;font-weight:500">${escHtml(o.importer||'')}</div>
+        ${o.weight?`<div class="cn-date-col" style="margin-top:3px">⚖️ ${o.weight} кг · ${o.rate||'?'}$/кг</div>`:''}
       </td>
       <td><div class="cn-prod-list">${prodListHtml}${moreHtml}</div></td>
       <td class="r">
