@@ -1921,16 +1921,26 @@ window.calcCnDeliveryFromUsd=function(){
 
 // PRODUCTS IN CN MODAL
 function renderCnProds(){
-  // Рахуємо фактичне розмитнення на одиницю для кожного товару
   const pay2=Number(document.getElementById('cnPay2')?.value)||0;
-  const totalBuySum=cnProdItems.reduce((a,p)=>a+Number(p.qty||0)*Number(p.buyPrice||0),0);
+
+  // Логіка: Смарт-трек вже розподілив розмитнення в ціні "під ключ"
+  // Прогнозне розмитнення кожного товару = (під ключ - викуп) × к-сть
+  // Загальне прогнозне розмитнення = сума по всіх товарах
+  // Коефіцієнт = фактичне ÷ прогнозне
+  // Фактична ціна/шт = викуп + (прогнозне розмитнення/шт × коефіцієнт)
+
+  const totalPrognosticCustoms=cnProdItems.reduce((a,p)=>{
+    const progPerUnit=Number(p.price||0)-Number(p.buyPrice||0);
+    return a+(progPerUnit>0?progPerUnit*Number(p.qty||0):0);
+  },0);
+
+  const coeff=pay2&&totalPrognosticCustoms>0?pay2/totalPrognosticCustoms:null;
 
   const html=cnProdItems.map((p,i)=>{
-    // Частка розмитнення пропорційно до вартості викупу
-    const itemBuySum=Number(p.qty||0)*Number(p.buyPrice||0);
-    const share=totalBuySum>0?itemBuySum/totalBuySum:0;
-    const customsPerUnit=pay2&&p.qty&&p.buyPrice?(share*pay2/Number(p.qty)).toFixed(2):null;
-    const calcActual=customsPerUnit&&p.buyPrice?(Number(p.buyPrice)+Number(customsPerUnit)).toFixed(2):null;
+    const progCustomsPerUnit=Number(p.price||0)-Number(p.buyPrice||0);
+    const hasPrognosis=p.price&&p.buyPrice&&progCustomsPerUnit>0;
+    const factCustomsPerUnit=coeff&&hasPrognosis?progCustomsPerUnit*coeff:null;
+    const calcActual=factCustomsPerUnit&&p.buyPrice?(Number(p.buyPrice)+factCustomsPerUnit).toFixed(2):null;
 
     return`<div class="cn-prod-card">
     <div class="cn-prod-card-grid" style="grid-template-columns:42px 1fr 60px 100px 100px 24px">
@@ -1956,11 +1966,13 @@ function renderCnProds(){
       </div>
       <button class="del-btn" onclick="removeCnProd('${p._id}')">×</button>
     </div>
-    ${(p.buyPrice||p.qty)?`<div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:11px">
-      ${p.buyPrice&&p.qty?`<span style="color:var(--muted)">Викуп разом: <b style="font-family:'JetBrains Mono',monospace">₴${(Number(p.qty)*Number(p.buyPrice)).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:''}
-      ${customsPerUnit?`<span style="color:var(--blue)">+ Розмит./шт: <b style="font-family:'JetBrains Mono',monospace">₴${Number(customsPerUnit).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b> (${(share*100).toFixed(1)}%)</span>`:''}
-      ${calcActual?`<span style="color:var(--green);font-weight:600">= Факт. ₴/шт: <b style="font-family:'JetBrains Mono',monospace;font-size:13px">₴${Number(calcActual).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:''}
-    </div>`:''}
+    <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:11px">
+      ${p.buyPrice&&p.qty?`<span style="color:var(--muted)">Викуп: <b style="font-family:'JetBrains Mono',monospace">₴${(Number(p.qty)*Number(p.buyPrice)).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:''}
+      ${hasPrognosis?`<span style="color:var(--muted)">Прогн. розмит./шт: <b style="font-family:'JetBrains Mono',monospace">₴${progCustomsPerUnit.toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:''}
+      ${factCustomsPerUnit?`<span style="color:var(--blue)">Факт. розмит./шт: <b style="font-family:'JetBrains Mono',monospace">₴${factCustomsPerUnit.toLocaleString('uk-UA',{minimumFractionDigits:2})}</b> (к-т: ${coeff.toFixed(3)})</span>`:''}
+      ${calcActual?`<span style="color:var(--green);font-weight:600">= Факт. ₴/шт: <b style="font-family:'JetBrains Mono',monospace;font-size:13px">₴${Number(calcActual).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:
+      (!pay2&&hasPrognosis)?`<span style="color:var(--muted)">= Прогн. ₴/шт: <b style="font-family:'JetBrains Mono',monospace">₴${Number(p.price).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:''}
+    </div>
   </div>`;
   }).join('');
   document.getElementById('cnProdList').innerHTML=html;
@@ -2034,18 +2046,23 @@ window.updateCnSummary=function(){
 window.saveCnOrder=async function(){
   const id=document.getElementById('cnEditId').value||crypto.randomUUID();
   const pay2=parseFloat(document.getElementById('cnPay2').value)||0;
-  const totalBuySum=cnProdItems.filter(p=>p.name).reduce((a,p)=>a+Number(p.qty||0)*Number(p.buyPrice||0),0);
+  const totalPrognosticCustoms=cnProdItems.filter(p=>p.name).reduce((a,p)=>{
+    const prog=Number(p.price||0)-Number(p.buyPrice||0);
+    return a+(prog>0?prog*Number(p.qty||0):0);
+  },0);
+  const coeff=pay2&&totalPrognosticCustoms>0?pay2/totalPrognosticCustoms:null;
+
   const prods=cnProdItems.filter(p=>p.name).map(p=>{
-    const itemBuySum=Number(p.qty||0)*Number(p.buyPrice||0);
-    const share=totalBuySum>0?itemBuySum/totalBuySum:0;
-    const customsPerUnit=pay2&&p.qty&&p.buyPrice?share*pay2/Number(p.qty):0;
-    const calcActual=p.buyPrice?Number(p.buyPrice)+customsPerUnit:0;
+    const progCustomsPerUnit=Number(p.price||0)-Number(p.buyPrice||0);
+    const hasPrognosis=p.price&&p.buyPrice&&progCustomsPerUnit>0;
+    const factCustomsPerUnit=coeff&&hasPrognosis?progCustomsPerUnit*coeff:0;
+    const calcActual=factCustomsPerUnit&&p.buyPrice?Number(p.buyPrice)+factCustomsPerUnit:0;
     return{
       name:p.name,
       qty:Number(p.qty)||0,
       buyPrice:Number(p.buyPrice)||0,
       price:Number(p.price)||0,
-      actualPrice:pay2&&p.buyPrice?Math.round(calcActual*100)/100:0,
+      actualPrice:calcActual?Math.round(calcActual*100)/100:0,
       photo:p.photo||''
     };
   });
