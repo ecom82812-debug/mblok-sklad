@@ -1776,13 +1776,15 @@ function renderChina(){
     }
 
     const prodListHtml=prods.map(p=>{
-      const displayPrice=p.actualPrice||p.price;
-      const isActual=!!p.actualPrice;
+      const hasActual=!!Number(p.actualPrice);
+      const displayPrice=hasActual?p.actualPrice:p.price;
       return`<div class="cn-prod-item">
         <div class="cn-prod-img">${p.photo?`<img src="${p.photo}" onerror="this.style.display='none'">`:'📦'}</div>
         <span>${escHtml(p.name||'')}</span>
         <span class="cn-prod-qty">×${p.qty}</span>
-        ${displayPrice?`<span style="font-size:10px;font-family:'JetBrains Mono',monospace;${isActual?'color:var(--green);font-weight:600':'color:var(--muted)'}">₴${Number(displayPrice).toLocaleString('uk-UA')}/шт${isActual?' ✓':' ~'}</span>`:''}
+        ${p.buyPrice?`<span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted)">викуп:₴${Number(p.buyPrice).toLocaleString('uk-UA')}</span>`:''}
+        ${hasActual?`<span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:600">факт:₴${Number(p.actualPrice).toLocaleString('uk-UA')} ✓</span>`:
+        p.price?`<span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted)">прогн:₴${Number(p.price).toLocaleString('uk-UA')} ~</span>`:''}
       </div>`;
     }).join('');
     const moreHtml='';
@@ -1870,7 +1872,7 @@ window.openCnModal=function(id){
   if(activeBtn)activeBtn.classList.add('sel');
   // Load products
   cnProdItems=(o.products||[]).map(p=>({...p,_id:crypto.randomUUID()}));
-  if(!cnProdItems.length)cnProdItems=[{_id:crypto.randomUUID(),name:'',qty:'',price:'',actualPrice:'',photo:''}];
+  if(!cnProdItems.length)cnProdItems=[{_id:crypto.randomUUID(),name:'',qty:'',buyPrice:'',price:'',actualPrice:'',photo:''}];
   renderCnProds();
   cnTogglePay1();cnTogglePay2();updateCnSummary();
   document.getElementById('cnOverlay').classList.add('open');
@@ -1919,8 +1921,19 @@ window.calcCnDeliveryFromUsd=function(){
 
 // PRODUCTS IN CN MODAL
 function renderCnProds(){
-  const html=cnProdItems.map((p,i)=>`<div class="cn-prod-card">
-    <div class="cn-prod-card-grid">
+  // Рахуємо фактичне розмитнення на одиницю для кожного товару
+  const pay2=Number(document.getElementById('cnPay2')?.value)||0;
+  const totalBuySum=cnProdItems.reduce((a,p)=>a+Number(p.qty||0)*Number(p.buyPrice||0),0);
+
+  const html=cnProdItems.map((p,i)=>{
+    // Частка розмитнення пропорційно до вартості викупу
+    const itemBuySum=Number(p.qty||0)*Number(p.buyPrice||0);
+    const share=totalBuySum>0?itemBuySum/totalBuySum:0;
+    const customsPerUnit=pay2&&p.qty&&p.buyPrice?(share*pay2/Number(p.qty)).toFixed(2):null;
+    const calcActual=customsPerUnit&&p.buyPrice?(Number(p.buyPrice)+Number(customsPerUnit)).toFixed(2):null;
+
+    return`<div class="cn-prod-card">
+    <div class="cn-prod-card-grid" style="grid-template-columns:42px 1fr 60px 100px 100px 24px">
       <div class="cn-photo-box" onclick="triggerCnPhoto('${p._id}')" title="Фото">
         ${p.photo?`<img src="${p.photo}" onerror="this.innerHTML='📷'">`:'📷'}
         <input type="file" id="cnPhotoFile_${p._id}" accept="image/*" style="display:none" onchange="handleCnPhoto(this,'${p._id}')">
@@ -1934,22 +1947,22 @@ function renderCnProds(){
         <input type="number" class="finput" style="height:30px;font-size:12px;text-align:center" placeholder="0" min="0" value="${p.qty||''}" oninput="updateCnProd('${p._id}','qty',this.value)">
       </div>
       <div>
-        <div class="cn-field-label">~ Очікувана ₴/шт</div>
-        <input type="number" class="finput" style="height:30px;font-size:12px;text-align:right" placeholder="0" min="0" step="0.01" value="${p.price||''}" oninput="updateCnProd('${p._id}','price',this.value)">
+        <div class="cn-field-label">Викуп ₴/шт</div>
+        <input type="number" class="finput" style="height:30px;font-size:12px;text-align:right" placeholder="0" min="0" step="0.01" value="${p.buyPrice||''}" oninput="updateCnProd('${p._id}','buyPrice',this.value)">
+      </div>
+      <div>
+        <div class="cn-field-label">Під ключ ₴/шт ~</div>
+        <input type="number" class="finput" style="height:30px;font-size:12px;text-align:right;color:var(--muted)" placeholder="прогноз" min="0" step="0.01" value="${p.price||''}" oninput="updateCnProd('${p._id}','price',this.value)">
       </div>
       <button class="del-btn" onclick="removeCnProd('${p._id}')">×</button>
     </div>
-    <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
-      <div>
-        <div class="cn-field-label" style="color:var(--green)">✓ Фактична ₴/шт (після розмитнення)</div>
-        <input type="number" class="finput" style="height:28px;font-size:12px;text-align:right;border-color:${p.actualPrice?'var(--green)':'var(--border2)'}" placeholder="якщо відрізняється від очікуваної" min="0" step="0.01" value="${p.actualPrice||''}" oninput="updateCnProd('${p._id}','actualPrice',this.value)">
-      </div>
-      <div style="text-align:right;font-size:11px;color:var(--muted)">
-        ${p.price&&p.qty?`Очік. сума: <span style="font-family:'JetBrains Mono',monospace">₴${(Number(p.qty)*Number(p.price)).toLocaleString('uk-UA',{minimumFractionDigits:2})}</span>`:''}
-        ${p.actualPrice&&p.qty?`<br>Факт. сума: <span style="font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:600">₴${(Number(p.qty)*Number(p.actualPrice)).toLocaleString('uk-UA',{minimumFractionDigits:2})}</span>`:''}
-      </div>
-    </div>
-  </div>`).join('');
+    ${(p.buyPrice||p.qty)?`<div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:11px">
+      ${p.buyPrice&&p.qty?`<span style="color:var(--muted)">Викуп разом: <b style="font-family:'JetBrains Mono',monospace">₴${(Number(p.qty)*Number(p.buyPrice)).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:''}
+      ${customsPerUnit?`<span style="color:var(--blue)">+ Розмит./шт: <b style="font-family:'JetBrains Mono',monospace">₴${Number(customsPerUnit).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b> (${(share*100).toFixed(1)}%)</span>`:''}
+      ${calcActual?`<span style="color:var(--green);font-weight:600">= Факт. ₴/шт: <b style="font-family:'JetBrains Mono',monospace;font-size:13px">₴${Number(calcActual).toLocaleString('uk-UA',{minimumFractionDigits:2})}</b></span>`:''}
+    </div>`:''}
+  </div>`;
+  }).join('');
   document.getElementById('cnProdList').innerHTML=html;
   updateCnSummary();
 }
@@ -1970,7 +1983,7 @@ window.removeCnProd=function(pid){
   renderCnProds();
 };
 window.addCnProd=function(){
-  cnProdItems.push({_id:crypto.randomUUID(),name:'',qty:'',price:'',actualPrice:'',photo:''});
+  cnProdItems.push({_id:crypto.randomUUID(),name:'',qty:'',buyPrice:'',price:'',actualPrice:'',photo:''});
   renderCnProds();
   setTimeout(()=>{const inputs=document.querySelectorAll('#cnProdList input[type=text]');inputs[inputs.length-1]?.focus();},50);
 };
@@ -2020,7 +2033,22 @@ window.updateCnSummary=function(){
 // SAVE CN ORDER
 window.saveCnOrder=async function(){
   const id=document.getElementById('cnEditId').value||crypto.randomUUID();
-  const prods=cnProdItems.filter(p=>p.name).map(p=>({name:p.name,qty:Number(p.qty)||0,price:Number(p.price)||0,actualPrice:Number(p.actualPrice)||0,photo:p.photo||''}));
+  const pay2=parseFloat(document.getElementById('cnPay2').value)||0;
+  const totalBuySum=cnProdItems.filter(p=>p.name).reduce((a,p)=>a+Number(p.qty||0)*Number(p.buyPrice||0),0);
+  const prods=cnProdItems.filter(p=>p.name).map(p=>{
+    const itemBuySum=Number(p.qty||0)*Number(p.buyPrice||0);
+    const share=totalBuySum>0?itemBuySum/totalBuySum:0;
+    const customsPerUnit=pay2&&p.qty&&p.buyPrice?share*pay2/Number(p.qty):0;
+    const calcActual=p.buyPrice?Number(p.buyPrice)+customsPerUnit:0;
+    return{
+      name:p.name,
+      qty:Number(p.qty)||0,
+      buyPrice:Number(p.buyPrice)||0,
+      price:Number(p.price)||0,
+      actualPrice:pay2&&p.buyPrice?Math.round(calcActual*100)/100:0,
+      photo:p.photo||''
+    };
+  });
   if(!prods.length){toast('Додай хоча б один товар','err');return;}
   const order={
     id,
@@ -2093,7 +2121,7 @@ window.doCnImport=async function(){
   closeCnImport();
   setSyncStatus('syncing');
   for(const p of prods){
-    const importPrice=Number(p.actualPrice)||Number(p.price)||0;
+    const importPrice=Number(p.actualPrice)||Number(p.buyPrice)||Number(p.price)||0;
     const existing=allItems.find(r=>r.warehouse===whId&&(r.name||'').toLowerCase()===p.name.toLowerCase());
     if(existing){
       const oldQty=Number(existing.qty)||0;
