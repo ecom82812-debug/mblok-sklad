@@ -1147,6 +1147,14 @@ tr.row-zero .p-name{color:var(--muted)}
   .wh-toolbar .tb-sel select{width:100%;min-width:0;font-size:13.5px;height:40px;text-overflow:ellipsis}
   .wh-toolbar .tb-right{display:none}
 }
+
+/* Плашка груп: переносити на кілька рядків, щоб усі групи були видні */
+@media(min-width:761px){
+  .seg-wrap{align-items:flex-start}
+  .seg-groups{flex-wrap:wrap;overflow:visible;row-gap:4px}
+  .sg{height:36px;padding:0 13px;font-size:13.5px}
+  .seg-wrap .tb-btn{height:46px;flex-shrink:0}
+}
 </style>
 <script>
 /* Іконки (Lucide, MIT) */
