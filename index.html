@@ -1977,7 +1977,7 @@ function distHtml(items){
 // ─── WAREHOUSE ─────────────────────────────────────────
 // ─── Стан екрана складу ────────────────────────────────
 // Як показувати групи: chips | sidebar | panel | tabs | seg
-let GRP_UI=(()=>{try{return localStorage.getItem('mblok_grpui')||'seg';}catch(e){return'seg';}})();
+let GRP_UI='seg'; // групи — плашкою над каталогом
 window.setGrpUi=v=>{GRP_UI=v;try{localStorage.setItem('mblok_grpui',v);}catch(e){}renderPage();};
 function groupList(whId){
   const items=allItems.filter(r=>r.warehouse===whId);
