@@ -1155,6 +1155,12 @@ tr.row-zero .p-name{color:var(--muted)}
   .sg{height:36px;padding:0 13px;font-size:13.5px}
   .seg-wrap .tb-btn{height:46px;flex-shrink:0}
 }
+
+/* Мініатюри фото: показувати фото цілком на світлому тлі й трохи приглушити яскравість */
+.nm-wrap .product-img,.mob-card-top img{object-fit:contain!important;background:#fff;padding:2px;filter:saturate(.82) brightness(.97) contrast(.94);transition:filter .15s}
+.wh-table tbody tr:hover .product-img,.mob-card:active .mob-card-top img{filter:none}
+.tile-img img{filter:saturate(.88) contrast(.96);transition:filter .15s}
+.tile:hover .tile-img img{filter:none}
 </style>
 <script>
 /* Іконки (Lucide, MIT) */
