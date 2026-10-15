@@ -1167,6 +1167,53 @@ tr.row-zero .p-name{color:var(--muted)}
 .nm-wrap{gap:14px}
 .wh-table td{padding-top:8px;padding-bottom:8px}
 @media(max-width:760px){.mob-card-top img,.mob-card-img{width:68px!important;height:68px!important;border-radius:12px!important}}
+
+/* ══ Історія змін ══ */
+.dr-hist{border-top:1px solid var(--border);padding-top:16px}
+.dr-hist-h{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:650;color:var(--text);margin-bottom:10px}
+.dr-hist-h .i{color:var(--muted)}
+.he{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);position:relative}
+.he:last-child{border-bottom:none}
+.he-ic{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--surface3);color:var(--text2)}
+.he-ic.t-g{background:var(--green-bg);color:var(--green)}.he-ic.t-b{background:var(--blue-bg);color:var(--blue)}
+.he-ic.t-v{background:var(--violet-bg);color:var(--violet)}.he-ic.t-a{background:var(--amber-bg);color:var(--amber)}
+.he-ic.t-r{background:var(--red-bg);color:var(--red)}
+.he-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.he-top{font-size:13px;color:var(--text);display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px}
+.he-top b{font-weight:650}
+.he-prod{font-weight:550;color:var(--text2)}
+.he-prod.link{cursor:pointer;text-decoration:underline;text-decoration-color:var(--border2);text-underline-offset:3px}
+.he-prod.link:hover{color:var(--text);text-decoration-color:var(--text)}
+.he-note{font-size:12px;color:var(--muted);background:var(--surface3);border-radius:6px;padding:0 7px;line-height:19px}
+.he-ch{font-size:13px;color:var(--text2);font-variant-numeric:tabular-nums}
+.he-f{color:var(--muted)}
+.he-ch s{color:var(--muted);text-decoration-color:var(--muted2)}
+.he-arr{color:var(--muted2);margin:0 2px}
+.he-ch b{font-weight:650;color:var(--text)}
+.he-d{font-size:11.5px;font-weight:650;border-radius:5px;padding:0 5px;margin-left:4px}
+.he-d.up{background:var(--green-bg);color:var(--green)}.he-d.down{background:var(--red-bg);color:var(--red)}
+.he-meta{display:flex;gap:10px;font-size:12px;color:var(--muted);margin-top:2px}
+.he-user{display:inline-flex;align-items:center;gap:4px;font-weight:550;color:var(--text2)}
+.he-restore{align-self:flex-start;display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 10px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.he-restore:hover{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber)}
+.he-empty{font-size:12.5px;color:var(--muted);padding:8px 0;line-height:1.5}
+.he-more{width:100%;margin-top:8px;height:34px;border-radius:9px;border:1px dashed var(--border2);background:transparent;color:var(--text2);font-size:12.5px;font-weight:550;cursor:pointer}
+.he-more:hover{background:var(--surface2)}
+.hist-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--sh-xs);padding:4px 20px 8px}
+.hist-day{font-size:11.5px;font-weight:650;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:16px 0 4px;border-bottom:1px solid var(--border)}
+.hist-day:first-letter{text-transform:uppercase}
+.hist-wrap .he{padding:13px 0}
+.hist-count{font-size:12.5px;color:var(--muted)}
+.hist-wrap .empty{padding:48px 0}
+@media(max-width:760px){
+  .hist-wrap{padding:2px 14px 6px}
+  .he{flex-wrap:wrap}
+  .he-restore{margin-left:40px}
+}
+
+.drawer-body>*{flex-shrink:0}
+
+@media(max-width:760px){.he-body{flex:1 1 calc(100% - 40px)}.he-restore{order:3;margin-left:40px}.he-meta{flex-wrap:wrap}}
 </style>
 <script>
 /* Іконки (Lucide, MIT) */
@@ -1605,7 +1652,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, getDoc, getDocs, query, where, orderBy, limit, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBWy6VhhuYFyUWBJ4vpaBFWaO6BWhc2G2E",
@@ -1683,6 +1730,9 @@ function initApp(){
   onSnapshot(collection(db,'products'),snap=>{
     allItems=snap.docs.map(d=>({id:d.id,...d.data()}));
     allItems.sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
+    // запам'ятати збережений стан — з ним порівнюємо при наступній зміні
+    for(const k in serverState)delete serverState[k];
+    snap.docs.forEach(d=>{serverState[d.id]=snapItem(d.data());});
     if(!_saving){renderStats();renderPage();}
     else renderStats();
     setSyncStatus('ok');
@@ -1716,24 +1766,265 @@ function setSyncStatus(s){
   const t=document.getElementById('syncTxt');if(t)t.textContent=s==='syncing'?'Збереження…':s==='error'?'Немає зв’язку':'Синхронізовано';
 }
 
+// ─── ІСТОРІЯ ЗМІН ──────────────────────────────────────
+// Кожне збереження чи видалення товару пишеться в колекцію `history`:
+// хто, коли, що саме змінилось (було → стало). Звідти ж можна повернути значення.
+const serverState={};          // останній збережений стан кожного товару (з бази)
+const histCache={};            // історія по товару, завантажена для картки
+let allHistory=[];             // останні записи для журналу
+let histSubscribed=false;
+const lastHist={};             // для злиття швидких ±1 в один запис
+let histUser='all', histAction='all';
+const HIST_FIELDS={name:'Назва',art:'Артикул',sup_art:'Арт. постачальника',warehouse:'Склад',group:'Група',qty:'Кількість',price_buy:'Ціна закупки',photo:'Фото'};
+const HIST_ACT={
+  create:{l:'Створено',ic:'plus',c:'g'},
+  update:{l:'Змінено',ic:'pencil',c:'b'},
+  qty:{l:'Кількість',ic:'layers',c:'b'},
+  incoming:{l:'Прихід',ic:'incoming',c:'b'},
+  move:{l:'Переміщено',ic:'warehouse',c:'v'},
+  bulk:{l:'Масова зміна',ic:'layers',c:'v'},
+  import:{l:'Прихід з Китаю',ic:'ship',c:'b'},
+  undo:{l:'Скасування',ic:'undo',c:'a'},
+  restore:{l:'Відновлено',ic:'undo',c:'a'},
+  delete:{l:'Видалено',ic:'trash',c:'r'},
+};
+function snapItem(it){
+  return{name:it.name||'',art:it.art||'',sup_art:it.sup_art||'',warehouse:it.warehouse||'wh_1',
+    qty:Number(it.qty)||0,price_buy:Number(it.price_buy)||0,photo:it.photo||'',group:it.group||'',order:it.order||0};
+}
+// Фото в base64 занадто великі для журналу — зберігаємо лише посилання
+const histPhoto=p=>(p&&!String(p).startsWith('data:')&&String(p).length<2000)?p:'';
+function diffItems(a,b){
+  const ch={};
+  for(const f of Object.keys(HIST_FIELDS)){
+    const x=a?a[f]:undefined,y=b[f];
+    if(f==='photo'){
+      if(a&&(x||'')!==(y||''))ch.photo={from:x?'є':'—',to:y?'є':'—'};
+      continue;
+    }
+    if(a){if(String(x??'')===String(y??''))continue;ch[f]={from:x,to:y};}
+    else if(y!==''&&!(f!=='qty'&&f!=='price_buy'&&!y))ch[f]={from:null,to:y};
+  }
+  return ch;
+}
+async function logHistory(entry,mergeKey){
+  const now=Date.now();
+  const user=currentUser?.login||'?';
+  try{
+    // Швидкі кліки ±1 по одному товару протягом хвилини — один запис
+    const lh=mergeKey&&lastHist[mergeKey];
+    if(lh&&lh.user===user&&now-lh.ts<60000){
+      const e={...lh.entry,changes:{qty:{from:lh.entry.changes.qty.from,to:entry.changes.qty.to}},ts:now};
+      lh.entry=e;lh.ts=now;
+      await setDoc(doc(db,'history',lh.hid),e);
+      cacheHist(lh.hid,e);
+      return lh.hid;
+    }
+    const hid='h_'+now+'_'+Math.random().toString(36).slice(2,7);
+    const e={...entry,user,ts:now};
+    await setDoc(doc(db,'history',hid),e);
+    if(mergeKey)lastHist[mergeKey]={hid,ts:now,user,entry:e};
+    else if(entry.productId)delete lastHist['qty:'+entry.productId];
+    cacheHist(hid,e);
+    return hid;
+  }catch(err){console.warn('Не вдалося записати історію',err);}
+}
+function cacheHist(hid,e){
+  const rec={id:hid,...e};
+  if(e.productId&&histCache[e.productId]){
+    histCache[e.productId]=[rec,...histCache[e.productId].filter(h=>h.id!==hid)];
+  }
+  allHistory=[rec,...allHistory.filter(h=>h.id!==hid)];
+  if(drawerId&&drawerId===e.productId)renderDrawerHistory();
+  if(activeTab==='history')renderPage();
+}
+function subscribeHistory(){
+  if(histSubscribed)return;histSubscribed=true;
+  onSnapshot(query(collection(db,'history'),orderBy('ts','desc'),limit(500)),snap=>{
+    allHistory=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(activeTab==='history')renderPage();
+    if(drawerId)renderDrawerHistory();
+  },err=>console.warn('history',err));
+}
+async function loadProductHistory(id){
+  try{
+    const snap=await getDocs(query(collection(db,'history'),where('productId','==',id)));
+    histCache[id]=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  }catch(err){console.warn('history load',err);histCache[id]=histCache[id]||[];}
+  if(drawerId===id)renderDrawerHistory();
+}
+const whNameById=id=>allWarehouses.find(w=>w.id===id)?.name||id||'—';
+const grpNameById=id=>id?(allGroups.find(g=>g.id===id)?.name||'(видалена група)'):'без групи';
+function fmtHistVal(f,v){
+  if(v===null||v===undefined)return'—';
+  if(f==='price_buy')return fmtM(v);
+  if(f==='qty')return fmtN(v)+' шт';
+  if(f==='warehouse')return escHtml(whNameById(v));
+  if(f==='group')return escHtml(grpNameById(v));
+  return escHtml(String(v)||'—');
+}
+function fmtWhen(ts){
+  const d=new Date(ts);
+  const t=d.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
+  const today=new Date();today.setHours(0,0,0,0);
+  const day=new Date(d);day.setHours(0,0,0,0);
+  const diff=Math.round((today-day)/864e5);
+  if(diff===0)return'сьогодні, '+t;
+  if(diff===1)return'вчора, '+t;
+  return d.toLocaleDateString('uk-UA',{day:'2-digit',month:'2-digit',year:'numeric'})+', '+t;
+}
+function dayLabel(ts){
+  const d=new Date(ts);const today=new Date();today.setHours(0,0,0,0);
+  const day=new Date(d);day.setHours(0,0,0,0);
+  const diff=Math.round((today-day)/864e5);
+  if(diff===0)return'Сьогодні';if(diff===1)return'Вчора';
+  return d.toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'});
+}
+// Чи можна повернути значення з цього запису
+function canRestore(h){
+  if(h.action==='delete')return!!h.snapshot&&!allItems.find(r=>r.id===h.productId);
+  if(h.action==='create')return false;
+  if(!allItems.find(r=>r.id===h.productId))return false;
+  return Object.keys(h.changes||{}).some(f=>f!=='photo'&&h.changes[f].from!==null&&h.changes[f].from!==undefined);
+}
+function histChangesHtml(h){
+  if(h.action==='delete'&&h.snapshot){
+    const s=h.snapshot;
+    return`<div class="he-ch">Був залишок <b>${fmtN(s.qty)} шт</b> по <b>${fmtM(s.price_buy)}</b> · ${escHtml(whNameById(s.warehouse))}</div>`;
+  }
+  const ch=h.changes||{};
+  const keys=Object.keys(ch);
+  if(h.action==='create')return`<div class="he-ch">${['qty','price_buy','warehouse'].filter(k=>ch[k]).map(k=>`${HIST_FIELDS[k]}: <b>${fmtHistVal(k,ch[k].to)}</b>`).join(' · ')}</div>`;
+  return keys.map(f=>`<div class="he-ch"><span class="he-f">${HIST_FIELDS[f]||f}:</span> <s>${fmtHistVal(f,ch[f].from)}</s> <span class="he-arr">→</span> <b>${fmtHistVal(f,ch[f].to)}</b>${f==='qty'&&typeof ch[f].from==='number'&&typeof ch[f].to==='number'?` <span class="he-d ${ch[f].to>=ch[f].from?'up':'down'}">${ch[f].to>=ch[f].from?'+':''}${fmtN(ch[f].to-ch[f].from)}</span>`:''}</div>`).join('');
+}
+function histEntryHtml(h,withProduct){
+  const a=HIST_ACT[h.action]||HIST_ACT.update;
+  const exists=allItems.find(r=>r.id===h.productId);
+  return`<div class="he">
+    <div class="he-ic t-${a.c}">${ic(a.ic,14)}</div>
+    <div class="he-body">
+      <div class="he-top"><b>${a.l}</b>${withProduct?` · <span class="he-prod${exists?' link':''}"${exists?` onclick="openProductFromHist('${h.productId}')"`:''}>${escHtml(h.productName||'—')}</span>`:''}${h.note?`<span class="he-note">${escHtml(h.note)}</span>`:''}</div>
+      ${histChangesHtml(h)}
+      <div class="he-meta"><span class="he-user">${ic('user',11)}${escHtml(h.user||'?')}</span><span>${fmtWhen(h.ts)}</span></div>
+    </div>
+    ${canRestore(h)?`<button class="he-restore" onclick="${h.action==='delete'?`restoreDeleted('${h.id}')`:`restoreFromHist('${h.id}')`}" title="${h.action==='delete'?'Повернути видалений товар':'Повернути значення «було»'}">${ic('undo',13)}${h.action==='delete'?'Відновити':'Повернути'}</button>`:''}
+  </div>`;
+}
+const findHist=hid=>allHistory.find(h=>h.id===hid)||Object.values(histCache).flat().find(h=>h.id===hid);
+window.restoreFromHist=function(hid){
+  const h=findHist(hid);if(!h)return;
+  const it=allItems.find(r=>r.id===h.productId);if(!it){toast('Товар не знайдено','err');return;}
+  const fields=Object.keys(h.changes||{}).filter(f=>f!=='photo'&&h.changes[f].from!==null&&h.changes[f].from!==undefined);
+  const desc=fields.map(f=>`${HIST_FIELDS[f]}: ${fmtHistVal(f,it[f]).replace(/<[^>]+>/g,'')} → ${fmtHistVal(f,h.changes[f].from).replace(/<[^>]+>/g,'')}`).join('; ');
+  confirmCallback=async()=>{
+    pushUndo({...it},`Повернення · ${it.name}`,true);
+    fields.forEach(f=>{it[f]=h.changes[f].from;});
+    renderPage();
+    await saveToDb(it,{action:'restore',note:`до стану на ${fmtWhen(h.ts)}`});
+    toast('Значення повернуто','ok');
+  };
+  document.getElementById('confirmName').textContent=`Повернути «${it.name}»?`;
+  document.getElementById('confirmMsg').textContent=desc;
+  document.querySelector('#confirmOverlay .confirm-actions .btn-danger').textContent='Повернути';
+  document.getElementById('confirmOverlay').classList.add('open');
+};
+window.restoreDeleted=function(hid){
+  const h=findHist(hid);if(!h||!h.snapshot)return;
+  confirmCallback=async()=>{
+    await saveToDb({id:h.productId,...h.snapshot},{action:'restore',note:'видалений товар повернуто'});
+    toast('Товар відновлено','ok');
+  };
+  document.getElementById('confirmName').textContent=`Відновити «${h.productName}»?`;
+  document.getElementById('confirmMsg').textContent=`Товар повернеться на «${whNameById(h.snapshot.warehouse)}» із залишком ${fmtN(h.snapshot.qty)} шт по ${fmtM(h.snapshot.price_buy)}.${h.snapshot.photo?'':' Фото, завантажене з комп’ютера, не відновлюється.'}`;
+  document.querySelector('#confirmOverlay .confirm-actions .btn-danger').textContent='Відновити';
+  document.getElementById('confirmOverlay').classList.add('open');
+};
+window.openProductFromHist=function(id){
+  const it=allItems.find(r=>r.id===id);if(!it)return;
+  if(activeTab!==it.warehouse)switchTab(it.warehouse);
+  openDrawer(id);
+};
+function renderDrawerHistory(){
+  const el=document.getElementById('drHistList');if(!el||!drawerId)return;
+  if(!histCache[drawerId]){el.innerHTML='<div class="he-empty">Завантаження…</div>';return;}
+  const list=histCache[drawerId];
+  el.innerHTML=list.length
+    ?list.slice(0,el.dataset.all?999:8).map(h=>histEntryHtml(h,false)).join('')+(list.length>8&&!el.dataset.all?`<button class="he-more" onclick="this.parentNode.dataset.all=1;renderDrawerHistoryPublic()">Показати всю історію (${list.length})</button>`:'')
+    :'<div class="he-empty">Змін ще не було. Відтепер кожна зміна кількості, ціни чи складу записуватиметься сюди.</div>';
+}
+window.renderDrawerHistoryPublic=renderDrawerHistory;
+
+// ─── Сторінка «Журнал змін» ────────────────────────────
+window.setHistUser=v=>{histUser=v;renderPage();};
+window.setHistAction=v=>{histAction=v;renderPage();};
+function renderHistoryPage(){
+  subscribeHistory();
+  const users=[...new Set(allHistory.map(h=>h.user).filter(Boolean))];
+  let list=allHistory;
+  if(histUser!=='all')list=list.filter(h=>h.user===histUser);
+  if(histAction!=='all')list=list.filter(h=>histAction==='price'?(h.changes&&h.changes.price_buy):h.action===histAction);
+  if(searchQ){const q=searchQ.toLowerCase();list=list.filter(h=>(h.productName||'').toLowerCase().includes(q));}
+  const dayStart=new Date();dayStart.setHours(0,0,0,0);
+  const today=allHistory.filter(h=>h.ts>=dayStart.getTime());
+  const week=allHistory.filter(h=>h.ts>=Date.now()-7*864e5);
+  document.getElementById('statsBar').innerHTML=kpiStrip([
+    {label:'Змін сьогодні',val:fmtN(today.length),sub:`${new Set(today.map(h=>h.user)).size} користувач(ів)`,main:true},
+    {label:'За 7 днів',val:fmtN(week.length),sub:'усі зміни товарів'},
+    {label:'Змін ціни за 7 днів',val:fmtN(week.filter(h=>h.changes&&h.changes.price_buy).length),sub:'показати',onclick:"setHistAction(histActionIs('price')?'all':'price')",on:histAction==='price'},
+    {label:'Видалено за 7 днів',val:fmtN(week.filter(h=>h.action==='delete').length),sub:'можна відновити',tone:'red',onclick:"setHistAction(histActionIs('delete')?'all':'delete')",on:histAction==='delete'},
+  ]);
+  const toolbar=`<div class="toolbar wh-toolbar">
+    <div class="tb-sel"><span class="tb-lbl">${ic('user',14)}</span><select onchange="setHistUser(this.value)" style="padding-left:32px">
+      <option value="all">Усі користувачі</option>${users.map(u=>`<option value="${escHtml(u)}"${histUser===u?' selected':''}>${escHtml(u)}</option>`).join('')}
+    </select></div>
+    <div class="tb-sel"><select onchange="setHistAction(this.value)">
+      <option value="all"${histAction==='all'?' selected':''}>Усі дії</option>
+      <option value="price"${histAction==='price'?' selected':''}>Зміни ціни закупки</option>
+      ${Object.entries(HIST_ACT).map(([k,v])=>`<option value="${k}"${histAction===k?' selected':''}>${v.l}</option>`).join('')}
+    </select></div>
+    <div class="ml-auto hist-count">${fmtN(list.length)} записів${allHistory.length>=500?' · показано останні 500':''}</div>
+  </div>`;
+  let body='',lastDay='';
+  list.forEach(h=>{
+    const dl=dayLabel(h.ts);
+    if(dl!==lastDay){body+=`<div class="hist-day">${dl}</div>`;lastDay=dl;}
+    body+=histEntryHtml(h,true);
+  });
+  const empty=`<div class="empty"><div class="e-ic">${ic('clock',22)}</div><b>${allHistory.length?'Немає записів за цим фільтром':'Журнал поки порожній'}</b><span>${allHistory.length?'Зміни фільтр або пошук':'З цього моменту тут з’являтиметься кожна зміна товарів: хто, коли й що змінив'}</span></div>`;
+  document.getElementById('pageContent').innerHTML=toolbar+`<div class="hist-wrap">${body||empty}</div>`;
+}
+window.histActionIs=a=>histAction===a;
+
 // ─── DB ────────────────────────────────────────────────
-async function saveToDb(item){
+async function saveToDb(item,meta={}){
   setSyncStatus('syncing');
   _saving=true;
   try{
     const id=item.id||crypto.randomUUID();
-    await setDoc(doc(db,'products',id),{
-      name:item.name||'',art:item.art||'',sup_art:item.sup_art||'',warehouse:item.warehouse||'wh_1',
-      qty:Number(item.qty)||0,price_buy:Number(item.price_buy)||0,
-      photo:item.photo||'',order:item.order||0,group:item.group||'',updated:serverTimestamp()
-    });
+    const prev=serverState[id];
+    const next=snapItem(item);
+    await setDoc(doc(db,'products',id),{...next,updated:serverTimestamp(),updatedBy:currentUser?.login||''});
+    serverState[id]={...next};
+    // Запис в історію змін (зміна лише порядку не записується)
+    const ch=diffItems(prev,next);
+    if(Object.keys(ch).length){
+      let action=meta.action||(!prev?'create':ch.warehouse?'move':'update');
+      const onlyQty=Object.keys(ch).length===1&&ch.qty;
+      if(action==='qty'&&!onlyQty)action='update';
+      logHistory({productId:id,productName:next.name,warehouse:next.warehouse,action,changes:ch,note:meta.note||''},action==='qty'?'qty:'+id:null);
+    }
     setSyncStatus('ok');
     setTimeout(()=>_saving=false,500);
     return id;
   }catch(e){_saving=false;setSyncStatus('error');toast('Помилка збереження','err');throw e;}
 }
-async function deleteFromDb(id){
-  try{await deleteDoc(doc(db,'products',id));setSyncStatus('ok');}
+async function deleteFromDb(id,meta={}){
+  const prev=serverState[id]||snapItem(allItems.find(r=>r.id===id)||{});
+  try{
+    await deleteDoc(doc(db,'products',id));setSyncStatus('ok');
+    delete serverState[id];
+    logHistory({productId:id,productName:prev.name,warehouse:prev.warehouse,action:'delete',changes:{},snapshot:{...prev,photo:histPhoto(prev.photo)},note:meta.note||''});
+  }
   catch(e){setSyncStatus('error');}
 }
 async function saveDsToDb(item){
@@ -1776,7 +2067,7 @@ window.changeQty=async function(id,delta){
   if(newQty===(Number(item.qty)||0))return;
   pushUndo({...item},`${delta>0?'+1':'-1'} шт. · ${item.name}`,true);
   item.qty=newQty;renderPage();renderStats();
-  await saveToDb(item);
+  await saveToDb(item,{action:'qty'});
 };
 
 window.doUndo=async function(){
@@ -1787,7 +2078,7 @@ window.doUndo=async function(){
   const idx=allItems.findIndex(r=>r.id===id);
   if(idx>=0)allItems[idx]={...snapshot};
   renderPage();renderStats();
-  await saveToDb(snapshot);
+  await saveToDb(snapshot,{action:'undo',note:desc});
   toast(`Скасовано: ${desc}`,'ok');
 };
 
@@ -1818,6 +2109,8 @@ function renderTabs(){
   const cnOpen=allOrders.filter(o=>o.status!=='received').length;
   whs.push(`<div class="tab${dsActive?' active':''}" onclick="switchTab('dropship')">${ic('link',18)}<div class="tab-txt"><span class="tab-name">Дропшипінг</span></div><span class="tab-count">${allDsItems.length}</span></div>`);
   whs.push(`<div class="tab${cnActive?' active':''}" onclick="switchTab('china')">${ic('ship',18)}<div class="tab-txt"><span class="tab-name">Замовлення з Китаю</span></div>${cnOpen?`<span class="tab-count">${cnOpen}</span>`:''}</div>`);
+  whs.push(`<div class="sb-label">Контроль</div>`);
+  whs.push(`<div class="tab${activeTab==='history'?' active':''}" onclick="switchTab('history')">${ic('clock',18)}<div class="tab-txt"><span class="tab-name">Журнал змін</span></div></div>`);
   el.innerHTML=whs.join('');
 }
 
@@ -1826,6 +2119,7 @@ function renderHead(){
   let title='',sub='';
   if(activeTab==='dropship'){title='Дропшипінг';sub='Каталог товарів постачальників';}
   else if(activeTab==='china'){title='Замовлення з Китаю';sub='Викуп, доставка та розмитнення';}
+  else if(activeTab==='history'){title='Журнал змін';sub='Хто, коли і що змінив у товарах';}
   else{const wh=allWarehouses.find(w=>w.id===activeTab);title=wh?.name||'Склад';const n=allItems.filter(r=>r.warehouse===activeTab).length;sub=`${n} позицій · вартість ${fmtM(whTotal(activeTab))}`;}
   document.getElementById('pageTitle').textContent=title;
   document.getElementById('pageSub').textContent=sub;
@@ -1846,6 +2140,8 @@ window.switchTab=function(id){
   document.getElementById('addBtn').innerHTML=ic('plus',16)+`<span class="lbl">${isDs?'Додати товар':isChina?'Нове замовлення':'Додати товар'}</span>`;
   document.getElementById('addBtn').onclick=isDs?()=>openDsModal():isChina?()=>openCnModal():()=>openModal();
   document.getElementById('mobFab').onclick=isDs?()=>openDsModal():isChina?()=>openCnModal():()=>openModal();
+  document.getElementById('addBtn').style.display=id==='history'?'none':'';
+  document.getElementById('mobFab').style.visibility=id==='history'?'hidden':'';
   renderTabs();renderPage();updateMobNav();
 };
 
@@ -1866,6 +2162,7 @@ window.openMore=function(){
     <div class="sheet-sep"></div>
     ${activeTab!=='dropship'&&activeTab!=='china'?`<button class="sheet-item" onclick="closeMore();openGrp()">${ic('folder',18)}Групи товарів</button>`:''}
     <button class="sheet-item" onclick="closeMore();openSup()">${ic('building',18)}Постачальники</button>
+    <button class="sheet-item${activeTab==='history'?' active':''}" onclick="closeMore();switchTab('history')">${ic('clock',18)}Журнал змін</button>
     ${currentUser?.role==='admin'?`<button class="sheet-item" onclick="closeMore();openUsers()">${ic('users',18)}Керування доступом</button>`:''}
     <div class="sheet-sep"></div>
     <button class="sheet-item danger" onclick="doLogout()">${ic('logout',18)}Вийти · ${escHtml(currentUser?.login||'')}</button>
@@ -1917,6 +2214,7 @@ function renderPage(){
   renderHead();
   if(activeTab==='dropship'){renderStats();renderDropship();}
   else if(activeTab==='china'){renderChina();}
+  else if(activeTab==='history'){renderHistoryPage();}
   else{renderStats();renderWarehouse();}
 }
 
@@ -1940,7 +2238,7 @@ function kpiStrip(cells){
   </div>`).join('')}</div>`;
 }
 function renderStats(){
-  if(activeTab==='china')return; // статистику Китаю малює renderChina()
+  if(activeTab==='china'||activeTab==='history')return; // ці сторінки малюють свою статистику
   const bar=document.getElementById('statsBar');
   if(activeTab==='dropship'){
     const prices=allDsItems.map(r=>Number(r.price)||0).filter(Boolean);
@@ -2072,17 +2370,17 @@ window.clearSel=function(){selected.clear();renderPage();};
 window.bulkMove=async function(whId){
   if(!whId)return;const ids=[...selected];if(!ids.length)return;
   const wh=allWarehouses.find(w=>w.id===whId);
-  for(const id of ids){const it=allItems.find(r=>r.id===id);if(it){it.warehouse=whId;it.group='';await saveToDb(it);}}
+  for(const id of ids){const it=allItems.find(r=>r.id===id);if(it){it.warehouse=whId;it.group='';await saveToDb(it,{action:'move',note:'масове переміщення'});}}
   selected.clear();toast(`Переміщено ${ids.length} поз. → ${wh?.name||''}`,'ok');renderPage();
 };
 window.bulkGroup=async function(gid){
   if(gid==='')return;const ids=[...selected];if(!ids.length)return;
-  for(const id of ids){const it=allItems.find(r=>r.id===id);if(it){it.group=gid==='__none'?'':gid;await saveToDb(it);}}
+  for(const id of ids){const it=allItems.find(r=>r.id===id);if(it){it.group=gid==='__none'?'':gid;await saveToDb(it,{action:'bulk',note:'масова зміна групи'});}}
   selected.clear();toast(`Групу змінено для ${ids.length} поз.`,'ok');renderPage();
 };
 window.bulkDelete=function(){
   const ids=[...selected];if(!ids.length)return;
-  confirmCallback=async()=>{for(const id of ids)await deleteFromDb(id);selected.clear();toast(`Видалено ${ids.length} поз.`,'ok');renderPage();};
+  confirmCallback=async()=>{for(const id of ids)await deleteFromDb(id,{note:'масове видалення'});selected.clear();toast(`Видалено ${ids.length} поз.`,'ok');renderPage();};
   document.getElementById('confirmName').textContent=`Видалити ${ids.length} поз.?`;
   document.getElementById('confirmMsg').textContent='Вибрані товари буде видалено зі складу. Дію не можна скасувати.';
   document.getElementById('confirmOverlay').classList.add('open');
@@ -2120,7 +2418,7 @@ window.exportCsv=function(){
 };
 
 // ─── Бокова панель товару ──────────────────────────────
-window.openDrawer=function(id){drawerId=id;renderDrawer();document.getElementById('drawerOverlay').classList.add('open');};
+window.openDrawer=function(id){drawerId=id;loadProductHistory(id);renderDrawer();document.getElementById('drawerOverlay').classList.add('open');};
 window.closeDrawer=function(){drawerId=null;document.getElementById('drawerOverlay')?.classList.remove('open');};
 window.rowClick=function(ev,id){
   if(ev.target.closest('button,input,select,a,.cell-view,.p-sup-art,.sel-box,.drag-handle'))return;
@@ -2129,7 +2427,7 @@ window.rowClick=function(ev,id){
 window.moveItem=async function(id,whId){
   const it=allItems.find(r=>r.id===id);if(!it||!whId||it.warehouse===whId)return;
   pushUndo({...it},`Переміщення · ${it.name}`);
-  it.warehouse=whId;it.group='';await saveToDb(it);
+  it.warehouse=whId;it.group='';await saveToDb(it,{action:'move'});
   toast('Переміщено','ok');closeDrawer();renderPage();
 };
 function renderDrawer(){
@@ -2166,7 +2464,9 @@ function renderDrawer(){
     <div class="dr-move">
       <label>Перемістити на склад</label>
       <select onchange="moveItem('${r.id}',this.value)"><option value="">Оберіть склад…</option>${allWarehouses.filter(w=>w.id!==r.warehouse).map(w=>`<option value="${w.id}">${escHtml(w.name)}</option>`).join('')}</select>
-    </div>`;
+    </div>
+    <div class="dr-hist"><div class="dr-hist-h">${ic('clock',15)}Історія змін</div><div id="drHistList"></div></div>`;
+  renderDrawerHistory();
   document.getElementById('drawerFoot').innerHTML=`
     <button class="btn btn-danger" onclick="closeDrawer();confirmDeleteItem('${r.id}','${jsq(r.name||'')}')">${ic('trash',15)}</button>
     <button class="btn" onclick="closeDrawer();openModal('${r.id}')">${ic('pencil',15)}Редагувати</button>
@@ -2673,7 +2973,7 @@ window.saveItem=async function(){
   const existing=id?allItems.find(x=>x.id===id):{};
   const maxOrder=allItems.filter(r=>r.warehouse===document.getElementById('fWarehouse').value).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
   const item={id,name,art:document.getElementById('fArt').value.trim(),sup_art:document.getElementById('fSupArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),group:document.getElementById('fGroup').value||'',order:existing.order!==undefined?existing.order:maxOrder+10};
-  closeModal();await saveToDb(item);toast(id?'Оновлено':'Додано','ok');
+  closeModal();await saveToDb(item,{note:id?'редагування картки':''});toast(id?'Оновлено':'Додано','ok');
 };
 
 // ─── DELETE ────────────────────────────────────────────
@@ -2688,7 +2988,7 @@ window.confirmDeleteItem=function(id,name){
   document.getElementById('confirmMsg').textContent='Видалити цей товар? Дію не можна скасувати.';
   document.getElementById('confirmOverlay').classList.add('open');
 };
-window.closeConfirm=function(){document.getElementById('confirmOverlay').classList.remove('open');confirmCallback=null;};
+window.closeConfirm=function(){document.getElementById('confirmOverlay').classList.remove('open');confirmCallback=null;setTimeout(()=>{const b=document.querySelector('#confirmOverlay .confirm-actions .btn-danger');if(b)b.textContent='Видалити';},200);};
 window.doConfirm=async function(){if(!confirmCallback)return;const fn=confirmCallback;closeConfirm();await fn();};
 
 // ─── INLINE EDIT ───────────────────────────────────────
@@ -2715,7 +3015,7 @@ async function commitEdit(input,id,field){
   if(String(newVal)===String(item[field])){renderPage();return;}
   pushUndo(prev,`Зміна ${field==='qty'?'кількості':'ціни'} · ${item.name}`);
   item[field]=newVal;renderPage();renderStats();
-  await saveToDb(item);
+  await saveToDb(item,{action:field==='qty'?'qty':'update',note:'зміна в таблиці'});
 }
 function cancelEdit(){if(!editingCell)return;editingCell=null;renderPage();}
 
@@ -2765,7 +3065,7 @@ window.applyIncoming=async function(){
   pushUndo({...r},`Прихід +${fmtN(newQty)} шт. · ${r.name}`);
   r.qty=totalQty;r.price_buy=Math.round(avgPrice*100)/100;
   closeIncoming();renderPage();renderStats();
-  await saveToDb(r);toast(`Прихід: +${fmtN(newQty)} шт.`,'ok');
+  await saveToDb(r,{action:'incoming',note:`+${fmtN(newQty)} шт по ${fmtM(newPrice)}`});toast(`Прихід: +${fmtN(newQty)} шт.`,'ok');
 };
 
 // ─── USERS ─────────────────────────────────────────────
@@ -3330,7 +3630,7 @@ window.doCnImport=async function(){
       const avgPrice=((oldQty*(Number(existing.price_buy)||0))+(Number(p.qty)*importPrice))/newQty;
       existing.qty=newQty;
       existing.price_buy=Math.round(avgPrice*100)/100;
-      await saveToDb(existing);
+      await saveToDb(existing,{action:'import',note:`+${p.qty} шт · замовлення #${o.id.slice(-4).toUpperCase()}`});
     }else{
       const maxOrder=allItems.filter(r=>r.warehouse===whId).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
       const newItem={
@@ -3343,7 +3643,7 @@ window.doCnImport=async function(){
         group:'',
         order:maxOrder+10
       };
-      await saveToDb(newItem);
+      await saveToDb(newItem,{action:'import',note:`замовлення #${o.id.slice(-4).toUpperCase()}`});
     }
   }
   setSyncStatus('ok');
