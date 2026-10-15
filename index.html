@@ -1214,6 +1214,18 @@ tr.row-zero .p-name{color:var(--muted)}
 .drawer-body>*{flex-shrink:0}
 
 @media(max-width:760px){.he-body{flex:1 1 calc(100% - 40px)}.he-restore{order:3;margin-left:40px}.he-meta{flex-wrap:wrap}}
+
+.hist-toolbar{flex-wrap:wrap}
+.date-range{display:flex;align-items:center;gap:6px}
+.date-range input{height:36px;width:150px;font-size:13px;padding:0 10px;border-radius:10px}
+.date-range span{color:var(--muted)}
+.hist-day{display:flex;justify-content:space-between;align-items:baseline}
+.hist-day span{font-size:11.5px;font-weight:600;color:var(--muted2);letter-spacing:0;text-transform:none}
+@media(max-width:760px){
+  .hist-toolbar .tb-sel{flex:1 1 45%}
+  .date-range{flex:1 1 100%}.date-range input{flex:1;width:auto;height:40px}
+  .hist-count{width:100%;margin:0}
+}
 </style>
 <script>
 /* Іконки (Lucide, MIT) */
@@ -1838,14 +1850,44 @@ function cacheHist(hid,e){
   if(drawerId&&drawerId===e.productId)renderDrawerHistory();
   if(activeTab==='history')renderPage();
 }
+// Період журналу: пресет або свій діапазон дат
+let histPeriod='7d', histFrom='', histTo='', histSortAsc=false, histUnsub=null, histKey='';
+function histRange(){
+  const d0=new Date();d0.setHours(0,0,0,0);const t0=d0.getTime();
+  switch(histPeriod){
+    case 'today':return{from:t0,to:null};
+    case 'yesterday':return{from:t0-864e5,to:t0-1};
+    case '7d':return{from:t0-6*864e5,to:null};
+    case '30d':return{from:t0-29*864e5,to:null};
+    case 'month':{const m=new Date(d0);m.setDate(1);return{from:m.getTime(),to:null};}
+    case 'prevmonth':{const m=new Date(d0);m.setDate(1);const e=m.getTime()-1;m.setMonth(m.getMonth()-1);return{from:m.getTime(),to:e};}
+    case 'custom':{
+      const f=histFrom?new Date(histFrom+'T00:00:00').getTime():null;
+      const t=histTo?new Date(histTo+'T23:59:59.999').getTime():null;
+      return{from:f,to:t};
+    }
+    default:return{from:null,to:null};
+  }
+}
 function subscribeHistory(){
-  if(histSubscribed)return;histSubscribed=true;
-  onSnapshot(query(collection(db,'history'),orderBy('ts','desc'),limit(500)),snap=>{
+  const r=histRange();
+  const key=histPeriod==='all'?'all':`${r.from}|${r.to}`;
+  if(histSubscribed&&key===histKey)return;
+  histSubscribed=true;histKey=key;
+  if(histUnsub){histUnsub();histUnsub=null;}
+  const cons=[];
+  if(r.from!=null)cons.push(where('ts','>=',r.from));
+  if(r.to!=null)cons.push(where('ts','<=',r.to));
+  cons.push(orderBy('ts','desc'),limit(r.from!=null||r.to!=null?3000:500));
+  histUnsub=onSnapshot(query(collection(db,'history'),...cons),snap=>{
     allHistory=snap.docs.map(d=>({id:d.id,...d.data()}));
     if(activeTab==='history')renderPage();
     if(drawerId)renderDrawerHistory();
   },err=>console.warn('history',err));
 }
+window.setHistPeriod=v=>{histPeriod=v;if(v==='custom'&&!histFrom){const d=new Date();histTo=d.toISOString().slice(0,10);d.setDate(d.getDate()-6);histFrom=d.toISOString().slice(0,10);}renderPage();};
+window.setHistDate=(which,v)=>{if(which==='from')histFrom=v;else histTo=v;histPeriod='custom';renderPage();};
+window.setHistSort=v=>{histSortAsc=v==='asc';renderPage();};
 async function loadProductHistory(id){
   try{
     const snap=await getDocs(query(collection(db,'history'),where('productId','==',id)));
@@ -1878,7 +1920,8 @@ function dayLabel(ts){
   const day=new Date(d);day.setHours(0,0,0,0);
   const diff=Math.round((today-day)/864e5);
   if(diff===0)return'Сьогодні';if(diff===1)return'Вчора';
-  return d.toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'});
+  const y=d.getFullYear()!==new Date().getFullYear()?' '+d.getFullYear():'';
+  return d.toLocaleDateString('uk-UA',{day:'numeric',month:'long'})+y+', '+d.toLocaleDateString('uk-UA',{weekday:'long'});
 }
 // Чи можна повернути значення з цього запису
 function canRestore(h){
@@ -1959,21 +2002,30 @@ window.setHistUser=v=>{histUser=v;renderPage();};
 window.setHistAction=v=>{histAction=v;renderPage();};
 function renderHistoryPage(){
   subscribeHistory();
-  const users=[...new Set(allHistory.map(h=>h.user).filter(Boolean))];
-  let list=allHistory;
+  const r=histRange();
+  // записи в межах періоду (живі записи з кешу теж фільтруємо)
+  const inRange=allHistory.filter(h=>(r.from==null||h.ts>=r.from)&&(r.to==null||h.ts<=r.to));
+  const users=[...new Set(inRange.map(h=>h.user).filter(Boolean))];
+  let list=inRange;
   if(histUser!=='all')list=list.filter(h=>h.user===histUser);
   if(histAction!=='all')list=list.filter(h=>histAction==='price'?(h.changes&&h.changes.price_buy):h.action===histAction);
   if(searchQ){const q=searchQ.toLowerCase();list=list.filter(h=>(h.productName||'').toLowerCase().includes(q));}
-  const dayStart=new Date();dayStart.setHours(0,0,0,0);
-  const today=allHistory.filter(h=>h.ts>=dayStart.getTime());
-  const week=allHistory.filter(h=>h.ts>=Date.now()-7*864e5);
+  list=[...list].sort((a,b)=>histSortAsc?(a.ts-b.ts):(b.ts-a.ts));
+  const PL={today:'сьогодні',yesterday:'вчора','7d':'за 7 днів','30d':'за 30 днів',month:'цього місяця',prevmonth:'минулого місяця',all:'за весь час',custom:'за період'};
+  const fmtD=v=>v?new Date(v+'T00:00:00').toLocaleDateString('uk-UA',{day:'2-digit',month:'2-digit',year:'numeric'}):'…';
+  const periodTxt=histPeriod==='custom'?`${fmtD(histFrom)} – ${fmtD(histTo)}`:PL[histPeriod];
   document.getElementById('statsBar').innerHTML=kpiStrip([
-    {label:'Змін сьогодні',val:fmtN(today.length),sub:`${new Set(today.map(h=>h.user)).size} користувач(ів)`,main:true},
-    {label:'За 7 днів',val:fmtN(week.length),sub:'усі зміни товарів'},
-    {label:'Змін ціни за 7 днів',val:fmtN(week.filter(h=>h.changes&&h.changes.price_buy).length),sub:'показати',onclick:"setHistAction(histActionIs('price')?'all':'price')",on:histAction==='price'},
-    {label:'Видалено за 7 днів',val:fmtN(week.filter(h=>h.action==='delete').length),sub:'можна відновити',tone:'red',onclick:"setHistAction(histActionIs('delete')?'all':'delete')",on:histAction==='delete'},
+    {label:'Змін '+(histPeriod==='custom'?'за період':PL[histPeriod]),val:fmtN(inRange.length),sub:histPeriod==='custom'?periodTxt:`${users.length} користувач(ів)`,main:true},
+    {label:'Користувачів',val:fmtN(users.length),sub:users.slice(0,3).join(', ')||'—'},
+    {label:'Змін ціни закупки',val:fmtN(inRange.filter(h=>h.changes&&h.changes.price_buy).length),sub:'показати',onclick:"setHistAction(histActionIs('price')?'all':'price')",on:histAction==='price'},
+    {label:'Видалено',val:fmtN(inRange.filter(h=>h.action==='delete').length),sub:'можна відновити',tone:'red',onclick:"setHistAction(histActionIs('delete')?'all':'delete')",on:histAction==='delete'},
   ]);
-  const toolbar=`<div class="toolbar wh-toolbar">
+  const po=(v,l)=>`<option value="${v}"${histPeriod===v?' selected':''}>${l}</option>`;
+  const toolbar=`<div class="toolbar wh-toolbar hist-toolbar">
+    <div class="tb-sel"><span class="tb-lbl">${ic('clock',14)}</span><select onchange="setHistPeriod(this.value)" style="padding-left:32px" title="Період">
+      ${po('today','Сьогодні')}${po('yesterday','Вчора')}${po('7d','Останні 7 днів')}${po('30d','Останні 30 днів')}${po('month','Цей місяць')}${po('prevmonth','Минулий місяць')}${po('all','Весь час')}${po('custom','Свій період…')}
+    </select></div>
+    ${histPeriod==='custom'?`<div class="date-range"><input type="date" value="${histFrom}" max="${histTo||''}" onchange="setHistDate('from',this.value)" title="Від"><span>–</span><input type="date" value="${histTo}" min="${histFrom||''}" onchange="setHistDate('to',this.value)" title="До"></div>`:''}
     <div class="tb-sel"><span class="tb-lbl">${ic('user',14)}</span><select onchange="setHistUser(this.value)" style="padding-left:32px">
       <option value="all">Усі користувачі</option>${users.map(u=>`<option value="${escHtml(u)}"${histUser===u?' selected':''}>${escHtml(u)}</option>`).join('')}
     </select></div>
@@ -1982,15 +2034,19 @@ function renderHistoryPage(){
       <option value="price"${histAction==='price'?' selected':''}>Зміни ціни закупки</option>
       ${Object.entries(HIST_ACT).map(([k,v])=>`<option value="${k}"${histAction===k?' selected':''}>${v.l}</option>`).join('')}
     </select></div>
-    <div class="ml-auto hist-count">${fmtN(list.length)} записів${allHistory.length>=500?' · показано останні 500':''}</div>
+    <div class="tb-sel"><select onchange="setHistSort(this.value)" title="Сортування за датою">
+      <option value="desc"${!histSortAsc?' selected':''}>Спочатку нові</option>
+      <option value="asc"${histSortAsc?' selected':''}>Спочатку старі</option>
+    </select></div>
+    <div class="ml-auto hist-count">${fmtN(list.length)} записів · ${periodTxt}</div>
   </div>`;
   let body='',lastDay='';
   list.forEach(h=>{
     const dl=dayLabel(h.ts);
-    if(dl!==lastDay){body+=`<div class="hist-day">${dl}</div>`;lastDay=dl;}
+    if(dl!==lastDay){body+=`<div class="hist-day">${dl}<span>${fmtN(list.filter(x=>dayLabel(x.ts)===dl).length)}</span></div>`;lastDay=dl;}
     body+=histEntryHtml(h,true);
   });
-  const empty=`<div class="empty"><div class="e-ic">${ic('clock',22)}</div><b>${allHistory.length?'Немає записів за цим фільтром':'Журнал поки порожній'}</b><span>${allHistory.length?'Зміни фільтр або пошук':'З цього моменту тут з’являтиметься кожна зміна товарів: хто, коли й що змінив'}</span></div>`;
+  const empty=`<div class="empty"><div class="e-ic">${ic('clock',22)}</div><b>${inRange.length?'Немає записів за цим фільтром':'За цей період змін немає'}</b><span>${inRange.length?'Зміни фільтр або пошук':'Обери інший період'}</span>${histPeriod!=='all'?`<button class="btn" onclick="setHistPeriod('all')">Показати за весь час</button>`:''}</div>`;
   document.getElementById('pageContent').innerHTML=toolbar+`<div class="hist-wrap">${body||empty}</div>`;
 }
 window.histActionIs=a=>histAction===a;
