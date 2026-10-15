@@ -1413,8 +1413,8 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="sb-foot">
     <button class="sb-link" id="usersBtn" onclick="openUsers()" style="display:none"><span data-ic="users" data-s="17"></span>Керування доступом</button>
     <div class="sb-user">
-      <div class="sb-avatar" id="sbAvatar">A</div>
-      <div class="sb-user-info"><div class="sb-user-name" id="sbUserName">admin</div><div class="sb-user-role" id="sbUserRole">Адміністратор</div></div>
+      <div class="sb-avatar" id="sbAvatar" onclick="openProfile()" style="cursor:pointer" title="Змінити ім’я">A</div>
+      <div class="sb-user-info" onclick="openProfile()" style="cursor:pointer" title="Змінити ім’я"><div class="sb-user-name" id="sbUserName">admin</div><div class="sb-user-role" id="sbUserRole">Адміністратор</div></div>
       <button class="logout-btn" onclick="doLogout()" title="Вийти"><span data-ic="logout" data-s="17"></span></button>
     </div>
   </div>
@@ -1641,6 +1641,18 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </div>
 
+<!-- MODAL ПРОФІЛЬ -->
+<div class="overlay" id="profOverlay" onclick="if(event.target===this)closeProfile()">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr"><div class="modal-title"><span class="mt-ic" data-ic="user" data-s="17"></span>Мій профіль</div><button class="modal-x" onclick="closeProfile()">×</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Ім’я</label><input type="text" id="profName" maxlength="40" placeholder="Як тебе показувати" onkeydown="if(event.key==='Enter')saveProfile()"></div>
+      <div style="font-size:12.5px;color:var(--muted);line-height:1.5">Це ім’я видно в журналі змін і в сповіщеннях Telegram замість логіна <b id="profLogin"></b>. Вхід — як і раніше, за логіном і паролем.</div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="closeProfile()">Скасувати</button><button class="btn btn-primary" onclick="saveProfile()"><span data-ic="check" data-s="15"></span>Зберегти</button></div>
+  </div>
+</div>
+
 <!-- MODAL КЕРУВАННЯ ГРУПАМИ -->
 <div class="overlay" id="grpOverlay" onclick="closeGrpOut(event)">
   <div class="modal">
@@ -1794,6 +1806,29 @@ let dsSupFilter='all';
 let _saving=false;
 
 // ─── LOGIN ─────────────────────────────────────────────
+// ─── Профіль: ім'я замість логіна ──────────────────────
+let profiles={};
+const userName=login=>(login&&profiles[login]?.name)||login||'';
+const myName=()=>userName(currentUser?.login);
+function renderMe(){
+  const n=myName()||'?';
+  const el=document.getElementById('sbUserName');if(el)el.textContent=n;
+  const av=document.getElementById('sbAvatar');if(av)av.textContent=n.trim()[0]?.toUpperCase()||'?';
+}
+window.openProfile=function(){
+  document.getElementById('profName').value=profiles[currentUser?.login]?.name||'';
+  document.getElementById('profLogin').textContent='«'+(currentUser?.login||'')+'»';
+  document.getElementById('profOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('profName').focus(),100);
+};
+window.closeProfile=()=>document.getElementById('profOverlay').classList.remove('open');
+window.saveProfile=async function(){
+  const name=document.getElementById('profName').value.trim().slice(0,40);
+  const login=currentUser?.login;if(!login)return;
+  await setDoc(doc(db,'profiles',login),{name,updated:Date.now()});
+  profiles[login]={name};renderMe();closeProfile();renderPage();
+  toast(name?`Тепер ти — ${name}`:'Ім’я прибрано','ok');
+};
 window.doLogin=async function(){
   const login=document.getElementById('loginUser').value.trim();
   const pass=document.getElementById('loginPass').value;
@@ -1818,9 +1853,9 @@ function showApp(){
   document.getElementById('loginWrap').style.display='none';
   document.getElementById('appWrap').style.display='block';
   if(currentUser?.role==='admin')document.getElementById('usersBtn').style.display='flex';
-  document.getElementById('sbUserName').textContent=currentUser?.login||'';
+  renderMe();
   document.getElementById('sbUserRole').textContent=currentUser?.role==='admin'?'Адміністратор':'Менеджер';
-  document.getElementById('sbAvatar').textContent=(currentUser?.login||'?')[0].toUpperCase();
+
   initApp();
 }
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
@@ -1872,6 +1907,11 @@ function initApp(){
   onSnapshot(collection(db,'groups'),snap=>{
     allGroups=snap.docs.map(d=>({id:d.id,...d.data()}));
     if(!_saving) renderPage();
+  });
+  // Імена користувачів (для журналу й сповіщень)
+  onSnapshot(collection(db,'profiles'),snap=>{
+    profiles={};snap.docs.forEach(d=>{profiles[d.id]=d.data();});
+    renderMe();if(!_saving)renderPage();
   });
   // Тільда: нові картки та налаштування синхронізації
   onSnapshot(collection(db,'tilda_inbox'),snap=>{
@@ -2083,7 +2123,7 @@ function histEntryHtml(h,withProduct){
     <div class="he-body">
       <div class="he-top"><b>${a.l}</b>${withProduct?` · <span class="he-prod${exists?' link':''}"${exists?` onclick="openProductFromHist('${h.productId}')"`:''}>${escHtml(h.productName||'—')}</span>`:''}${h.note?`<span class="he-note">${escHtml(h.note)}</span>`:''}</div>
       ${histChangesHtml(h)}
-      <div class="he-meta"><span class="he-user">${ic('user',11)}${escHtml(h.user||'?')}</span><span>${fmtWhen(h.ts)}</span></div>
+      <div class="he-meta"><span class="he-user">${ic('user',11)}${escHtml(userName(h.user)||'?')}</span><span>${fmtWhen(h.ts)}</span></div>
     </div>
     ${canRestore(h)?`<button class="he-restore" onclick="${h.action==='delete'?`restoreDeleted('${h.id}')`:`restoreFromHist('${h.id}')`}" title="${h.action==='delete'?'Повернути видалений товар':'Повернути значення «було»'}">${ic('undo',13)}${h.action==='delete'?'Відновити':'Повернути'}</button>`:''}
   </div>`;
@@ -2151,7 +2191,7 @@ function renderHistoryPage(){
   const periodTxt=histPeriod==='custom'?`${fmtD(histFrom)} – ${fmtD(histTo)}`:PL[histPeriod];
   document.getElementById('statsBar').innerHTML=kpiStrip([
     {label:'Змін '+(histPeriod==='custom'?'за період':PL[histPeriod]),val:fmtN(inRange.length),sub:histPeriod==='custom'?periodTxt:`${users.length} користувач(ів)`,main:true},
-    {label:'Користувачів',val:fmtN(users.length),sub:users.slice(0,3).join(', ')||'—'},
+    {label:'Користувачів',val:fmtN(users.length),sub:escHtml(users.slice(0,3).map(userName).join(', '))||'—'},
     {label:'Змін ціни закупки',val:fmtN(inRange.filter(h=>h.changes&&h.changes.price_buy).length),sub:'показати',onclick:"setHistAction(histActionIs('price')?'all':'price')",on:histAction==='price'},
     {label:'Видалено',val:fmtN(inRange.filter(h=>h.action==='delete').length),sub:'можна відновити',tone:'red',onclick:"setHistAction(histActionIs('delete')?'all':'delete')",on:histAction==='delete'},
   ]);
@@ -2162,7 +2202,7 @@ function renderHistoryPage(){
     </select></div>
     ${histPeriod==='custom'?`<div class="date-range"><input type="date" value="${histFrom}" max="${histTo||''}" onchange="setHistDate('from',this.value)" title="Від"><span>–</span><input type="date" value="${histTo}" min="${histFrom||''}" onchange="setHistDate('to',this.value)" title="До"></div>`:''}
     <div class="tb-sel"><span class="tb-lbl">${ic('user',14)}</span><select onchange="setHistUser(this.value)" style="padding-left:32px">
-      <option value="all">Усі користувачі</option>${users.map(u=>`<option value="${escHtml(u)}"${histUser===u?' selected':''}>${escHtml(u)}</option>`).join('')}
+      <option value="all">Усі користувачі</option>${users.map(u=>`<option value="${escHtml(u)}"${histUser===u?' selected':''}>${escHtml(userName(u))}</option>`).join('')}
     </select></div>
     <div class="tb-sel"><select onchange="setHistAction(this.value)">
       <option value="all"${histAction==='all'?' selected':''}>Усі дії</option>
@@ -2628,7 +2668,7 @@ function renderTildaPage(){
   const st=tildaBusy?`<span class="tl-dot"></span>Оновлення…`:m.lastError&&!tildaErr?`<span class="tl-dot err"></span>Остання спроба не вдалася`:m.setupDone?`<span class="tl-dot"></span>Підключено`:`<span class="tl-dot off"></span>Не налаштовано`;
   const head=`<div class="tl-head">
     <div class="tl-logo">T</div>
-    <div class="tl-hinfo"><b>mblok.shop ${st}</b><span>${m.setupDone?`Оновлено ${tildaWhen(m.lastSync)}${m.lastBy?' · '+escHtml(m.lastBy):''} · автоматично при відкритті складу`:'Склад ще не зв’язаний із сайтом'}</span></div>
+    <div class="tl-hinfo"><b>mblok.shop ${st}</b><span>${m.setupDone?`Оновлено ${tildaWhen(m.lastSync)}${m.lastBy?' · '+escHtml(userName(m.lastBy)):''} · автоматично при відкритті складу`:'Склад ще не зв’язаний із сайтом'}</span></div>
     <div class="tl-hacts">
       ${m.setupDone?`<button class="btn" onclick="tildaStartLink()" ${tildaBusy?'disabled':''}>${ic('link',15)}Зв’язки й групи</button><button class="btn btn-primary" onclick="tildaSyncNow()" ${tildaBusy?'disabled':''}>${ic('refresh',15)}Оновити зараз</button>`:''}
     </div></div>`;
@@ -2786,7 +2826,7 @@ function tgStockEvent(id,prev,next){
   if(tgLast[id+kind]&&Date.now()-tgLast[id+kind]<10*60*1000)return; // той самий товар — не частіше ніж раз на 10 хв
   tgLast[id+kind]=Date.now();
   const wh=allWarehouses.find(w=>w.id===next.warehouse)?.name||'';
-  tgQueue.push({kind,name:next.name,art:next.art,wh,qty:now,user:currentUser?.login||''});
+  tgQueue.push({kind,name:next.name,art:next.art,wh,qty:now,user:myName()});
   clearTimeout(tgTimer);tgTimer=setTimeout(tgFlush,2000); // масові зміни — одним повідомленням
 }
 async function tgFlush(){
@@ -2976,7 +3016,8 @@ window.openMore=function(){
     <button class="sheet-item${activeTab==='tilda'?' active':''}" onclick="closeMore();switchTab('tilda')"><span class="tl-ic">T</span>Тільда${tildaInbox.filter(x=>x.status!=='skipped').length?`<small>${tildaInbox.filter(x=>x.status!=='skipped').length} нових</small>`:''}</button>
     ${currentUser?.role==='admin'?`<button class="sheet-item" onclick="closeMore();openUsers()">${ic('users',18)}Керування доступом</button>`:''}
     <div class="sheet-sep"></div>
-    <button class="sheet-item danger" onclick="doLogout()">${ic('logout',18)}Вийти · ${escHtml(currentUser?.login||'')}</button>
+    <button class="sheet-item" onclick="closeMore();openProfile()">${ic('user',18)}Моє ім’я<small>${escHtml(myName())}</small></button>
+    <button class="sheet-item danger" onclick="doLogout()">${ic('logout',18)}Вийти · ${escHtml(myName())}</button>
   </div>`;
   document.getElementById('moreOverlay').classList.add('open');
 };
@@ -3922,8 +3963,8 @@ function loadUsers(){
   list.innerHTML='<div class="loading"><div class="spin"></div></div>';
   onSnapshot(collection(db,'users'),snap=>{
     const users=snap.docs.map(d=>({id:d.id,...d.data()}));
-    list.innerHTML=`<div class="user-row"><div class="user-avatar">A</div><div class="user-info"><div class="user-login">admin</div><div class="user-role">Адміністратор</div></div></div>`+
-    users.map(u=>`<div class="user-row"><div class="user-avatar">${u.id[0].toUpperCase()}</div><div class="user-info"><div class="user-login">${escHtml(u.id)}</div><div class="user-role">Менеджер</div></div><button class="user-del" onclick="removeUser('${u.id}')">×</button></div>`).join('');
+    list.innerHTML=`<div class="user-row"><div class="user-avatar">${escHtml((userName('admin')||'A')[0].toUpperCase())}</div><div class="user-info"><div class="user-login">${escHtml(userName('admin'))}${profiles.admin?.name?' <span style="color:var(--muted);font-weight:400">· admin</span>':''}</div><div class="user-role">Адміністратор</div></div></div>`+
+    users.map(u=>`<div class="user-row"><div class="user-avatar">${escHtml((userName(u.id)||'?')[0].toUpperCase())}</div><div class="user-info"><div class="user-login">${escHtml(userName(u.id))}${profiles[u.id]?.name?` <span style="color:var(--muted);font-weight:400">· ${escHtml(u.id)}</span>`:''}</div><div class="user-role">Менеджер</div></div><button class="user-del" onclick="removeUser('${u.id}')">×</button></div>`).join('');
   },{once:true});
 }
 window.addUser=async function(){
