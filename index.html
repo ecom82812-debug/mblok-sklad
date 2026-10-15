@@ -1828,6 +1828,8 @@ document.getElementById('loginUser').addEventListener('keydown',e=>{if(e.key==='
 const saved=sessionStorage.getItem('mblok_user');
 if(saved){currentUser=JSON.parse(saved);showApp();}
 
+// Номер версії складу: збільшувати, коли змінюється структура запису товару
+const APP_VER=2;
 // ─── INIT ──────────────────────────────────────────────
 function initApp(){
   setSyncStatus('syncing');
@@ -1878,6 +1880,10 @@ function initApp(){
     if(activeTab==='tilda'&&!_saving)renderPage();
   });
   onSnapshot(collection(db,'meta'),snap=>{
+    // стара відкрита вкладка після оновлення складу — перезавантажити, щоб не затирала нові поля
+    const av=snap.docs.find(x=>x.id==='app')?.data()?.ver||0;
+    if(av>APP_VER){if(!window._reloading){window._reloading=true;toast('Склад оновився — перезавантажую сторінку…','ok');setTimeout(()=>location.reload(),1500);}return;}
+    if(av<APP_VER)setDoc(doc(db,'meta','app'),{ver:APP_VER,at:Date.now()});
     const d=snap.docs.find(x=>x.id==='tilda');
     tildaMeta=d?d.data():{};
     if(activeTab==='tilda'&&!tildaBusy)renderPage();
@@ -2402,6 +2408,9 @@ window.tildaApply=async function(){
       Object.assign(p,it);
       linked++;
     }
+    // товари, які свідомо залишили без пари, не прив'язувати автоматично
+    const noAdd=d.rows.filter(r=>!d.links[r.p.id]).map(r=>r.p.id),noDel=d.rows.filter(r=>d.links[r.p.id]).map(r=>r.p.id);
+    await tildaNoRelink(noAdd,noDel);
     // 3. Решта карток — у «Нові з Тільди»
     const added=await tildaFillInbox();
     const nm={...tildaMeta,setupDone:true,opts:{name:!!opts.name,photo:!!opts.photo,group:!!opts.group,sku:!!opts.sku},
@@ -2421,7 +2430,7 @@ async function tildaFillInbox(){
     const ex=tildaInbox.find(x=>x.id===t.uid);
     if(linked.has(t.uid)){if(ex&&ex.status!=='skipped'){await deleteDoc(doc(db,'tilda_inbox',t.uid));}continue;}
     const data={title:t.title,sku:t.skus[0]||'',skus:t.skus,img:t.img||'',url:t.url||'',parts:t.parts||[],part:tildaPrimaryPart(t),brand:t.brand||''};
-    if(!ex){await setDoc(doc(db,'tilda_inbox',t.uid),{...data,status:'new',ts:Date.now()});tildaInbox.push({id:t.uid,...data,status:'new'});added++;}
+    if(!ex){await setDoc(doc(db,'tilda_inbox',t.uid),{...data,status:'new',ts:Date.now()});if(!tildaInbox.find(i=>i.id===t.uid))tildaInbox.push({id:t.uid,...data,status:'new'});added++;}
     else if(ex.title!==data.title||ex.img!==data.img||ex.part!==data.part||ex.sku!==data.sku){const {id,...rest}=ex;await setDoc(doc(db,'tilda_inbox',t.uid),{...rest,...data});}
   }
   // картки, яких уже немає на сайті, прибираємо зі списку нових
@@ -2449,6 +2458,8 @@ async function tildaSync(silent){
       const g={name:p.title,color:grpById(parentGid)?.color||'#64748b',warehouse:TILDA_WH,parent:parentGid,tildaPart:p.uid,order:i,created:serverTimestamp()};
       await setDoc(doc(db,'groups',id),g);allGroups.push({id,...g});
     }
+    const repaired=await tildaRepairLinks();
+    if(repaired)console.info('Тільда: відновлено зв’язків',repaired);
     // прив'язані товари: оновити лише те, що змінилося на Тільді
     for(const p of allItems.filter(r=>r.tildaUid)){
       const t=tildaProd(p.tildaUid);
@@ -2502,12 +2513,47 @@ function tildaMaybeAutoSync(){
   setTimeout(()=>tildaSync(true),4000);
 }
 
+// Товар складу з тим самим артикулом, що й картка (і ще не прив'язаний) — щоб не робити дубль
+function tildaStockMatch(t){
+  const ks=(t.skus||[t.sku]).map(skuN).filter(Boolean);if(!ks.length)return null;
+  const m=allItems.filter(r=>!r.tildaUid&&r.art&&ks.includes(skuN(r.art)));
+  return m.length===1?m[0]:null;
+}
+async function tildaLinkExisting(p,t,meta){
+  const it={...p,...tildaProdFields(t)};
+  it.tildaSku=t.skus.find(s=>skuN(s)===skuN(p.art))||t.skus[0]||'';
+  await saveToDb(it,{action:'tilda',wait:true,...meta});
+  Object.assign(p,it);
+}
+// Стара версія складу (відкрита до оновлення вкладка чи телефон) при збереженні стирала поля зв'язку.
+// Відновлюємо такі зв'язки самі — лише коли пара однозначна за артикулом і її не відв'язували вручну.
+async function tildaRepairLinks(){
+  const linked=tildaLinkedUids();const no=new Set(tildaMeta.noRelink||[]);let n=0;
+  for(const t of tildaCat.products){
+    if(linked.has(t.uid))continue;
+    if(tildaInbox.find(i=>i.id===t.uid&&i.status==='skipped'))continue;
+    const p=tildaStockMatch(t);if(!p||no.has(p.id))continue;
+    const same=tildaCat.products.filter(x=>x.skus.some(s=>skuN(s)===skuN(p.art)));
+    if(same.length!==1)continue;
+    await tildaLinkExisting(p,t,{note:'зв’язок з карткою відновлено',user:TILDA_USER});
+    linked.add(t.uid);n++;
+  }
+  return n;
+}
+async function tildaNoRelink(add,remove){
+  const s0=new Set(tildaMeta.noRelink||[]);
+  (add||[]).forEach(i=>s0.add(i));(remove||[]).forEach(i=>s0.delete(i));
+  const nm={...tildaMeta,noRelink:[...s0]};await setDoc(doc(db,'meta','tilda'),nm);tildaMeta=nm;
+}
 // ── Дії з новими картками
 async function tildaTake(uid,mode){
   const x=tildaInbox.find(i=>i.id===uid);if(!x)return;
   const t=tildaProd(uid)||{uid,title:x.title,skus:x.skus||[x.sku].filter(Boolean),img:x.img,url:x.url,parts:x.parts||[]};
   const f=tildaProdFields(t);
-  if(mode==='stock'){
+  const ex=mode==='stock'&&tildaStockMatch(t);
+  if(ex){
+    await tildaLinkExisting(ex,t,{note:'прив’язано до картки Тільди'});
+  }else if(mode==='stock'){
     const maxOrder=allItems.filter(r=>r.warehouse===TILDA_WH).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
     const it={name:t.title,art:t.skus[0]||'',sup_art:'',warehouse:TILDA_WH,qty:0,price_buy:0,photo:tildaThumb(t.img),group:groupForPart(f.tildaPart),order:maxOrder+10,...f};
     const id=await saveToDb(it,{action:'create',note:'з Тільди'});
@@ -2526,6 +2572,14 @@ window.tildaAct=async function(uid,mode){
     const {id,...rest}=x;x.status=mode==='skip'?'skipped':'new';
     await setDoc(doc(db,'tilda_inbox',uid),{...rest,status:x.status});
     tildaSel.delete(uid);renderTabs();renderPage();return;
+  }
+  if(mode.startsWith('link:')){
+    const p=allItems.find(r=>r.id===mode.slice(5));const x=tildaInbox.find(i=>i.id===uid);if(!p||!x)return;
+    const t=tildaProd(uid)||{uid,title:x.title,skus:x.skus||[x.sku].filter(Boolean),img:x.img,url:x.url,parts:x.parts||[]};
+    await tildaLinkExisting(p,t,{note:'прив’язано до картки Тільди'});
+    await tildaNoRelink([],[p.id]);
+    await deleteDoc(doc(db,'tilda_inbox',uid));tildaInbox=tildaInbox.filter(i=>i.id!==uid);tildaSel.delete(uid);
+    toast('Прив’язано до товару на складі','ok');renderTabs();renderPage();return;
   }
   await tildaTake(uid,mode);
   toast(mode==='stock'?'Додано на Склад №1 (0 шт)':'Додано в дропшипінг','ok');renderTabs();renderPage();
@@ -2547,6 +2601,7 @@ window.tildaUnlink=async function(pid){
   const p=allItems.find(r=>r.id===pid);if(!p)return;
   const it={...p};TILDA_KEYS.forEach(k=>delete it[k]);
   await saveToDb(it,{action:'tilda',note:'відв’язано від картки Тільди',unlink:true});
+  await tildaNoRelink([pid],[]);
   toast('Відв’язано','ok');renderPage();
 };
 
@@ -2620,8 +2675,8 @@ function tildaInboxHtml(list,skipped){
     <span class="sel-box${tildaSel.has(x.id)?' on':''}" onclick="tildaToggleSel('${x.id}')" role="checkbox"></span>
     ${x.img?`<img class="tl-img" src="${escHtml(tildaThumb(x.img,160))}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:`<div class="tl-img ph">${ic('image',18)}</div>`}
     <div class="tl-main"><div class="tl-name">${escHtml(x.title||'—')}</div>
-      <div class="tl-meta">${x.sku?`<span class="tl-sku">${escHtml(x.sku)}</span>`:'<span>без артикулу</span>'}${pathOf(x)?`<span>${escHtml(pathOf(x))}</span>`:''}${x.url?`<a href="${escHtml(x.url)}" target="_blank" rel="noopener">на сайті ${ic('external',11)}</a>`:''}</div></div>
-    <div class="tl-acts">${skipped?`<button class="btn" onclick="tildaAct('${x.id}','back')">Повернути</button>`:`<button class="btn btn-soft" onclick="tildaAct('${x.id}','stock')" title="Додати на Склад №1 з кількістю 0">${ic('warehouse',14)}Свій склад</button><button class="btn" onclick="tildaAct('${x.id}','ds')" title="Додати в каталог дропшипінгу">${ic('link',14)}Дроп</button><button class="btn" onclick="tildaAct('${x.id}','skip')" title="Не показувати серед нових">Пропустити</button>`}</div>
+      <div class="tl-meta">${x.sku?`<span class="tl-sku">${escHtml(x.sku)}</span>`:'<span>без артикулу</span>'}${pathOf(x)?`<span>${escHtml(pathOf(x))}</span>`:''}${x.url?`<a href="${escHtml(x.url)}" target="_blank" rel="noopener">на сайті ${ic('external',11)}</a>`:''}${!skipped&&tildaStockMatch(x)?`<span class="tl-pill info">вже є на складі: ${escHtml(tildaStockMatch(x).name)} · ${fmtN(tildaStockMatch(x).qty)} шт</span>`:''}</div></div>
+    <div class="tl-acts">${skipped?`<button class="btn" onclick="tildaAct('${x.id}','back')">Повернути</button>`:tildaStockMatch(x)?`<button class="btn btn-primary" onclick="tildaAct('${x.id}','link:${tildaStockMatch(x).id}')" title="Цей товар уже є на складі — просто з’єднати">${ic('link',14)}Прив’язати до складу</button><button class="btn" onclick="tildaAct('${x.id}','skip')">Пропустити</button>`:`<button class="btn btn-soft" onclick="tildaAct('${x.id}','stock')" title="Додати на Склад №1 з кількістю 0">${ic('warehouse',14)}Свій склад</button><button class="btn" onclick="tildaAct('${x.id}','ds')" title="Додати в каталог дропшипінгу">${ic('link',14)}Дроп</button><button class="btn" onclick="tildaAct('${x.id}','skip')" title="Не показувати серед нових">Пропустити</button>`}</div>
   </div>`).join('');
   return`<div class="tl-card">${bulk}${rows}</div>`;
 }
