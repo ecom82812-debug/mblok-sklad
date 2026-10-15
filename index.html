@@ -1226,6 +1226,110 @@ tr.row-zero .p-name{color:var(--muted)}
   .date-range{flex:1 1 100%}.date-range input{flex:1;width:auto;height:40px}
   .hist-count{width:100%;margin:0}
 }
+
+/* ══ Підгрупи ══ */
+.seg-sub{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 12px;padding-left:4px}
+.ssg{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:12.5px;font-weight:550;font-family:var(--font);cursor:pointer;white-space:nowrap}
+.ssg span{font-size:11.5px;color:var(--muted);font-weight:600}
+.ssg:hover{border-color:var(--border2);color:var(--text)}
+.ssg.on{border-color:var(--gc);background:color-mix(in srgb,var(--gc) 10%,var(--surface));color:var(--text);box-shadow:0 0 0 1px var(--gc)}
+.seg-sub-l{display:inline-flex;align-items:center;font-size:12px;color:var(--muted);margin-right:2px}
+.p-sub{display:inline-flex;align-items:center;font-size:11.5px;color:var(--muted);background:var(--surface3);border-radius:5px;padding:0 6px;line-height:18px}
+.grp-row.child{padding-left:26px}
+.grp-row.child .grp-name::before{content:'↳ ';color:var(--muted2)}
+.grp-tag{font-size:10.5px;font-weight:650;color:var(--muted);background:var(--surface3);border-radius:4px;padding:0 5px;line-height:16px;margin-left:6px}
+
+/* ══ Тільда ══ */
+.tl-ic{width:18px;height:18px;border-radius:5px;border:1.8px solid currentColor;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;font-family:var(--display);flex-shrink:0;line-height:1}
+.sheet-item .tl-ic{margin-right:0}
+.p-tilda{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:650;color:var(--muted);text-decoration:none;border:1px solid var(--border);border-radius:5px;padding:0 5px;line-height:17px}
+.p-tilda:hover{color:var(--text);border-color:var(--border2)}
+.p-tilda.gone{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-border)}
+.tl-head{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--sh-xs);padding:16px 18px;margin-bottom:14px;flex-wrap:wrap}
+.tl-logo{width:44px;height:44px;border-radius:12px;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:20px;flex-shrink:0}
+.tl-hinfo{flex:1;min-width:200px}
+.tl-hinfo b{font-size:15px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.tl-hinfo span{font-size:12.5px;color:var(--muted)}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block}
+.tl-dot.off{background:var(--muted2)}.tl-dot.err{background:var(--red)}
+.tl-hacts{display:flex;gap:8px;flex-wrap:wrap}
+.tl-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
+.tl-tab{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;border:none;background:none;color:var(--muted);font-size:13.5px;font-weight:600;font-family:var(--font);cursor:pointer;position:relative;white-space:nowrap}
+.tl-tab span{font-size:11.5px;background:var(--surface3);color:var(--text2);border-radius:20px;padding:0 7px;line-height:18px}
+.tl-tab.on{color:var(--text)}
+.tl-tab.on::after{content:'';position:absolute;left:10px;right:10px;bottom:-1px;height:2.5px;border-radius:2px 2px 0 0;background:var(--text)}
+.tl-tab.on span.hot,.tl-tab span.hot{background:var(--accent);color:var(--accent-ink)}
+.tl-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--sh-xs);overflow:hidden;margin-bottom:14px}
+.tl-card-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tl-card-h h3{font-size:14.5px;font-weight:700;color:var(--text);margin:0;display:flex;align-items:center;gap:8px}
+.tl-card-h p{font-size:12.5px;color:var(--muted);margin:2px 0 0;width:100%}
+.tl-step{width:22px;height:22px;border-radius:50%;background:var(--text);color:var(--surface);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.tl-row{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border)}
+.tl-row:last-child{border-bottom:none}
+.tl-row.sel{background:var(--accent-soft)}
+.tl-img{width:52px;height:52px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid var(--border);flex-shrink:0}
+.tl-img.ph{display:flex;align-items:center;justify-content:center;color:var(--muted2)}
+.tl-main{flex:1;min-width:0}
+.tl-name{font-size:13.5px;font-weight:600;color:var(--text);line-height:1.35}
+.tl-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:12px;color:var(--muted);margin-top:3px}
+.tl-meta a{color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:3px}
+.tl-meta a:hover{color:var(--text)}
+.tl-sku{font-family:var(--mono);font-size:11.5px;color:var(--text2);background:var(--surface3);border-radius:4px;padding:0 5px}
+.tl-acts{display:flex;gap:6px;flex-shrink:0}
+.tl-acts .btn{height:32px;padding:0 11px;font-size:12.5px}
+.btn-soft{background:var(--accent-soft);border-color:transparent;color:var(--text)}
+.tl-bulk{display:flex;align-items:center;gap:8px;padding:10px 18px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap;font-size:13px}
+.tl-bulk .btn{height:32px;font-size:12.5px}
+.tl-empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:13.5px}
+.tl-intro{padding:22px 22px 24px}
+.tl-intro h2{font-family:var(--display);font-size:20px;margin:0 0 8px;color:var(--text)}
+.tl-intro ul{margin:10px 0 18px;padding-left:18px;color:var(--text2);font-size:13.5px;line-height:1.7}
+.tl-map{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr);align-items:center;gap:10px;padding:8px 18px;border-bottom:1px solid var(--border)}
+.tl-map:last-child{border-bottom:none}
+.tl-map.sub{padding-left:42px}
+.tl-map .tl-part{font-size:13.5px;font-weight:600;color:var(--text)}
+.tl-map.sub .tl-part{font-weight:500}
+.tl-map.sub .tl-part::before{content:'↳ ';color:var(--muted2)}
+.tl-map .tl-part small{font-weight:500;color:var(--muted);margin-left:6px}
+.tl-arr{color:var(--muted2);text-align:center}
+.tl-map select,.tl-link select{width:100%;height:36px;border-radius:9px;font-size:13px}
+.tl-link{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1.15fr);align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)}
+.tl-link:last-child{border-bottom:none}
+.tl-side{display:flex;align-items:center;gap:10px;min-width:0}
+.tl-side .tl-img{width:44px;height:44px}
+.tl-pick{display:flex;flex-direction:column;gap:5px;min-width:0}
+.tl-pickrow{display:flex;align-items:center;gap:8px;min-width:0}
+.tl-pickrow .tl-img{width:36px;height:36px;border-radius:8px}
+.tl-pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:650;border-radius:5px;padding:0 6px;line-height:18px;white-space:nowrap}
+.tl-pill.ok{background:var(--green-bg);color:var(--green)}
+.tl-pill.warn{background:var(--amber-bg);color:var(--amber)}
+.tl-pill.info{background:var(--blue-bg);color:var(--blue)}
+.tl-pill.mute{background:var(--surface3);color:var(--muted)}
+.tl-hint{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);background:none;border:1px dashed var(--border2);border-radius:7px;padding:2px 8px;cursor:pointer;font-family:var(--font);text-align:left;max-width:100%}
+.tl-hint:hover{border-color:var(--text2);color:var(--text)}
+.tl-hint b{font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-opts{display:flex;flex-wrap:wrap;gap:8px 18px;padding:14px 18px;font-size:13px;color:var(--text2)}
+.tl-opts label{display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.tl-foot{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--sh-md);padding:12px 16px;margin-top:4px}
+.tl-foot .tl-sum{flex:1;min-width:200px;font-size:13px;color:var(--text2)}
+.tl-foot .tl-sum b{color:var(--text)}
+.tl-filter{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.tl-filter input{height:32px;border-radius:8px;font-size:13px;padding:0 10px;min-width:180px;flex:1;max-width:280px}
+.tl-filter .chip{border:1px solid var(--border);background:var(--surface)}
+.tl-filter .chip.active{border-color:var(--text);color:var(--text);font-weight:650}
+.tl-err{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);border-radius:12px;padding:12px 16px;font-size:13px;margin-bottom:14px}
+@media(max-width:760px){
+  .tl-head{padding:14px}
+  .tl-hacts{width:100%}.tl-hacts .btn{flex:1}
+  .tl-row{flex-wrap:wrap;padding:12px 14px}
+  .tl-acts{width:100%}.tl-acts .btn{flex:1;height:38px}
+  .tl-map,.tl-link{grid-template-columns:1fr;gap:6px;padding:12px 14px}
+  .tl-map.sub{padding-left:28px}
+  .tl-arr{display:none}
+  .tl-foot{bottom:calc(76px + env(safe-area-inset-bottom));padding:10px 12px}
+  .tl-foot .tl-sum{flex:1 1 100%;font-size:12.5px}
+  .tl-foot .btn{flex:1 1 0;min-width:0;height:40px;padding:0 10px}
+}
 </style>
 <script>
 /* Іконки (Lucide, MIT) */
@@ -1270,6 +1374,7 @@ window.IC={
   grid:'<rect width="7" height="7" x="3" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="3" rx="1.5"/><rect width="7" height="7" x="14" y="14" rx="1.5"/><rect width="7" height="7" x="3" y="14" rx="1.5"/>',
   download:'<path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/>',
   chevron:'<path d="m6 9 6 6 6-6"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>',
   scale:'<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',
 };
 window.ic=function(n,s){s=s||16;return '<svg class="i" width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]||'')+'</svg>';};
@@ -1766,6 +1871,18 @@ function initApp(){
     allGroups=snap.docs.map(d=>({id:d.id,...d.data()}));
     if(!_saving) renderPage();
   });
+  // Тільда: нові картки та налаштування синхронізації
+  onSnapshot(collection(db,'tilda_inbox'),snap=>{
+    tildaInbox=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderTabs();
+    if(activeTab==='tilda'&&!_saving)renderPage();
+  });
+  onSnapshot(collection(db,'meta'),snap=>{
+    const d=snap.docs.find(x=>x.id==='tilda');
+    tildaMeta=d?d.data():{};
+    if(activeTab==='tilda'&&!tildaBusy)renderPage();
+    tildaMaybeAutoSync();
+  });
   // China orders
   onSnapshot(collection(db,'orders'),snap=>{
     allOrders=snap.docs.map(d=>({id:d.id,...d.data()}));
@@ -1799,10 +1916,22 @@ const HIST_ACT={
   undo:{l:'Скасування',ic:'undo',c:'a'},
   restore:{l:'Відновлено',ic:'undo',c:'a'},
   delete:{l:'Видалено',ic:'trash',c:'r'},
+  tilda:{l:'Тільда',ic:'link',c:'v'},
 };
+// Поля зв'язку з карткою на Тільді (кількість і ціна закупки сюди не входять ніколи)
+const TILDA_KEYS=['tildaUid','tildaSku','tildaTitle','tildaImg','tildaPart','tildaUrl','tildaGone'];
 function snapItem(it){
-  return{name:it.name||'',art:it.art||'',sup_art:it.sup_art||'',warehouse:it.warehouse||'wh_1',
+  const s={name:it.name||'',art:it.art||'',sup_art:it.sup_art||'',warehouse:it.warehouse||'wh_1',
     qty:Number(it.qty)||0,price_buy:Number(it.price_buy)||0,photo:it.photo||'',group:it.group||'',order:it.order||0};
+  if(it.tildaUid){TILDA_KEYS.forEach(k=>{s[k]=k==='tildaGone'?!!it[k]:(it[k]||'');});}
+  return s;
+}
+// Форми редагування не знають про поля Тільди — підтягуємо їх із поточного запису
+function withTilda(item,base){
+  if(!base)return item;
+  const out={...item};
+  TILDA_KEYS.forEach(k=>{if(out[k]===undefined&&base[k]!==undefined)out[k]=base[k];});
+  return out;
 }
 // Фото в base64 занадто великі для журналу — зберігаємо лише посилання
 const histPhoto=p=>(p&&!String(p).startsWith('data:')&&String(p).length<2000)?p:'';
@@ -1821,7 +1950,7 @@ function diffItems(a,b){
 }
 async function logHistory(entry,mergeKey){
   const now=Date.now();
-  const user=currentUser?.login||'?';
+  const user=entry.user||currentUser?.login||'?';
   try{
     // Швидкі кліки ±1 по одному товару протягом хвилини — один запис
     const lh=mergeKey&&lastHist[mergeKey];
@@ -2051,6 +2180,544 @@ function renderHistoryPage(){
 }
 window.histActionIs=a=>histAction===a;
 
+// ─── ТІЛЬДА ────────────────────────────────────────────
+// Склад читає публічний каталог mblok.shop через функцію-посередника на Supabase
+// (сайт віддає каталог лише своєму домену). На Тільду нічого не пишеться.
+// З Тільди беремо тільки назву, фото, розділ і артикул. Кількість і ціну закупки — ніколи.
+const TILDA_FN='https://vhwmqseyscuxdllnyzwm.supabase.co/functions/v1/tilda-catalog';
+const TILDA_WH='wh_1';
+const TILDA_USER='Тільда';
+const TILDA_AUTO_MS=20*60*1000;   // автооновлення не частіше ніж раз на 20 хв
+let tildaInbox=[], tildaMeta={}, tildaCat=null, tildaBusy=false, tildaErr='', tildaView='inbox';
+let tildaDraft=null;              // чернетка зв'язування: {links:{productId:uid}, groups:{partUid:groupId|'__new'|'__none'}, opts}
+let tildaSel=new Set(), tildaLinkFilter='all', tildaLinkQ='', tildaAutoTried=false;
+
+// ── Допоміжне
+const LOOKALIKE={'А':'A','В':'B','Е':'E','К':'K','М':'M','Н':'H','О':'O','Р':'P','С':'C','Т':'T','Х':'X','І':'I','У':'Y'};
+const skuN=s=>String(s||'').trim().toUpperCase().replace(/\s+/g,'').replace(/[АВЕКМНОРСТХІУ]/g,c=>LOOKALIKE[c]);
+const NAME_STOP=new Set(['конструктор','на','з','із','та','і','й','у','в','для','фірмова','модель','led','підсвітка','підсвіткою','підсвітки','-','x','×']);
+const nameTok=s=>String(s||'').toLowerCase().replace(/[«»"'“”„()\[\],.:;!?+]/g,' ').split(/\s+/).filter(w=>w.length>1&&!NAME_STOP.has(w));
+function nameSim(a,b){
+  const A=new Set(nameTok(a)),B=new Set(nameTok(b));
+  if(!A.size||!B.size)return 0;
+  let n=0;A.forEach(w=>{if(B.has(w))n++;});
+  return n/(A.size+B.size-n);
+}
+// Фото з Тільди — зменшена копія з їхнього CDN (оригінали бувають по 2 МБ)
+function tildaThumb(u,w=300){
+  const m=String(u||'').match(/^https?:\/\/static\.tildacdn\.(?:com|one|net)\/(stor[^/]+|tild[^/]+)\/(.+)$/);
+  return m?`https://thb.tildacdn.com/${m[1]}/-/resize/${w}x/${m[2]}`:(u||'');
+}
+const tildaParts=()=>tildaCat?.parts||[];
+const tildaPart=uid=>tildaParts().find(p=>p.uid===uid);
+const tildaProd=uid=>tildaCat?.products.find(t=>t.uid===uid);
+function tildaPath(uid){const p=tildaPart(uid);if(!p)return'';const par=p.parent&&tildaPart(p.parent);return par?par.title+' › '+p.title:p.title;}
+// Головний розділ картки: найточніший (підрозділ), службові «Новинки», «Топ» сюди не потрапляють
+function tildaPrimaryPart(t){
+  const known=(t.parts||[]).filter(u=>tildaPart(u));
+  return known.find(u=>tildaPart(u).parent)||known[0]||'';
+}
+const groupForPart=uid=>uid?(allGroups.find(g=>g.warehouse===TILDA_WH&&g.tildaPart===uid)?.id||''):'';
+const tildaOpts=()=>({name:true,photo:true,group:true,sku:true,...(tildaMeta.opts||{})});
+const tildaLinkedUids=()=>{
+  const s=new Set();
+  allItems.forEach(r=>{if(r.tildaUid)s.add(r.tildaUid);});
+  allDsItems.forEach(r=>{if(r.tildaUid)s.add(r.tildaUid);});
+  return s;
+};
+function tildaBadge(r){
+  if(!r.tildaUid)return'';
+  if(r.tildaGone)return`<span class="p-tilda gone" title="Картки вже немає на сайті">немає на сайті</span>`;
+  return r.tildaUrl?`<a class="p-tilda" href="${escHtml(r.tildaUrl)}" target="_blank" rel="noopener" title="Відкрити картку на сайті" onclick="event.stopPropagation()">T ${ic('external',10)}</a>`:'';
+}
+
+async function tildaFetch(){
+  const r=await fetch(TILDA_FN,{cache:'no-store'});
+  const j=await r.json().catch(()=>({ok:false,error:'Відповідь не JSON ('+r.status+')'}));
+  if(!j.ok)throw new Error(j.error||('HTTP '+r.status));
+  j.products.forEach(t=>{t.thumb=tildaThumb(t.img);});
+  tildaCat=j;
+  return j;
+}
+function tildaProdFields(t){
+  const part=tildaPrimaryPart(t);
+  return{tildaUid:t.uid,tildaSku:t.skus[0]||'',tildaTitle:t.title,tildaImg:t.img||'',tildaPart:part,tildaUrl:t.url||'',tildaGone:false};
+}
+
+// ── Резервна копія перед першим застосуванням
+function tildaBackup(){
+  const data={created:new Date().toISOString(),by:currentUser?.login||'',products:allItems,groups:allGroups,dropship:allDsItems};
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'}));
+  a.download=`mblok_backup_${new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')}.json`;
+  document.body.appendChild(a);a.click();a.remove();
+}
+
+// ── Чернетка зв'язування (налаштування і сторінка «Зв'язки»)
+function tildaDefaultGroupMap(){
+  const map={};
+  const whG=allGroups.filter(g=>g.warehouse===TILDA_WH);
+  const used=new Set();
+  const n=s=>String(s||'').toLowerCase().replace(/ф/g,'f').replace(/[^a-zа-яіїєґ0-9]/g,'');
+  tildaParts().forEach(p=>{
+    let g=whG.find(x=>x.tildaPart===p.uid);
+    if(!g&&!p.parent){
+      const pn=n(p.title);
+      g=whG.find(x=>!x.tildaPart&&!used.has(x.id)&&isTopGroup(x)&&(n(x.name)===pn||(n(x.name).slice(0,4)===pn.slice(0,4)&&n(x.name).length>=4)));
+    }
+    if(!g&&p.parent){
+      const par=map[p.parent];
+      if(par&&par!=='__new'&&par!=='__none')g=whG.find(x=>x.parent===par&&n(x.name)===n(p.title));
+    }
+    if(g){map[p.uid]=g.id;used.add(g.id);}else map[p.uid]='__new';
+  });
+  return map;
+}
+function tildaPlan(){
+  const T=tildaCat.products;
+  const bySku=new Map();
+  T.forEach(t=>t.skus.forEach(s=>{const k=skuN(s);if(!k)return;if(!bySku.has(k))bySku.set(k,[]);if(!bySku.get(k).includes(t))bySku.get(k).push(t);}));
+  const prods=allItems.filter(r=>r.warehouse===TILDA_WH||r.tildaUid);
+  const rows=prods.map(p=>{
+    const cands=p.art?(bySku.get(skuN(p.art))||[]):[];
+    let best=null,bs=0;
+    T.forEach(t=>{const s=nameSim(p.name,t.title);if(s>bs){bs=s;best=t;}});
+    const row={p,cands,best,bs,kind:'none',sug:'',hint:null,diff:false};
+    if(p.tildaUid){row.kind=tildaProd(p.tildaUid)?'linked':'gone';row.sug=p.tildaUid;}
+    else if(cands.length===1){
+      const c=cands[0],cs=nameSim(p.name,c.title);
+      if(best&&best.uid!==c.uid&&bs>=0.5&&bs>=cs+0.3){row.kind='check';row.hint=best;row.alt=c;}
+      else{row.kind='sku';row.sug=c.uid;row.diff=cs<0.2;}
+    }else if(cands.length>1){row.kind='check';row.hint=cands.includes(best)?best:cands[0];}
+    else if(best&&bs>=0.5){row.kind='name';row.hint=best;}
+    return row;
+  });
+  // одна картка Тільди — лише для одного товару: спірні пропозиції не ставимо самі
+  const cnt={};rows.forEach(r=>{if(r.sug&&r.kind==='sku')cnt[r.sug]=(cnt[r.sug]||0)+1;});
+  rows.forEach(r=>{if(r.kind==='sku'&&cnt[r.sug]>1){r.kind='check';r.hint=tildaProd(r.sug);r.sug='';}});
+  return rows;
+}
+window.tildaStartLink=async function(){
+  tildaView='link';tildaErr='';
+  if(!tildaCat){tildaBusy=true;renderPage();try{await tildaFetch();}catch(e){tildaErr=e.message;}tildaBusy=false;}
+  if(tildaCat){
+    const rows=tildaPlan();
+    const links={};rows.forEach(r=>{links[r.p.id]=r.sug||'';});
+    tildaDraft={links,groups:tildaDefaultGroupMap(),opts:{...tildaOpts(),renameGroups:true},rows};
+  }
+  renderPage();
+};
+window.tildaCancelLink=function(){tildaDraft=null;tildaView='inbox';renderPage();};
+window.tildaSetLink=function(pid,uid){if(!tildaDraft)return;tildaDraft.links[pid]=uid;renderPage();};
+window.tildaSetGroupMap=function(part,val){if(!tildaDraft)return;tildaDraft.groups[part]=val;renderPage();};
+window.tildaSetOpt=function(k,v){if(!tildaDraft)return;tildaDraft.opts[k]=v;renderPage();};
+window.tildaAcceptHints=function(){
+  if(!tildaDraft)return;
+  const taken=new Set(Object.values(tildaDraft.links).filter(Boolean));
+  let n=0;
+  tildaDraft.rows.forEach(r=>{if(!tildaDraft.links[r.p.id]&&r.hint&&!taken.has(r.hint.uid)){tildaDraft.links[r.p.id]=r.hint.uid;taken.add(r.hint.uid);n++;}});
+  toast(n?`Прийнято підказок: ${n}`:'Немає вільних підказок',n?'ok':'');renderPage();
+};
+window.tildaLinkFilterSet=function(f){tildaLinkFilter=f;renderPage();};
+window.tildaLinkSearch=function(v){tildaLinkQ=v;clearTimeout(window._tlq);window._tlq=setTimeout(()=>{renderPage();const el=document.getElementById('tlLinkQ');if(el){el.focus();el.setSelectionRange(v.length,v.length);}},250);};
+
+function tildaDraftSummary(){
+  const d=tildaDraft;const rows=d.rows;
+  let link=0,relink=0,unlink=0;
+  rows.forEach(r=>{const cur=r.p.tildaUid||'',nx=d.links[r.p.id]||'';if(cur===nx)return;if(!cur)link++;else if(!nx)unlink++;else relink++;});
+  const chosen=new Set(Object.values(d.links).filter(Boolean));
+  const dup=[...chosen].filter(u=>Object.values(d.links).filter(x=>x===u).length>1);
+  const linkedElsewhere=new Set(allDsItems.filter(r=>r.tildaUid).map(r=>r.tildaUid));
+  allItems.forEach(r=>{if(r.tildaUid&&!(r.id in d.links))linkedElsewhere.add(r.tildaUid);});
+  const toInbox=tildaCat.products.filter(t=>!chosen.has(t.uid)&&!linkedElsewhere.has(t.uid)&&!tildaInbox.find(x=>x.id===t.uid)).length;
+  const newGroups=Object.values(d.groups).filter(v=>v==='__new').length;
+  return{link,relink,unlink,dup,toInbox,newGroups,linked:chosen.size};
+}
+
+window.tildaApply=async function(){
+  const d=tildaDraft;if(!d||tildaBusy)return;
+  const sum=tildaDraftSummary();
+  if(sum.dup.length){
+    const names=sum.dup.map(u=>tildaProd(u)?.title).filter(Boolean).slice(0,3).join('; ');
+    toast(`Одна картка обрана для кількох товарів: ${names}`,'err');return;
+  }
+  tildaBusy=true;renderPage();
+  try{
+    if(!tildaMeta.setupDone||!tildaMeta.backupAt)tildaBackup();
+    const opts=d.opts;
+    // 1. Розділи → групи (порядок і вкладеність як на Тільді)
+    const PAL=['#2563eb','#ea580c','#0d9488','#db2777','#7c3aed','#16a34a','#b45309','#0891b2','#c026d3','#dc2626','#4d7c0f','#475569'];
+    const partToGroup={};
+    const parts=tildaParts();
+    for(let i=0;i<parts.length;i++){
+      const p=parts[i];const v=d.groups[p.uid]||'__new';
+      if(v==='__none')continue;
+      const parentGid=p.parent?(partToGroup[p.parent]||''):'';
+      const parentG=parentGid&&grpById(parentGid);
+      if(v==='__new'){
+        const id='grp_t'+p.uid;
+        const ex=grpById(id);
+        const g={name:p.title,color:ex?.color||parentG?.color||PAL[i%PAL.length],warehouse:TILDA_WH,parent:parentGid,tildaPart:p.uid,order:i,created:ex?.created||serverTimestamp()};
+        await setDoc(doc(db,'groups',id),g);
+        const loc=allGroups.find(x=>x.id===id);if(loc)Object.assign(loc,g);else allGroups.push({id,...g});
+        partToGroup[p.uid]=id;
+      }else{
+        const ex=grpById(v);if(!ex)continue;
+        // ця група могла бути прив'язана до іншого розділу — знімаємо стару прив'язку
+        allGroups.filter(x=>x.tildaPart===p.uid&&x.id!==v).forEach(x=>{x.tildaPart='';const {id,...rest}=x;setDoc(doc(db,'groups',id),rest);});
+        const {id,...rest}=ex;
+        const g={...rest,tildaPart:p.uid,parent:parentGid||(p.parent?'':ex.parent||''),order:i,name:opts.renameGroups?p.title:ex.name};
+        await setDoc(doc(db,'groups',id),g);
+        Object.assign(ex,g);
+        partToGroup[p.uid]=id;
+      }
+    }
+    // групи, які не прив'язані до розділів, — у кінець списку
+    let tail=parts.length;
+    for(const g of allGroups.filter(x=>x.warehouse===TILDA_WH&&!x.tildaPart&&x.order===undefined)){
+      const {id,...rest}=g;g.order=100+tail++;await setDoc(doc(db,'groups',id),{...rest,order:g.order});
+    }
+    // 2. Товари
+    let linked=0,unlinked=0;
+    for(const r of d.rows){
+      const p=allItems.find(x=>x.id===r.p.id);if(!p)continue;
+      const cur=p.tildaUid||'',nx=d.links[p.id]||'';
+      if(cur===nx)continue;
+      if(!nx){
+        const it={...p};TILDA_KEYS.forEach(k=>delete it[k]);
+        await saveToDb(it,{action:'tilda',note:'відв’язано від картки Тільди',unlink:true,wait:true});
+        TILDA_KEYS.forEach(k=>delete p[k]);
+        unlinked++;continue;
+      }
+      const t=tildaProd(nx);if(!t)continue;
+      const f=tildaProdFields(t);
+      const sku=t.skus.find(s=>skuN(s)===skuN(p.art))||t.skus[0]||'';
+      f.tildaSku=sku;
+      const it={...p,...f};
+      if(opts.name)it.name=t.title;
+      if(opts.photo&&t.img)it.photo=tildaThumb(t.img);
+      if(opts.group&&p.warehouse===TILDA_WH){const g=partToGroup[f.tildaPart]||groupForPart(f.tildaPart);if(g)it.group=g;}
+      if(opts.sku&&sku)it.art=sku;
+      await saveToDb(it,{action:'tilda',note:'прив’язано до картки Тільди',wait:true});
+      Object.assign(p,it);
+      linked++;
+    }
+    // 3. Решта карток — у «Нові з Тільди»
+    const added=await tildaFillInbox();
+    const nm={...tildaMeta,setupDone:true,opts:{name:!!opts.name,photo:!!opts.photo,group:!!opts.group,sku:!!opts.sku},
+      backupAt:tildaMeta.backupAt||Date.now(),lastSync:Date.now(),lastBy:currentUser?.login||'',siteCount:tildaCat.products.length,syncing:0,lastError:''};
+    await setDoc(doc(db,'meta','tilda'),nm);tildaMeta=nm;
+    tildaDraft=null;tildaView='inbox';
+    toast(`Готово: прив’язано ${linked}${unlinked?`, відв’язано ${unlinked}`:''}${added?`, нових карток ${added}`:''}`,'ok');
+  }catch(e){console.error(e);tildaErr='Не вдалося застосувати: '+e.message;toast('Помилка — дивись повідомлення','err');}
+  tildaBusy=false;renderPage();
+};
+
+// Картки Тільди без пари на складі → «Нові з Тільди»
+async function tildaFillInbox(){
+  const linked=tildaLinkedUids();
+  let added=0;
+  for(const t of tildaCat.products){
+    const ex=tildaInbox.find(x=>x.id===t.uid);
+    if(linked.has(t.uid)){if(ex&&ex.status!=='skipped'){await deleteDoc(doc(db,'tilda_inbox',t.uid));}continue;}
+    const data={title:t.title,sku:t.skus[0]||'',skus:t.skus,img:t.img||'',url:t.url||'',parts:t.parts||[],part:tildaPrimaryPart(t),brand:t.brand||''};
+    if(!ex){await setDoc(doc(db,'tilda_inbox',t.uid),{...data,status:'new',ts:Date.now()});tildaInbox.push({id:t.uid,...data,status:'new'});added++;}
+    else if(ex.title!==data.title||ex.img!==data.img||ex.part!==data.part||ex.sku!==data.sku){const {id,...rest}=ex;await setDoc(doc(db,'tilda_inbox',t.uid),{...rest,...data});}
+  }
+  // картки, яких уже немає на сайті, прибираємо зі списку нових
+  for(const x of tildaInbox.filter(x=>!tildaProd(x.id))){await deleteDoc(doc(db,'tilda_inbox',x.id));}
+  return added;
+}
+
+// ── Регулярне оновлення
+async function tildaSync(silent){
+  if(tildaBusy)return;
+  if(!tildaMeta.setupDone){if(!silent)tildaStartLink();return;}
+  tildaBusy=true;tildaErr='';if(!silent)renderPage();
+  let changed=0;
+  try{
+    await setDoc(doc(db,'meta','tilda'),{...tildaMeta,syncing:Date.now()});
+    await tildaFetch();
+    const opts=tildaOpts();
+    // нові розділи на Тільді → нові групи
+    const parts=tildaParts();
+    for(let i=0;i<parts.length;i++){
+      const p=parts[i];
+      if(groupForPart(p.uid))continue;
+      const parentGid=p.parent?groupForPart(p.parent):'';
+      const id='grp_t'+p.uid;
+      const g={name:p.title,color:grpById(parentGid)?.color||'#64748b',warehouse:TILDA_WH,parent:parentGid,tildaPart:p.uid,order:i,created:serverTimestamp()};
+      await setDoc(doc(db,'groups',id),g);allGroups.push({id,...g});
+    }
+    // прив'язані товари: оновити лише те, що змінилося на Тільді
+    for(const p of allItems.filter(r=>r.tildaUid)){
+      const t=tildaProd(p.tildaUid);
+      const it={...p};let ch=false,note=[];
+      if(!t){
+        if(!p.tildaGone){it.tildaGone=true;ch=true;note.push('картку прибрано з сайту або приховано');}
+      }else{
+        if(p.tildaGone){it.tildaGone=false;ch=true;note.push('картка знову на сайті');}
+        if(t.title!==p.tildaTitle){it.tildaTitle=t.title;if(opts.name)it.name=t.title;ch=true;}
+        if((t.img||'')!==(p.tildaImg||'')){it.tildaImg=t.img||'';if(opts.photo&&t.img)it.photo=tildaThumb(t.img);ch=true;}
+        const part=tildaPrimaryPart(t);
+        if(part!==(p.tildaPart||'')){it.tildaPart=part;if(opts.group&&p.warehouse===TILDA_WH){const g=groupForPart(part);if(g)it.group=g;}ch=true;}
+        if(!t.skus.map(skuN).includes(skuN(p.tildaSku))){it.tildaSku=t.skus[0]||'';if(opts.sku&&it.tildaSku)it.art=it.tildaSku;ch=true;}
+        if((t.url||'')!==(p.tildaUrl||'')){it.tildaUrl=t.url||'';ch=true;}
+      }
+      if(ch){await saveToDb(it,{action:'tilda',note:note.join(', ')||'оновлено з Тільди',user:TILDA_USER,wait:true});Object.assign(p,it);changed++;}
+    }
+    // дропшип-товари з Тільди
+    for(const p of allDsItems.filter(r=>r.tildaUid)){
+      const t=tildaProd(p.tildaUid);const it={...p};let ch=false;
+      if(!t){if(!p.tildaGone){it.tildaGone=true;ch=true;}}
+      else{
+        if(p.tildaGone){it.tildaGone=false;ch=true;}
+        if(t.title!==p.tildaTitle){it.tildaTitle=t.title;if(opts.name)it.name=t.title;ch=true;}
+        if((t.img||'')!==(p.tildaImg||'')){it.tildaImg=t.img||'';if(opts.photo&&t.img)it.photo=tildaThumb(t.img);ch=true;}
+        if((t.url||'')!==(p.tildaUrl||'')){it.tildaUrl=t.url||'';if(!p.link||p.link===p.tildaUrl)it.link=t.url||'';ch=true;}
+      }
+      if(ch){await saveDsToDb(it);Object.assign(p,it);changed++;}
+    }
+    const added=await tildaFillInbox();
+    const nm={...tildaMeta,lastSync:Date.now(),lastBy:currentUser?.login||'',siteCount:tildaCat.products.length,syncing:0,lastError:''};
+    await setDoc(doc(db,'meta','tilda'),nm);tildaMeta=nm;
+    if(!silent)toast(changed||added?`Оновлено: ${changed} тов.${added?`, нових карток ${added}`:''}`:'З Тільди нічого нового','ok');
+    else if(added)toast(`З Тільди: ${added} нових карток`,'ok');
+  }catch(e){
+    console.warn('Tilda sync',e);tildaErr='Не вдалося отримати каталог: '+e.message;
+    try{const nm={...tildaMeta,syncing:0,lastError:e.message,lastErrorAt:Date.now()};await setDoc(doc(db,'meta','tilda'),nm);tildaMeta=nm;}catch(_){}
+    if(!silent)toast('Тільда не відповіла','err');
+  }
+  tildaBusy=false;if(activeTab==='tilda')renderPage();
+}
+window.tildaSyncNow=()=>tildaSync(false);
+// для діагностики з консолі браузера
+window._tildaState=()=>({tildaDraft,tildaInbox,tildaMeta,tildaCat,allItems,allGroups,allDsItems,allHistory,tildaProd,tildaDraftSummary,grpLabel,grpById});
+function tildaMaybeAutoSync(){
+  if(tildaAutoTried||!tildaMeta.setupDone)return;
+  const now=Date.now();
+  if(now-(tildaMeta.lastSync||0)<TILDA_AUTO_MS)return;
+  if(tildaMeta.syncing&&now-tildaMeta.syncing<3*60*1000)return; // хтось інший уже оновлює
+  tildaAutoTried=true;
+  setTimeout(()=>tildaSync(true),4000);
+}
+
+// ── Дії з новими картками
+async function tildaTake(uid,mode){
+  const x=tildaInbox.find(i=>i.id===uid);if(!x)return;
+  const t=tildaProd(uid)||{uid,title:x.title,skus:x.skus||[x.sku].filter(Boolean),img:x.img,url:x.url,parts:x.parts||[]};
+  const f=tildaProdFields(t);
+  if(mode==='stock'){
+    const maxOrder=allItems.filter(r=>r.warehouse===TILDA_WH).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
+    const it={name:t.title,art:t.skus[0]||'',sup_art:'',warehouse:TILDA_WH,qty:0,price_buy:0,photo:tildaThumb(t.img),group:groupForPart(f.tildaPart),order:maxOrder+10,...f};
+    const id=await saveToDb(it,{action:'create',note:'з Тільди'});
+    if(!allItems.find(r=>r.id===id))allItems.push({id,...it});
+  }else{
+    const ds={name:t.title,art:t.skus[0]||'',supplier:'',price:0,link:t.url||'',note:'',photo:tildaThumb(t.img),...f};
+    const id=await saveDsToDb(ds);
+    if(!allDsItems.find(r=>r.id===id))allDsItems.push({id,...ds});
+  }
+  await deleteDoc(doc(db,'tilda_inbox',uid));
+  tildaInbox=tildaInbox.filter(i=>i.id!==uid);tildaSel.delete(uid);
+}
+window.tildaAct=async function(uid,mode){
+  if(mode==='skip'||mode==='back'){
+    const x=tildaInbox.find(i=>i.id===uid);if(!x)return;
+    const {id,...rest}=x;x.status=mode==='skip'?'skipped':'new';
+    await setDoc(doc(db,'tilda_inbox',uid),{...rest,status:x.status});
+    tildaSel.delete(uid);renderTabs();renderPage();return;
+  }
+  await tildaTake(uid,mode);
+  toast(mode==='stock'?'Додано на Склад №1 (0 шт)':'Додано в дропшипінг','ok');renderTabs();renderPage();
+};
+window.tildaBulk=async function(mode){
+  const ids=[...tildaSel];if(!ids.length)return;
+  tildaBusy=true;renderPage();
+  for(const id of ids){
+    if(mode==='skip'||mode==='back'){const x=tildaInbox.find(i=>i.id===id);if(!x)continue;const {id:_,...rest}=x;x.status=mode==='skip'?'skipped':'new';await setDoc(doc(db,'tilda_inbox',id),{...rest,status:x.status});}
+    else await tildaTake(id,mode);
+  }
+  tildaSel.clear();tildaBusy=false;
+  toast(`Готово: ${ids.length} карток`,'ok');renderTabs();renderPage();
+};
+window.tildaToggleSel=function(uid){tildaSel.has(uid)?tildaSel.delete(uid):tildaSel.add(uid);renderPage();};
+window.tildaSelAll=function(ids){const all=ids.every(i=>tildaSel.has(i));ids.forEach(i=>all?tildaSel.delete(i):tildaSel.add(i));renderPage();};
+window.tildaSetView=function(v){tildaView=v;tildaSel.clear();renderPage();};
+window.tildaUnlink=async function(pid){
+  const p=allItems.find(r=>r.id===pid);if(!p)return;
+  const it={...p};TILDA_KEYS.forEach(k=>delete it[k]);
+  await saveToDb(it,{action:'tilda',note:'відв’язано від картки Тільди',unlink:true});
+  toast('Відв’язано','ok');renderPage();
+};
+
+// ── Сторінка «Тільда»
+function tildaWhen(ts){
+  if(!ts)return'ще не було';
+  const d=new Date(ts),now=new Date();
+  const hm=d.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
+  if(d.toDateString()===now.toDateString())return'сьогодні о '+hm;
+  return d.toLocaleDateString('uk-UA',{day:'numeric',month:'long'})+' о '+hm;
+}
+function renderTildaPage(){
+  const m=tildaMeta;
+  const linkedItems=allItems.filter(r=>r.tildaUid);
+  const gone=linkedItems.filter(r=>r.tildaGone);
+  const nNew=tildaInbox.filter(x=>x.status!=='skipped');
+  const nSkip=tildaInbox.filter(x=>x.status==='skipped');
+  document.getElementById('statsBar').innerHTML=!m.setupDone?'':kpiStrip([
+    {label:'Карток на сайті',val:fmtN(tildaCat?.products.length??m.siteCount??0),sub:'видимі на mblok.shop',main:true},
+    {label:'Прив’язано до складу',val:fmtN(linkedItems.length),sub:`ще ${fmtN(allItems.filter(r=>r.warehouse===TILDA_WH&&!r.tildaUid).length)} тільки на складі`},
+    {label:'Нові з Тільди',val:fmtN(nNew.length),sub:'чекають рішення',tone:nNew.length?'amber':'',onclick:"tildaSetView('inbox')"},
+    {label:'Немає на сайті',val:fmtN(gone.length),sub:'прибрані або приховані',tone:gone.length?'red':'',onclick:"tildaSetView('gone')"},
+  ]);
+  const st=tildaBusy?`<span class="tl-dot"></span>Оновлення…`:m.lastError&&!tildaErr?`<span class="tl-dot err"></span>Остання спроба не вдалася`:m.setupDone?`<span class="tl-dot"></span>Підключено`:`<span class="tl-dot off"></span>Не налаштовано`;
+  const head=`<div class="tl-head">
+    <div class="tl-logo">T</div>
+    <div class="tl-hinfo"><b>mblok.shop ${st}</b><span>${m.setupDone?`Оновлено ${tildaWhen(m.lastSync)}${m.lastBy?' · '+escHtml(m.lastBy):''} · автоматично при відкритті складу`:'Склад ще не зв’язаний із сайтом'}</span></div>
+    <div class="tl-hacts">
+      ${m.setupDone?`<button class="btn" onclick="tildaStartLink()" ${tildaBusy?'disabled':''}>${ic('link',15)}Зв’язки й групи</button><button class="btn btn-primary" onclick="tildaSyncNow()" ${tildaBusy?'disabled':''}>${ic('refresh',15)}Оновити зараз</button>`:''}
+    </div></div>`;
+  const err=tildaErr?`<div class="tl-err">${escHtml(tildaErr)}</div>`:'';
+  let body='';
+  if(tildaView==='link'&&tildaDraft)body=tildaLinkHtml();
+  else if(tildaView==='link'&&tildaBusy)body=`<div class="tl-card"><div class="tl-empty">Завантажую каталог з Тільди…</div></div>`;
+  else if(!m.setupDone){
+    body=`<div class="tl-card"><div class="tl-intro">
+      <h2>Зв’язати склад із сайтом</h2>
+      <div style="font-size:13.5px;color:var(--text2)">Склад візьме з Тільди всі картки й розділи. Спочатку ти перевіриш, що з чим з’єднається, — і тільки після цього щось зміниться.</div>
+      <ul>
+        <li><b>Кількість і ціна закупки не змінюються ніколи</b> — з Тільди береться лише назва, фото, розділ і артикул.</li>
+        <li>Товари складу з’єднуються з картками за артикулом. Сумнівні пари покажу окремо.</li>
+        <li>Розділи Тільди стануть групами й підгрупами Складу №1.</li>
+        <li>Картки, яких немає на складі, підуть у «Нові з Тільди» — там вирішиш: свій склад, дроп чи пропустити.</li>
+        <li>Перед застосуванням автоматично завантажиться резервна копія складу.</li>
+      </ul>
+      <button class="btn btn-primary" onclick="tildaStartLink()" ${tildaBusy?'disabled':''}>${ic('link',15)}Почати — показати, що з’єднається</button>
+    </div></div>`;
+  }else{
+    const tabs=`<div class="tl-tabs">
+      <button class="tl-tab${tildaView==='inbox'?' on':''}" onclick="tildaSetView('inbox')">Нові з Тільди<span class="${nNew.length?'hot':''}">${nNew.length}</span></button>
+      <button class="tl-tab${tildaView==='skipped'?' on':''}" onclick="tildaSetView('skipped')">Пропущені<span>${nSkip.length}</span></button>
+      <button class="tl-tab${tildaView==='gone'?' on':''}" onclick="tildaSetView('gone')">Немає на сайті<span>${gone.length}</span></button>
+    </div>`;
+    if(tildaView==='gone')body=tabs+tildaGoneHtml(gone);
+    else body=tabs+tildaInboxHtml(tildaView==='skipped'?nSkip:nNew,tildaView==='skipped');
+  }
+  document.getElementById('pageContent').innerHTML=head+err+body;
+}
+function tildaInboxHtml(list,skipped){
+  if(!list.length)return`<div class="tl-card"><div class="tl-empty">${skipped?'Пропущених карток немає':'Усі картки з сайту вже розібрані — нових немає'}</div></div>`;
+  const pathOf=x=>{const u=x.part;if(!u)return'';const p=tildaPart(u);if(p)return tildaPath(u);const g=allGroups.find(g=>g.tildaPart===u);return g?grpLabel(g):'';};
+  const ids=list.map(x=>x.id);
+  const allOn=ids.every(i=>tildaSel.has(i));
+  const bulk=`<div class="tl-bulk">
+    <span class="sel-box${allOn?' on':tildaSel.size?' some':''}" onclick="tildaSelAll(${escHtml(JSON.stringify(ids))})" role="checkbox"></span>
+    ${tildaSel.size?`<b>${tildaSel.size}</b> вибрано:
+      ${skipped?`<button class="btn" onclick="tildaBulk('back')">Повернути в нові</button>`:`<button class="btn btn-primary" onclick="tildaBulk('stock')" ${tildaBusy?'disabled':''}>${ic('warehouse',14)}Свій склад</button><button class="btn" onclick="tildaBulk('ds')" ${tildaBusy?'disabled':''}>${ic('link',14)}Дроп</button><button class="btn" onclick="tildaBulk('skip')">Пропустити</button>`}`
+    :`<span style="color:var(--muted)">${skipped?'Ці картки не показуються серед нових. Можна повернути.':'Свій склад — товар з’явиться на Складі №1 з кількістю 0. Дроп — у каталозі дропшипінгу, на залишках не світиться.'}</span>`}
+  </div>`;
+  const rows=list.slice().sort((a,b)=>(a.title||'').localeCompare(b.title||'','uk')).map(x=>`<div class="tl-row${tildaSel.has(x.id)?' sel':''}">
+    <span class="sel-box${tildaSel.has(x.id)?' on':''}" onclick="tildaToggleSel('${x.id}')" role="checkbox"></span>
+    ${x.img?`<img class="tl-img" src="${escHtml(tildaThumb(x.img,160))}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:`<div class="tl-img ph">${ic('image',18)}</div>`}
+    <div class="tl-main"><div class="tl-name">${escHtml(x.title||'—')}</div>
+      <div class="tl-meta">${x.sku?`<span class="tl-sku">${escHtml(x.sku)}</span>`:'<span>без артикулу</span>'}${pathOf(x)?`<span>${escHtml(pathOf(x))}</span>`:''}${x.url?`<a href="${escHtml(x.url)}" target="_blank" rel="noopener">на сайті ${ic('external',11)}</a>`:''}</div></div>
+    <div class="tl-acts">${skipped?`<button class="btn" onclick="tildaAct('${x.id}','back')">Повернути</button>`:`<button class="btn btn-soft" onclick="tildaAct('${x.id}','stock')" title="Додати на Склад №1 з кількістю 0">${ic('warehouse',14)}Свій склад</button><button class="btn" onclick="tildaAct('${x.id}','ds')" title="Додати в каталог дропшипінгу">${ic('link',14)}Дроп</button><button class="btn" onclick="tildaAct('${x.id}','skip')" title="Не показувати серед нових">Пропустити</button>`}</div>
+  </div>`).join('');
+  return`<div class="tl-card">${bulk}${rows}</div>`;
+}
+function tildaGoneHtml(list){
+  if(!list.length)return`<div class="tl-card"><div class="tl-empty">Усі прив’язані товари є на сайті</div></div>`;
+  return`<div class="tl-card"><div class="tl-bulk"><span style="color:var(--muted)">Ці товари прив’язані до карток, яких зараз немає на сайті (картку видалили або приховали). Зі складу нічого не зникло.</span></div>
+  ${list.map(r=>`<div class="tl-row">
+    ${r.photo?`<img class="tl-img" src="${escHtml(r.photo)}" alt="" loading="lazy">`:`<div class="tl-img ph">${ic('image',18)}</div>`}
+    <div class="tl-main"><div class="tl-name">${escHtml(r.name||'—')}</div><div class="tl-meta">${r.art?`<span class="tl-sku">${escHtml(r.art)}</span>`:''}<span>${fmtN(r.qty)} шт</span><span>${escHtml(allWarehouses.find(w=>w.id===r.warehouse)?.name||'')}</span></div></div>
+    <div class="tl-acts"><button class="btn" onclick="openDrawer('${r.id}')">Відкрити</button><button class="btn" onclick="tildaUnlink('${r.id}')">Відв’язати</button></div>
+  </div>`).join('')}</div>`;
+}
+function tildaLinkHtml(){
+  const d=tildaDraft;const T=tildaCat.products;
+  const sum=tildaDraftSummary();
+  // Крок 1 — розділи
+  const whG=allGroups.filter(g=>g.warehouse===TILDA_WH);
+  const cnt=uid=>T.filter(t=>t.parts.includes(uid)).length;
+  const gOpts=(part,sel)=>{
+    const p=tildaPart(part);
+    return`<option value="__new"${sel==='__new'?' selected':''}>＋ Створити групу «${escHtml(p.title)}»</option>`+
+      (p.parent?`<option value="__none"${sel==='__none'?' selected':''}>Не робити підгрупу (товари — у «${escHtml(tildaPart(p.parent)?.title||'')}»)</option>`:'')+
+      `<optgroup label="Наявні групи Складу №1">${whG.map(g=>`<option value="${g.id}"${sel===g.id?' selected':''}>${escHtml(grpLabel(g))}${g.tildaPart&&g.tildaPart!==part?' (уже з Тільди)':''}</option>`).join('')}</optgroup>`;
+  };
+  const mapRows=tildaParts().map(p=>`<div class="tl-map${p.parent?' sub':''}">
+    <div class="tl-part">${escHtml(p.title)}<small>${cnt(p.uid)} карт.</small></div>
+    <div class="tl-arr">→</div>
+    <select onchange="tildaSetGroupMap('${p.uid}',this.value)">${gOpts(p.uid,d.groups[p.uid]||'__new')}</select>
+  </div>`).join('');
+  const step1=`<div class="tl-card">
+    <div class="tl-card-h"><h3><span class="tl-step">1</span>Розділи Тільди → групи Складу №1</h3><p>Схожі за назвою групи я з’єднав сам. Решта буде створена. Старі групи, які ні з чим не з’єднані, залишаться як є.</p></div>
+    ${mapRows}
+    <div class="tl-opts"><label><input type="checkbox" ${d.opts.renameGroups?'checked':''} onchange="tildaSetOpt('renameGroups',this.checked)">Перейменувати наявні групи як на Тільді</label></div>
+  </div>`;
+  // Крок 2 — товари
+  const tOptsAll=T.slice().sort((a,b)=>a.title.localeCompare(b.title,'uk')).map(t=>`<option value="${t.uid}">${escHtml((t.skus[0]?t.skus[0]+' · ':'')+t.title)}</option>`).join('');
+  const optFor=uid=>`<option value="">— не прив’язувати (тільки склад) —</option>`+(uid?tOptsAll.replace(`value="${uid}"`,`value="${uid}" selected`):tOptsAll);
+  const rows=d.rows;
+  const state=r=>{const v=d.links[r.p.id]||'';if(r.kind==='check'||r.kind==='gone'||(r.kind==='sku'&&r.diff))return'check';if(v)return'ok';return'none';};
+  const counts={all:rows.length,check:rows.filter(r=>state(r)==='check').length,ok:rows.filter(r=>state(r)==='ok').length,none:rows.filter(r=>state(r)==='none').length};
+  let list=rows;
+  if(tildaLinkFilter!=='all')list=list.filter(r=>state(r)===tildaLinkFilter);
+  if(tildaLinkQ){const q=tildaLinkQ.toLowerCase();list=list.filter(r=>(r.p.name||'').toLowerCase().includes(q)||(r.p.art||'').toLowerCase().includes(q)||(tildaProd(d.links[r.p.id])?.title||'').toLowerCase().includes(q));}
+  const ord={check:0,none:1,ok:2};
+  list=list.slice().sort((a,b)=>ord[state(a)]-ord[state(b)]||(Number(b.p.qty)||0)-(Number(a.p.qty)||0));
+  const pill=r=>{
+    const v=d.links[r.p.id]||'';
+    if(r.kind==='gone')return`<span class="tl-pill warn">картки вже немає на сайті</span>`;
+    if(r.kind==='linked'&&v===r.p.tildaUid)return`<span class="tl-pill mute">уже прив’язано</span>`;
+    if(r.kind==='check')return`<span class="tl-pill warn">${r.alt?`артикул ${escHtml(r.p.art)} на Тільді в іншого товару`:'перевір — кілька варіантів'}</span>`;
+    if(r.kind==='sku'&&v===r.sug)return`<span class="tl-pill ok">збіг за артикулом</span>${r.diff?' <span class="tl-pill warn">назви різні — перевір</span>':''}`;
+    if(v)return`<span class="tl-pill info">обрано вручну</span>`;
+    if(r.kind==='name')return`<span class="tl-pill mute">артикул не знайдено</span>`;
+    return`<span class="tl-pill mute">${r.p.art?'артикулу немає на сайті':'без артикулу'}</span>`;
+  };
+  const linkRows=list.map(r=>{
+    const v=d.links[r.p.id]||'';const t=v&&tildaProd(v);
+    const hint=r.hint&&r.hint.uid!==v?`<button class="tl-hint" onclick="tildaSetLink('${r.p.id}','${r.hint.uid}')" title="Обрати цю картку">Схоже: <b>${escHtml((r.hint.skus[0]?r.hint.skus[0]+' · ':'')+r.hint.title)}</b></button>`:'';
+    return`<div class="tl-link">
+      <div class="tl-side">${r.p.photo?`<img class="tl-img" src="${escHtml(r.p.photo)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:`<div class="tl-img ph">${ic('image',16)}</div>`}
+        <div class="tl-main"><div class="tl-name">${escHtml(r.p.name||'—')}</div><div class="tl-meta">${r.p.art?`<span class="tl-sku">${escHtml(r.p.art)}</span>`:'<span>без артикулу</span>'}<span>${fmtN(r.p.qty)} шт</span>${r.p.warehouse!==TILDA_WH?`<span>${escHtml(allWarehouses.find(w=>w.id===r.p.warehouse)?.name||'')}</span>`:''}</div></div></div>
+      <div class="tl-arr">→</div>
+      <div class="tl-pick">
+        <div class="tl-pickrow">${t?`<img class="tl-img" src="${escHtml(t.thumb||'')}" alt="" loading="lazy">`:''}<select onchange="tildaSetLink('${r.p.id}',this.value)">${optFor(v)}</select></div>
+        <div class="tl-pickrow" style="flex-wrap:wrap">${pill(r)}${hint}</div>
+      </div>
+    </div>`;
+  }).join('');
+  const chip=(k,l)=>`<button class="chip${tildaLinkFilter===k?' active':''}" onclick="tildaLinkFilterSet('${k}')">${l} ${counts[k]}</button>`;
+  const hints=rows.filter(r=>!d.links[r.p.id]&&r.hint).length;
+  const step2=`<div class="tl-card">
+    <div class="tl-card-h"><h3><span class="tl-step">2</span>Товари Складу №1 ↔ картки Тільди</h3><p>Пари за артикулом уже обрані. «Перевір» — артикул збігся з іншим товаром або назви дуже різні. Товари без пари залишаться на складі як є.</p></div>
+    <div class="tl-filter">${chip('all','Усі')}${chip('check','Перевір')}${chip('ok','З’єднано')}${chip('none','Без пари')}
+      <input id="tlLinkQ" type="search" placeholder="Пошук за назвою чи артикулом" value="${escHtml(tildaLinkQ)}" oninput="tildaLinkSearch(this.value)">
+      ${hints?`<button class="btn" style="height:32px" onclick="tildaAcceptHints()">Прийняти всі підказки (${hints})</button>`:''}</div>
+    ${linkRows||'<div class="tl-empty">Нічого не знайдено</div>'}
+  </div>`;
+  // Крок 3 — що брати з Тільди
+  const o=d.opts;
+  const step3=`<div class="tl-card">
+    <div class="tl-card-h"><h3><span class="tl-step">3</span>Що брати з Тільди для прив’язаних товарів</h3><p>Так буде і зараз, і при кожному наступному оновленні. Кількість і ціна закупки не змінюються ніколи.</p></div>
+    <div class="tl-opts">
+      <label><input type="checkbox" ${o.name?'checked':''} onchange="tildaSetOpt('name',this.checked)">Назву</label>
+      <label><input type="checkbox" ${o.photo?'checked':''} onchange="tildaSetOpt('photo',this.checked)">Фото</label>
+      <label><input type="checkbox" ${o.group?'checked':''} onchange="tildaSetOpt('group',this.checked)">Групу (за розділом)</label>
+      <label><input type="checkbox" ${o.sku?'checked':''} onchange="tildaSetOpt('sku',this.checked)">Артикул</label>
+    </div></div>`;
+  const foot=`<div class="tl-foot">
+    <div class="tl-sum">${sum.dup.length?`<b style="color:var(--red)">Одна картка обрана для кількох товарів (${sum.dup.length}) — виправ перед застосуванням.</b><br>`:''}
+      Прив’язати <b>${sum.link}</b>${sum.relink?` · змінити <b>${sum.relink}</b>`:''}${sum.unlink?` · відв’язати <b>${sum.unlink}</b>`:''} · нових груп <b>${sum.newGroups}</b> · у «Нові з Тільди» <b>${sum.toInbox}</b></div>
+    <button class="btn" onclick="tildaCancelLink()">Скасувати</button>
+    <button class="btn btn-primary" onclick="tildaApply()" ${tildaBusy||sum.dup.length?'disabled':''}>${ic('check',15)}${tildaMeta.setupDone?'Застосувати':'Зберегти копію і застосувати'}</button>
+  </div>`;
+  return step1+step2+step3+foot;
+}
+
 // ─── DB ────────────────────────────────────────────────
 async function saveToDb(item,meta={}){
   setSyncStatus('syncing');
@@ -2058,8 +2725,9 @@ async function saveToDb(item,meta={}){
   try{
     const id=item.id||crypto.randomUUID();
     const prev=serverState[id];
+    if(!meta.unlink)item=withTilda(item,allItems.find(r=>r.id===id));
     const next=snapItem(item);
-    await setDoc(doc(db,'products',id),{...next,updated:serverTimestamp(),updatedBy:currentUser?.login||''});
+    await setDoc(doc(db,'products',id),{...next,updated:serverTimestamp(),updatedBy:meta.user||currentUser?.login||''});
     serverState[id]={...next};
     // Запис в історію змін (зміна лише порядку не записується)
     const ch=diffItems(prev,next);
@@ -2067,7 +2735,10 @@ async function saveToDb(item,meta={}){
       let action=meta.action||(!prev?'create':ch.warehouse?'move':'update');
       const onlyQty=Object.keys(ch).length===1&&ch.qty;
       if(action==='qty'&&!onlyQty)action='update';
-      logHistory({productId:id,productName:next.name,warehouse:next.warehouse,action,changes:ch,note:meta.note||''},action==='qty'?'qty:'+id:null);
+      const e={productId:id,productName:next.name,warehouse:next.warehouse,action,changes:ch,note:meta.note||''};
+      if(meta.user)e.user=meta.user;
+      if(meta.wait)await logHistory(e,null);
+      else logHistory(e,action==='qty'?'qty:'+id:null);
     }
     setSyncStatus('ok');
     setTimeout(()=>_saving=false,500);
@@ -2087,11 +2758,14 @@ async function saveDsToDb(item){
   setSyncStatus('syncing');
   try{
     const id=item.id||crypto.randomUUID();
-    await setDoc(doc(db,'dropship',id),{
+    item=withTilda(item,allDsItems.find(r=>r.id===id));
+    const data={
       name:item.name||'',art:item.art||'',supplier:item.supplier||'',
       price:Number(item.price)||0,link:item.link||'',note:item.note||'',
       photo:item.photo||'',updated:serverTimestamp()
-    });
+    };
+    if(item.tildaUid)TILDA_KEYS.forEach(k=>{data[k]=k==='tildaGone'?!!item[k]:(item[k]||'');});
+    await setDoc(doc(db,'dropship',id),data);
     setSyncStatus('ok');return id;
   }catch(e){setSyncStatus('error');throw e;}
 }
@@ -2167,6 +2841,8 @@ function renderTabs(){
   whs.push(`<div class="tab${cnActive?' active':''}" onclick="switchTab('china')">${ic('ship',18)}<div class="tab-txt"><span class="tab-name">Замовлення з Китаю</span></div>${cnOpen?`<span class="tab-count">${cnOpen}</span>`:''}</div>`);
   whs.push(`<div class="sb-label">Контроль</div>`);
   whs.push(`<div class="tab${activeTab==='history'?' active':''}" onclick="switchTab('history')">${ic('clock',18)}<div class="tab-txt"><span class="tab-name">Журнал змін</span></div></div>`);
+  const tlNew=tildaInbox.filter(x=>x.status!=='skipped').length;
+  whs.push(`<div class="tab${activeTab==='tilda'?' active':''}" onclick="switchTab('tilda')"><span class="tl-ic">T</span><div class="tab-txt"><span class="tab-name">Тільда</span><span class="tab-meta">${tildaMeta.setupDone?'синхронізація з сайтом':'не налаштовано'}</span></div>${tlNew?`<span class="tab-count">${tlNew}</span>`:''}</div>`);
   el.innerHTML=whs.join('');
 }
 
@@ -2176,6 +2852,7 @@ function renderHead(){
   if(activeTab==='dropship'){title='Дропшипінг';sub='Каталог товарів постачальників';}
   else if(activeTab==='china'){title='Замовлення з Китаю';sub='Викуп, доставка та розмитнення';}
   else if(activeTab==='history'){title='Журнал змін';sub='Хто, коли і що змінив у товарах';}
+  else if(activeTab==='tilda'){title='Тільда';sub='Картки й розділи з mblok.shop · Склад №1';}
   else{const wh=allWarehouses.find(w=>w.id===activeTab);title=wh?.name||'Склад';const n=allItems.filter(r=>r.warehouse===activeTab).length;sub=`${n} позицій · вартість ${fmtM(whTotal(activeTab))}`;}
   document.getElementById('pageTitle').textContent=title;
   document.getElementById('pageSub').textContent=sub;
@@ -2196,8 +2873,8 @@ window.switchTab=function(id){
   document.getElementById('addBtn').innerHTML=ic('plus',16)+`<span class="lbl">${isDs?'Додати товар':isChina?'Нове замовлення':'Додати товар'}</span>`;
   document.getElementById('addBtn').onclick=isDs?()=>openDsModal():isChina?()=>openCnModal():()=>openModal();
   document.getElementById('mobFab').onclick=isDs?()=>openDsModal():isChina?()=>openCnModal():()=>openModal();
-  document.getElementById('addBtn').style.display=id==='history'?'none':'';
-  document.getElementById('mobFab').style.visibility=id==='history'?'hidden':'';
+  document.getElementById('addBtn').style.display=(id==='history'||id==='tilda')?'none':'';
+  document.getElementById('mobFab').style.visibility=(id==='history'||id==='tilda')?'hidden':'';
   renderTabs();renderPage();updateMobNav();
 };
 
@@ -2219,6 +2896,7 @@ window.openMore=function(){
     ${activeTab!=='dropship'&&activeTab!=='china'?`<button class="sheet-item" onclick="closeMore();openGrp()">${ic('folder',18)}Групи товарів</button>`:''}
     <button class="sheet-item" onclick="closeMore();openSup()">${ic('building',18)}Постачальники</button>
     <button class="sheet-item${activeTab==='history'?' active':''}" onclick="closeMore();switchTab('history')">${ic('clock',18)}Журнал змін</button>
+    <button class="sheet-item${activeTab==='tilda'?' active':''}" onclick="closeMore();switchTab('tilda')"><span class="tl-ic">T</span>Тільда${tildaInbox.filter(x=>x.status!=='skipped').length?`<small>${tildaInbox.filter(x=>x.status!=='skipped').length} нових</small>`:''}</button>
     ${currentUser?.role==='admin'?`<button class="sheet-item" onclick="closeMore();openUsers()">${ic('users',18)}Керування доступом</button>`:''}
     <div class="sheet-sep"></div>
     <button class="sheet-item danger" onclick="doLogout()">${ic('logout',18)}Вийти · ${escHtml(currentUser?.login||'')}</button>
@@ -2271,6 +2949,7 @@ function renderPage(){
   if(activeTab==='dropship'){renderStats();renderDropship();}
   else if(activeTab==='china'){renderChina();}
   else if(activeTab==='history'){renderHistoryPage();}
+  else if(activeTab==='tilda'){renderTildaPage();}
   else{renderStats();renderWarehouse();}
 }
 
@@ -2294,7 +2973,7 @@ function kpiStrip(cells){
   </div>`).join('')}</div>`;
 }
 function renderStats(){
-  if(activeTab==='china'||activeTab==='history')return; // ці сторінки малюють свою статистику
+  if(activeTab==='china'||activeTab==='history'||activeTab==='tilda')return; // ці сторінки малюють свою статистику
   const bar=document.getElementById('statsBar');
   if(activeTab==='dropship'){
     const prices=allDsItems.map(r=>Number(r.price)||0).filter(Boolean);
@@ -2334,7 +3013,7 @@ function distHtml(items){
   const grps=allGroups.filter(g=>g.warehouse===activeTab);
   let parts=[];
   if(grps.length){
-    parts=grps.map(g=>({name:g.name,color:g.color||'#888',v:items.filter(r=>r.group===g.id).reduce((a,r)=>a+val(r),0)}));
+    parts=topGroups(activeTab).map(g=>({name:g.name,color:g.color||'#888',v:items.filter(r=>inGroup(r,g.id)).reduce((a,r)=>a+val(r),0)}));
     const rest=items.filter(r=>!r.group||!grps.find(g=>g.id===r.group)).reduce((a,r)=>a+val(r),0);
     if(rest)parts.push({name:'Без групи',color:'#8a909b',v:rest});
   }else{
@@ -2353,13 +3032,30 @@ function distHtml(items){
 // Як показувати групи: chips | sidebar | panel | tabs | seg
 let GRP_UI='seg'; // групи — плашкою над каталогом
 window.setGrpUi=v=>{GRP_UI=v;try{localStorage.setItem('mblok_grpui',v);}catch(e){}renderPage();};
+// Групи можуть мати підгрупи (поле parent) — як розділи й підрозділи на Тільді
+const grpById=id=>allGroups.find(g=>g.id===id);
+function whGroupsSorted(whId){
+  return allGroups.filter(g=>g.warehouse===whId).slice().sort((a,b)=>(a.order??1e15)-(b.order??1e15));
+}
+const isTopGroup=g=>!g.parent||!grpById(g.parent);
+const topGroups=whId=>whGroupsSorted(whId).filter(isTopGroup);
+const childGroups=gid=>{const g=grpById(gid);return g?whGroupsSorted(g.warehouse).filter(x=>x.parent===gid):[];};
+const grpFamily=gid=>[gid,...childGroups(gid).map(g=>g.id)];
+const inGroup=(r,gid)=>!!r.group&&(r.group===gid||grpById(r.group)?.parent===gid);
+const grpTop=gid=>{const g=grpById(gid);return g&&g.parent&&grpById(g.parent)?g.parent:gid;};
+const grpLabel=g=>{if(!g)return'';const p=g.parent&&grpById(g.parent);return p?p.name+' › '+g.name:g.name;};
+function grpOptions(whId,sel){
+  return topGroups(whId).map(g=>`<option value="${g.id}"${sel===g.id?' selected':''}>${escHtml(g.name)}</option>`+
+    childGroups(g.id).map(c=>`<option value="${c.id}"${sel===c.id?' selected':''}>&nbsp;&nbsp;↳ ${escHtml(c.name)}</option>`).join('')).join('');
+}
 function groupList(whId){
   const items=allItems.filter(r=>r.warehouse===whId);
-  const grps=allGroups.filter(g=>g.warehouse===whId);
+  const grps=topGroups(whId);
+  const all=allGroups.filter(g=>g.warehouse===whId);
   const val=arr=>arr.reduce((a,r)=>a+(Number(r.qty)||0)*(Number(r.price_buy)||0),0);
   const out=[{id:'all',name:'Усі товари',color:'var(--text)',items}];
-  grps.forEach(g=>{const it=items.filter(r=>r.group===g.id);out.push({id:g.id,name:g.name,color:g.color||'#888',items:it});});
-  const rest=items.filter(r=>!r.group||!grps.find(g=>g.id===r.group));
+  grps.forEach(g=>{const it=items.filter(r=>inGroup(r,g.id));out.push({id:g.id,name:g.name,color:g.color||'#888',items:it});});
+  const rest=items.filter(r=>!r.group||!all.find(g=>g.id===r.group));
   if(grps.length&&rest.length)out.push({id:'none',name:'Без групи',color:'#9aa1ab',items:rest});
   out.forEach(o=>{o.v=val(o.items);o.low=o.items.filter(r=>{const q=Number(r.qty)||0;return q<=5;}).length;});
   return out;
@@ -2384,7 +3080,7 @@ function whFiltered(){
   else if(activeFilter==='zero')d=d.filter(r=>stockOf(r)==='zero');
   else if(activeFilter==='ok')d=d.filter(r=>stockOf(r)==='ok');
   if(activeGroup==='none')d=d.filter(r=>!r.group||!allGroups.find(g=>g.id===r.group&&g.warehouse===activeTab));
-  else if(activeGroup!=='all')d=d.filter(r=>r.group===activeGroup);
+  else if(activeGroup!=='all')d=d.filter(r=>inGroup(r,activeGroup));
   const dir=sortDir==='asc'?1:-1;
   d.sort((a,b)=>{
     if(sortBy==='order'){
@@ -2452,7 +3148,7 @@ function renderBulkBar(){
   const sum=[...selected].reduce((a,id)=>{const it=allItems.find(r=>r.id===id);return a+(it?itemVal(it):0);},0);
   bar.innerHTML=`<div class="bb-count"><b>${n}</b> вибрано <span>· ${fmtM(sum)}</span></div>
     <select onchange="bulkMove(this.value)"><option value="">Перемістити на склад…</option>${allWarehouses.filter(w=>w.id!==activeTab).map(w=>`<option value="${w.id}">${escHtml(w.name)}</option>`).join('')}</select>
-    ${grps.length?`<select onchange="bulkGroup(this.value)"><option value="">Призначити групу…</option>${grps.map(g=>`<option value="${g.id}">${escHtml(g.name)}</option>`).join('')}<option value="__none">— без групи —</option></select>`:''}
+    ${grps.length?`<select onchange="bulkGroup(this.value)"><option value="">Призначити групу…</option>${grpOptions(activeTab,'')}<option value="__none">— без групи —</option></select>`:''}
     <button class="bb-btn danger" onclick="bulkDelete()">${ic('trash',15)}Видалити</button>
     <button class="bb-x" onclick="clearSel()" title="Зняти вибір">×</button>`;
   bar.classList.add('show');
@@ -2461,7 +3157,7 @@ function renderBulkBar(){
 // ─── Експорт CSV ───────────────────────────────────────
 window.exportCsv=function(){
   const d=whFiltered();
-  const grp=id=>allGroups.find(g=>g.id===id)?.name||'';
+  const grp=id=>grpLabel(allGroups.find(g=>g.id===id));
   const rows=[['Назва','Артикул','Артикул постачальника','Група','Кількість','Ціна закупки','Сума']]
     .concat(d.map(r=>[r.name||'',r.art||'',r.sup_art||'',grp(r.group),Number(r.qty)||0,(Number(r.price_buy)||0).toFixed(2).replace('.',','),itemVal(r).toFixed(2).replace('.',',')]));
   const csv='﻿'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
@@ -2498,11 +3194,12 @@ function renderDrawer(){
   el.innerHTML=`
     <div class="dr-photo">${r.photo?`<img src="${r.photo}" alt="" onerror="this.style.display='none'">`:`<div class="dr-ph">${ic('image',32)}<span>Фото не додано</span></div>`}</div>
     <div class="dr-head">
-      <div class="dr-tags">${stockBadge(r)}${grp?`<span class="dr-tag"><i style="background:${grp.color||'#888'}"></i>${escHtml(grp.name)}</span>`:''}<span class="dr-tag">${ic('warehouse',12)}${escHtml(wh?.name||'')}</span></div>
+      <div class="dr-tags">${stockBadge(r)}${grp?`<span class="dr-tag"><i style="background:${grp.color||'#888'}"></i>${escHtml(grpLabel(grp))}</span>`:''}<span class="dr-tag">${ic('warehouse',12)}${escHtml(wh?.name||'')}</span></div>
       <h2 class="dr-name">${escHtml(r.name||'—')}</h2>
       <div class="dr-arts">
         ${r.art?`<div><span>Артикул</span><b>${escHtml(r.art)}</b></div>`:''}
         ${r.sup_art?`<div><span>Арт. постачальника</span><b class="p-sup-art" onclick="copySupArt('${jsq(r.sup_art)}',this)" title="Скопіювати">${ic('copy',11)}${escHtml(r.sup_art)}</b></div>`:''}
+        ${r.tildaUid?`<div><span>Картка на сайті</span><b>${tildaBadge(r)}</b></div>`:''}
       </div>
     </div>
     <div class="dr-stock">
@@ -2548,9 +3245,12 @@ function renderWarehouse(){
       <span style="width:8px;height:8px;border-radius:3px;background:${color};display:inline-block;flex-shrink:0"></span>${escHtml(name)}<span class="cg-cnt">${items.length}</span>
     </button>`;
   };
+  const tops=topGroups(activeTab);
+  const actTop=activeGroup!=='all'&&activeGroup!=='none'?grpTop(activeGroup):'';
+  const subs=actTop?childGroups(actTop):[];
   const catTabs=`<span class="chip-sep"></span>
     ${whGroups.length?catTab('all','Усі','var(--text)',allWh):''}
-    ${whGroups.map((g,i)=>catTab(g.id,g.name,g.color||'#888',allWh.filter(r=>r.group===g.id),i<9?` title="Клавіша ${i+1}"`:'')).join('')}
+    ${tops.map((g,i)=>catTab(g.id,g.name,g.color||'#888',allWh.filter(r=>inGroup(r,g.id)),i<9?` title="Клавіша ${i+1}"`:'')+(g.id===actTop&&subs.length?subs.map(c=>catTab(c.id,'↳ '+c.name,c.color||g.color||'#888',allWh.filter(r=>r.group===c.id))).join(''):'')).join('')}
     ${ungrouped.length&&whGroups.length?catTab('none','Без групи','var(--muted2)',ungrouped):''}
     <button class="chip-add-group" onclick="openGrp()" title="Керування групами">${ic(whGroups.length?'sliders':'folder',14)}${whGroups.length?'Групи':'Створити групи'}</button>`;
 
@@ -2580,13 +3280,20 @@ function renderWarehouse(){
   const emptyHtml=`<div class="empty"><div class="e-ic">${ic(searchQ?'search':'inbox',22)}</div><b>${searchQ?'Нічого не знайдено':allWh.length?'Немає товарів за цим фільтром':'Склад поки порожній'}</b><span>${searchQ?'Спробуй інший запит або артикул':allWh.length?'Зміни фільтр, щоб побачити інші товари':'Додай перший товар кнопкою «Додати товар»'}</span>${!searchQ&&allWh.length&&(activeFilter!=='all'||activeGroup!=='all')?`<button class="btn" onclick="activeGroup='all';setFilter('all')">Скинути фільтри</button>`:''}</div>`;
 
   // Секції по групах
-  const useGroups=groupByOn&&whGroups.length&&activeGroup==='all';
+  const subSections=activeGroup!=='all'&&activeGroup!=='none'&&childGroups(activeGroup).length>0;
+  const useGroups=groupByOn&&whGroups.length&&(activeGroup==='all'||subSections);
   let sections=[];
-  if(useGroups){
-    whGroups.forEach(g=>{const it=d.filter(r=>r.group===g.id);if(it.length)sections.push({id:g.id,name:g.name,color:g.color||'#888',items:it});});
+  if(useGroups&&activeGroup==='all'){
+    tops.forEach(g=>{const it=d.filter(r=>inGroup(r,g.id));if(it.length)sections.push({id:g.id,name:g.name,color:g.color||'#888',items:it});});
     const rest=d.filter(r=>!r.group||!whGroups.find(g=>g.id===r.group));
     if(rest.length)sections.push({id:'__none',name:'Без групи',color:'var(--muted2)',items:rest,muted:true});
+  }else if(useGroups){
+    const par=grpById(activeGroup);
+    childGroups(activeGroup).forEach(g=>{const it=d.filter(r=>r.group===g.id);if(it.length)sections.push({id:g.id,name:g.name,color:g.color||par.color||'#888',items:it});});
+    const own=d.filter(r=>r.group===activeGroup);
+    if(own.length)sections.push({id:'__own_'+activeGroup,name:'Інше в «'+par.name+'»',color:par.color||'#888',items:own,muted:true});
   }else sections=[{id:null,items:d}];
+  _rowSubLbl=!(useGroups&&activeGroup!=='all');
 
   const allSel=d.length&&d.every(r=>selected.has(r.id));
   const someSel=!allSel&&d.some(r=>selected.has(r.id));
@@ -2709,7 +3416,11 @@ function renderWarehouse(){
     if(GRP_UI==='tabs'){
       grpUi=`<div class="ul-tabs">${gl.map(g=>`<button class="ul-tab${activeGroup===g.id?' on':''}" style="--gc:${g.color}" onclick="setGroupSelect('${g.id}')">${g.id==='all'?'':'<i></i>'}${grpName(g.name)}<span>${g.items.length}</span></button>`).join('')}<button class="ul-tab add" onclick="openGrp()" title="Керувати групами">${ic('plus',14)}</button></div>`;
     }else if(GRP_UI==='seg'){
-      grpUi=`<div class="seg-wrap"><div class="seg-groups">${gl.map(g=>`<button class="sg${activeGroup===g.id?' on':''}" style="--gc:${g.color}" onclick="setGroupSelect('${g.id}')">${g.id==='all'?'':'<i></i>'}${grpName(g.name)}<span>${g.items.length}</span></button>`).join('')}</div><button class="tb-btn" onclick="openGrp()">${ic('sliders',15)}<span class="lbl">Групи</span></button></div>`;
+      grpUi=`<div class="seg-wrap"><div class="seg-groups">${gl.map(g=>`<button class="sg${activeGroup===g.id||actTop===g.id?' on':''}" style="--gc:${g.color}" onclick="setGroupSelect('${g.id}')">${g.id==='all'?'':'<i></i>'}${grpName(g.name)}<span>${g.items.length}</span></button>`).join('')}</div><button class="tb-btn" onclick="openGrp()">${ic('sliders',15)}<span class="lbl">Групи</span></button></div>`;
+      if(subs.length){
+        const par=grpById(actTop);
+        grpUi+=`<div class="seg-sub"><button class="ssg${activeGroup===actTop?' on':''}" style="--gc:${par.color||'#888'}" onclick="setGroupSelect('${actTop}')">Усі в «${escHtml(par.name)}»<span>${allWh.filter(r=>inGroup(r,actTop)).length}</span></button>${subs.map(c=>`<button class="ssg${activeGroup===c.id?' on':''}" style="--gc:${c.color||par.color||'#888'}" onclick="setGroupSelect('${c.id}')">${escHtml(c.name)}<span>${allWh.filter(r=>r.group===c.id).length}</span></button>`).join('')}</div>`;
+      }
     }
   }
   const mainHtml=toolbar+mobCards+(viewMode==='grid'?gridHtml:table);
@@ -2731,6 +3442,7 @@ function renderWarehouse(){
   if(drawerId)renderDrawer();
 }
 
+let _rowSubLbl=true;
 function makeRow(r,whGroups,whTot,showGroup){
   const qty=Number(r.qty)||0;
   const qc=qty===0?'qty-zero':qty<=5?'qty-low':'qty-ok';
@@ -2744,9 +3456,9 @@ function makeRow(r,whGroups,whTot,showGroup){
     <td class="c-sel">${drag?`<span class="drag-handle" title="Перетягни, щоб змінити порядок">${ic('grip',14)}</span>`:''}<span class="sel-box${sel?' on':''}" onclick="toggleSel('${r.id}',event)" role="checkbox" aria-checked="${sel}"></span></td>
     <td class="c-name"><div class="nm-wrap">${photo}<div class="nm-txt">
       <div class="p-name"><span class="cell-view" onclick="startEdit('${r.id}','name',this)">${escHtml(r.name||'—')}</span></div>
-      <div class="p-meta">${r.art?`<span class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art)}</span>`:'<span class="p-art muted">без артикулу</span>'}${r.sup_art?`<span class="p-sup-art" onclick="copySupArt('${jsq(r.sup_art)}',this)" title="Артикул постачальника — клікни, щоб скопіювати">${ic('copy',11)}${escHtml(r.sup_art)}</span>`:''}</div>
+      <div class="p-meta">${r.art?`<span class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art)}</span>`:'<span class="p-art muted">без артикулу</span>'}${!showGroup&&_rowSubLbl&&grp&&grp.parent&&activeGroup!==grp.id?`<span class="p-sub">${escHtml(grp.name)}</span>`:''}${tildaBadge(r)}${r.sup_art?`<span class="p-sup-art" onclick="copySupArt('${jsq(r.sup_art)}',this)" title="Артикул постачальника — клікни, щоб скопіювати">${ic('copy',11)}${escHtml(r.sup_art)}</span>`:''}</div>
     </div></div></td>
-    ${showGroup?`<td class="c-grp">${grp?`<span class="p-grp"><i style="background:${grp.color||'#888'}"></i>${escHtml(grp.name)}</span>`:'<span class="muted">—</span>'}</td>`:''}
+    ${showGroup?`<td class="c-grp">${grp?`<span class="p-grp"><i style="background:${grp.color||'#888'}"></i>${escHtml(grpLabel(grp))}</span>`:'<span class="muted">—</span>'}</td>`:''}
     <td class="c-st">${stockBadge(r)}</td>
     <td class="r c-qty"><div class="qty-ctrl">
       <button class="qty-btn minus" onclick="changeQty('${r.id}',-1)" title="−1">−</button>
@@ -3009,7 +3721,7 @@ window.openModal=function(id){
   const whId=r?.warehouse||activeTab;
   const grpSel=document.getElementById('fGroup');
   const whGrps=allGroups.filter(g=>g.warehouse===whId);
-  grpSel.innerHTML='<option value="">— без групи —</option>'+whGrps.map(g=>`<option value="${g.id}"${r?.group===g.id?' selected':''}>${escHtml(g.name)}</option>`).join('');
+  grpSel.innerHTML='<option value="">— без групи —</option>'+grpOptions(whId,r?.group);
   previewModalPhotoVal(r?.photo||'');
   document.getElementById('overlay').classList.add('open');
   setTimeout(()=>document.getElementById('fName').focus(),100);
@@ -3173,13 +3885,14 @@ window.selectGrpColor=function(c){
 
 function renderGrpList(){
   const whGrps=allGroups.filter(g=>g.warehouse===activeTab);
-  document.getElementById('grpList').innerHTML=whGrps.length
-    ?whGrps.map(g=>`<div class="grp-row">
+  const row=(g,child)=>`<div class="grp-row${child?' child':''}">
         <div class="grp-dot" style="background:${g.color||'#888'}"></div>
-        <div class="grp-name">${escHtml(g.name)}</div>
-        <div class="grp-count">${allItems.filter(r=>r.group===g.id).length} тов.</div>
+        <div class="grp-name">${escHtml(g.name)}${g.tildaPart?'<span class="grp-tag" title="Розділ з Тільди">Тільда</span>':''}</div>
+        <div class="grp-count">${allItems.filter(r=>child?r.group===g.id:inGroup(r,g.id)).length} тов.</div>
         <button class="grp-del" onclick="deleteGroup('${g.id}')">×</button>
-      </div>`).join('')
+      </div>`;
+  document.getElementById('grpList').innerHTML=whGrps.length
+    ?topGroups(activeTab).map(g=>row(g,false)+childGroups(g.id).map(c=>row(c,true)).join('')).join('')
     :'<div style="color:var(--muted);font-size:13px;padding:8px">Груп ще немає — додай першу</div>';
 }
 
@@ -3197,7 +3910,10 @@ window.deleteGroup=async function(id){
   if(!confirm('Видалити групу? Товари залишаться, просто без групи.'))return;
   // Remove group from all items
   const grouped=allItems.filter(r=>r.group===id);
-  for(const item of grouped){item.group='';await saveToDb(item);}
+  const par=grpById(id)?.parent||'';
+  for(const item of grouped){item.group=par&&grpById(par)?par:'';await saveToDb(item);}
+  // підгрупи стають звичайними групами
+  for(const c of allGroups.filter(g=>g.parent===id)){const {id:cid,...rest}=c;await setDoc(doc(db,'groups',cid),{...rest,parent:''});}
   await deleteDoc(doc(db,'groups',id));
   toast('Групу видалено','ok');
   renderGrpList();
@@ -3212,9 +3928,9 @@ document.getElementById('mobSearchInput').addEventListener('input',e=>{searchQ=e
 // Цифри 0–9 — швидке перемикання груп на складі (0 — усі товари)
 document.addEventListener('keydown',e=>{
   if(e.ctrlKey||e.metaKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''))return;
-  if(activeTab==='dropship'||activeTab==='china'||!/^[0-9]$/.test(e.key))return;
+  if(activeTab==='dropship'||activeTab==='china'||activeTab==='history'||activeTab==='tilda'||!/^[0-9]$/.test(e.key))return;
   if(document.querySelector('.overlay.open,.drawer-overlay.open'))return;
-  const grps=allGroups.filter(g=>g.warehouse===activeTab);
+  const grps=topGroups(activeTab);
   const n=+e.key;
   if(n===0)setGroupSelect('all');else if(grps[n-1])setGroupSelect(grps[n-1].id);
 });
