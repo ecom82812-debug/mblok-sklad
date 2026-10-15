@@ -2773,6 +2773,27 @@ function tildaLinkHtml(){
   return step1+step2+step3+foot;
 }
 
+// ─── Сповіщення в Telegram ─────────────────────────────
+// Коли товар на складі закінчився — повідомлення в групу (бот через функцію Supabase).
+const TG_FN='https://vhwmqseyscuxdllnyzwm.supabase.co/functions/v1/tg-notify';
+const TG_KINDS={out:true};          // які події надсилати: out — закінчився
+let tgQueue=[],tgTimer=null;const tgLast={};
+function tgStockEvent(id,prev,next){
+  const was=Number(prev.qty)||0,now=Number(next.qty)||0;
+  let kind='';
+  if(was>0&&now===0)kind='out';
+  if(!kind||!TG_KINDS[kind])return;
+  if(tgLast[id+kind]&&Date.now()-tgLast[id+kind]<10*60*1000)return; // той самий товар — не частіше ніж раз на 10 хв
+  tgLast[id+kind]=Date.now();
+  const wh=allWarehouses.find(w=>w.id===next.warehouse)?.name||'';
+  tgQueue.push({kind,name:next.name,art:next.art,wh,qty:now,user:currentUser?.login||''});
+  clearTimeout(tgTimer);tgTimer=setTimeout(tgFlush,2000); // масові зміни — одним повідомленням
+}
+async function tgFlush(){
+  const events=tgQueue.splice(0);if(!events.length)return;
+  try{await fetch(TG_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({events})});}
+  catch(e){console.warn('Telegram',e);}
+}
 // ─── DB ────────────────────────────────────────────────
 async function saveToDb(item,meta={}){
   setSyncStatus('syncing');
@@ -2794,6 +2815,7 @@ async function saveToDb(item,meta={}){
       if(meta.user)e.user=meta.user;
       if(meta.wait)await logHistory(e,null);
       else logHistory(e,action==='qty'?'qty:'+id:null);
+      if(ch.qty&&prev)tgStockEvent(id,prev,next);
     }
     setSyncStatus('ok');
     setTimeout(()=>_saving=false,500);
