@@ -1266,6 +1266,13 @@ tr.row-zero .p-name{color:var(--muted)}
 .cn2-prods .mute{color:var(--muted)}
 .cn2-prods b.fact{color:var(--green)}
 .cn2-prods b.prog{color:var(--text2);font-weight:600}
+.cn2-prods b.inv{color:var(--text);font-weight:700}
+.cn2-plan{font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap}
+.cn2-dl{font-weight:700;border-radius:4px;padding:0 4px;margin-left:3px}
+.cn2-dl.up{color:var(--red);background:var(--red-bg)}.cn2-dl.down{color:var(--green);background:var(--green-bg)}
+.cn2-pay-l small .cn2-shipdev{display:block;margin-top:3px;font-size:11.5px;font-weight:500;color:var(--muted)}
+.cn2-pay-r em{white-space:nowrap}
+.cn2-shipdev b{font-weight:700;color:var(--text2)}.cn2-shipdev.up b{color:var(--red)}.cn2-shipdev.down b{color:var(--green)}
 .cn2-pn{display:flex;align-items:center;gap:10px;min-width:180px}
 .cn2-pn span{font-weight:550;line-height:1.3}
 .cn2-thumb{width:36px;height:36px;border-radius:8px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted2);flex-shrink:0;overflow:hidden}
@@ -4191,11 +4198,16 @@ function cnCalc(o){
     else if(mode==='share'){unit=b+(buyAll?pay2*b/buyAll:0);fact=true;}
     else unit=pr||b;
     unit=Math.round(unit*100)/100;
-    return{p,q,b,pr,unit,fact,sum:unit*q};
+    const delta=fact&&pr>0&&pr!==b?Math.round((unit-pr)*100)/100:null;
+    return{p,q,b,pr,unit,fact,paid:fact&&!!o.pay2Date,delta,sum:unit*q};
   });
   const costAll=rows.reduce((a,r)=>a+r.sum,0);
-  return{rows,qtyAll,buyAll,progAll,coeff,mode,costAll,pay1:cnNum(o.pay1),pay2,total:cnNum(o.pay1)+pay2};
+  const plan=cnNum(o.usdPlan),usd=cnNum(o.usd);
+  const shipDev=plan>0&&usd>0?(usd-plan)/plan:null;
+  return{rows,qtyAll,buyAll,progAll,coeff,mode,costAll,pay1:cnNum(o.pay1),pay2,total:cnNum(o.pay1)+pay2,plan,usd,shipDev};
 }
+const cnDelta=(d,small)=>d===null||d===undefined||Math.abs(d)<0.01?'':`<${small?'small':'span'} class="cn2-dl ${d>0?'up':'down'}" title="${d>0?'Дорожче':'Дешевше'} за прогноз імпортера">${d>0?'+':'−'}${fmtM(Math.abs(d)).replace('₴','₴')}</${small?'small':'span'}>`;
+const cnPct=x=>(x>0?'+':x<0?'−':'')+Math.abs(x*100).toFixed(1).replace('.',',')+'%';
 const cnPhoto=p=>p.photo||(p.productId&&allItems.find(r=>r.id===p.productId)?.photo)||'';
 
 // Стиснення фото до мініатюри (щоб замовлення вміщалося в запис бази)
@@ -4233,6 +4245,7 @@ function renderChina(){
     {label:'До оплати',val:money(due1+due2),sub:due2?`доставка ${fmtShort(due2)}${due1?` · викуп ${fmtShort(due1)}`:''}`:due1?`викуп ${fmtShort(due1)}`:'все сплачено',tone:due1+due2?'amber':''},
     {label:'Чекає оприбуткування',val:fmtN(toStock),sub:toStock?'отримані, ще не на складі':'немає',tone:toStock?'violet':'',onclick:toStock?"setCnFilter('received')":''},
     {label:'Сплачено всього',val:money(spent),sub:`${all.length} замовлень за весь час`},
+    ...(()=>{const dv=all.map(o=>calcs.get(o.id).shipDev).filter(x=>x!==null);if(!dv.length)return[];const av=dv.reduce((a,b)=>a+b,0)/dv.length;return[{label:'Доставка vs прогноз',val:`<span style="color:${av>0.005?'var(--red)':av<-0.005?'var(--green)':'inherit'}">${cnPct(av)}</span>`,sub:`в середньому по ${dv.length} замовл.`}];})(),
   ]);
   const cnt=k=>k==='active'?active.length:k==='all'?all.length:all.filter(o=>st(o)===k).length;
   const tab=(k,l,dot)=>`<button class="cn2-tab${cnFilter===k?' on':''}" onclick="setCnFilter('${k}')">${dot?`<i style="background:${dot}"></i>`:''}${l}<span>${cnt(k)}</span></button>`;
@@ -4267,7 +4280,8 @@ function cnCardHtml(o,c){
     <div class="cn2-pay-l"><span>${lbl}</span>${sub?`<small>${sub}</small>`:''}</div>
     <div class="cn2-pay-r"><b>${amt?fmtM(amt):'—'}</b>${amt?(date?`<em class="ok">${ic('check',11)}сплачено ${cnDate(date)}</em>`:`<em class="${mustPay?'wait':'mute'}">${mustPay?'чекає оплати':'ще не сплачено'}</em>`):`<em class="mute">${lbl==='Доставка'?'сума ще невідома':'не вказано'}</em>`}</div>
   </div>`;
-  const shipSub=o.weight?`${String(o.weight).replace('.',',')} кг × $${String(o.rate||0).replace('.',',')}${o.usd?` = $${fmtN(o.usd)}`:''}`:'';
+  const shipSub=(o.weight?`${String(o.weight).replace('.',',')} кг × $${String(o.rate||0).replace('.',',')}${o.usd?` = $${fmtN(o.usd)}`:''}`:o.usd?`$${fmtN(o.usd)}`:'')+
+    (c.shipDev!==null?`<span class="cn2-shipdev ${c.shipDev>0.005?'up':c.shipDev<-0.005?'down':''}">прогноз $${fmtN(c.plan)} → $${fmtN(c.usd)} <b>${cnPct(c.shipDev)}</b></span>`:'');
   const mustPay2=s==='shipping'||s==='received'||s==='stocked';
   const rows=c.rows.map(r=>{
     const ph=cnPhoto(r.p);
@@ -4275,10 +4289,10 @@ function cnCardHtml(o,c){
       <td class="cn2-pn"><div class="cn2-thumb">${ph?`<img src="${escHtml(ph)}" alt="" loading="lazy" onerror="this.remove()">`:ic('box',15)}</div><span>${escHtml(r.p.name||'—')}</span></td>
       <td class="r">${fmtN(r.q)}</td>
       <td class="r mute">${r.b?fmtM(r.b):'—'}</td>
-      <td class="r"><b class="${r.fact?'fact':'prog'}">${r.unit?(r.fact?'':'≈ ')+fmtM(r.unit):'—'}</b></td>
+      <td class="r"><b class="${r.paid?'fact':r.fact?'inv':'prog'}" title="${r.paid?'Фактична: доставка сплачена':r.fact?'За рахунком доставки (ще не сплачено)':'Прогноз імпортера'}">${r.unit?(r.fact?'':'≈ ')+fmtM(r.unit):'—'}</b>${r.pr&&r.pr!==r.b?`<div class="cn2-plan">прогноз ${fmtM(r.pr)} ${cnDelta(r.delta,true)}</div>`:''}</td>
       <td class="r">${r.sum?fmtM(r.sum):'—'}</td>
     </tr>`;}).join('');
-  const costNote=c.mode==='coeff'||c.mode==='share'?`<span class="cn2-note ok">${ic('check',11)}Собівартість фактична — доставка розподілена між товарами</span>`:
+  const costNote=c.mode==='coeff'||c.mode==='share'?(o.pay2Date?`<span class="cn2-note ok">${ic('check',11)}Собівартість фактична — доставка сплачена й розподілена між товарами</span>`:`<span class="cn2-note">${ic('clock',11)}Собівартість за рахунком доставки — остаточна після оплати (курс може змінитися)</span>`):
     c.mode==='forecast'?`<span class="cn2-note">≈ прогноз імпортера. Точна собівартість з’явиться, коли буде відома сума доставки</span>`:`<span class="cn2-note">Вкажи ціну викупу і прогноз «під ключ», щоб бачити собівартість</span>`;
   return`<article class="cn2-card st-${s}">
     <header class="cn2-head">
@@ -4391,7 +4405,8 @@ function renderCnModal(keepScroll){
         <div class="form-group"><label>Курс $, ₴</label><input type="number" min="1" step="0.01" value="${o.usdRate??''}" oninput="cnShip('usdRate',this.value)"></div>
         <div class="form-group"><label>Сума, $</label><input type="number" min="0" step="0.01" id="cnUsd" value="${o.usd??''}" oninput="cnShip('usd',this.value)"></div>
       </div>
-      <div class="cn2-grid3">
+      <div class="cn2-grid4">
+        <div class="form-group"><label>Прогноз доставки, $</label><input type="number" min="0" step="0.01" value="${o.usdPlan??''}" placeholder="з розрахунку імпортера" oninput="cnSet('usdPlan',this.value,1)"></div>
         <div class="form-group"><label>Сума, ₴</label><input type="number" min="0" step="0.01" id="cnPay2" value="${o.pay2??''}" oninput="cnSet('pay2',this.value,1)"></div>
         <div class="form-group"><label>Дата оплати</label><div class="cn2-dt"><input type="date" value="${o.pay2Date||''}" onchange="cnSet('pay2Date',this.value)">${o.pay2Date?'':`<button class="btn" onclick="cnSet('pay2Date',cnToday())">Сьогодні</button>`}</div></div>
         <div class="form-group cn2-calc"><label>Вага × тариф × курс</label><div><b>${cnNum(o.weight)&&cnNum(o.rate)?fmtM(cnNum(o.weight)*cnNum(o.rate)*usdRate):'—'}</b></div></div>
@@ -4457,7 +4472,7 @@ window.saveCnOrder=async function(){
   if(!prods.length){toast('Додай хоча б один товар','err');return;}
   if(prods.some(p=>!p.name)){toast('У кожного товару має бути назва','err');return;}
   const {_id,...rest}=o;
-  const order={...rest,products:prods,importer:(o.importer||'').trim(),trackNo:(o.trackNo||'').trim(),pay1:cnNum(o.pay1),pay2:cnNum(o.pay2),weight:cnNum(o.weight),rate:cnNum(o.rate),usd:cnNum(o.usd),usdRate:cnNum(o.usdRate)||41.5,notes:(o.notes||'').trim()};
+  const order={...rest,products:prods,importer:(o.importer||'').trim(),trackNo:(o.trackNo||'').trim(),usdPlan:cnNum(o.usdPlan),pay1:cnNum(o.pay1),pay2:cnNum(o.pay2),weight:cnNum(o.weight),rate:cnNum(o.rate),usd:cnNum(o.usd),usdRate:cnNum(o.usdRate)||41.5,notes:(o.notes||'').trim()};
   if(order.pay1Date&&order.status==='pending')order.status='paid';
   const btn=document.getElementById('cnSaveBtn');btn.disabled=true;
   const ok=await cnSaveOrder(order,d.isNew?'Замовлення додано':'Замовлення збережено');
