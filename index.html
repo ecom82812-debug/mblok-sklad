@@ -1242,6 +1242,7 @@ tr.row-zero .p-name{color:var(--muted)}
 .cn2-id b{font-family:var(--display);font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.2px}
 .cn2-id span{font-size:12.5px;color:var(--muted)}
 .cn2-id .late{color:var(--amber);font-weight:600}
+.cn2-track{font-family:var(--mono);font-size:11.5px;color:var(--text2);background:var(--surface3);border-radius:4px;padding:0 5px;cursor:copy}
 .cn2-pipe{display:flex;align-items:center;flex:1;min-width:300px;max-width:560px}
 .cn2-pipe>b{flex:1;height:2px;background:var(--border);margin:0 4px;margin-bottom:16px;min-width:10px}
 .cn2-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
@@ -4281,7 +4282,7 @@ function cnCardHtml(o,c){
     c.mode==='forecast'?`<span class="cn2-note">≈ прогноз імпортера. Точна собівартість з’явиться, коли буде відома сума доставки</span>`:`<span class="cn2-note">Вкажи ціну викупу і прогноз «під ключ», щоб бачити собівартість</span>`;
   return`<article class="cn2-card st-${s}">
     <header class="cn2-head">
-      <div class="cn2-id" onclick="openCnModal('${o.id}')"><b>${cnNo(o)}</b><span>${escHtml(o.importer||'Імпортер не вказаний')} · ${cnDate(o.date)}${days!==null&&s!=='pending'?` · <span class="${!o.deliveryDate&&days>45?'late':''}">${o.deliveryDate?`доставка ${days} дн.`:`${days} дн. від замовлення`}</span>`:''}</span></div>
+      <div class="cn2-id" onclick="openCnModal('${o.id}')"><b>${cnNo(o)}</b><span>${escHtml(o.importer||'Імпортер не вказаний')}${o.trackNo?` · <span class="cn2-track" title="Трек-номер вантажу — клікни, щоб скопіювати" onclick="event.stopPropagation();navigator.clipboard?.writeText('${jsq(o.trackNo)}');toast('Трек-номер скопійовано','ok')">${escHtml(o.trackNo)}</span>`:''} · ${cnDate(o.date)}${days!==null&&s!=='pending'?` · <span class="${!o.deliveryDate&&days>45?'late':''}">${o.deliveryDate?`доставка ${days} дн.`:`${days} дн. від замовлення`}</span>`:''}</span></div>
       ${cnPipe(o)}
       <div class="cn2-acts">${cnNextAction(o)}<button class="icon-btn" title="Відкрити й редагувати" onclick="openCnModal('${o.id}')">${ic('pencil',15)}</button></div>
     </header>
@@ -4359,8 +4360,9 @@ function renderCnModal(keepScroll){
   const usdRate=cnNum(o.usdRate)||41.5;
   document.getElementById('cnBody').innerHTML=`
     <section class="cn2-sec">
-      <div class="cn2-grid3">
+      <div class="cn2-grid4">
         <div class="form-group"><label>Імпортер</label><input type="text" value="${escHtml(o.importer||'')}" placeholder="Смарт-трек" oninput="cnSet('importer',this.value,1)"></div>
+        <div class="form-group"><label>Трек-номер вантажу</label><input type="text" value="${escHtml(o.trackNo||'')}" placeholder="00219513-5492-6" oninput="cnSet('trackNo',this.value,1)"></div>
         <div class="form-group"><label>Дата замовлення</label><input type="date" value="${o.date||''}" onchange="cnSet('date',this.value)"></div>
         <div class="form-group"><label>Дата отримання</label><input type="date" value="${o.deliveryDate||''}" onchange="cnSet('deliveryDate',this.value)"></div>
       </div>
@@ -4455,7 +4457,7 @@ window.saveCnOrder=async function(){
   if(!prods.length){toast('Додай хоча б один товар','err');return;}
   if(prods.some(p=>!p.name)){toast('У кожного товару має бути назва','err');return;}
   const {_id,...rest}=o;
-  const order={...rest,products:prods,importer:(o.importer||'').trim(),pay1:cnNum(o.pay1),pay2:cnNum(o.pay2),weight:cnNum(o.weight),rate:cnNum(o.rate),usd:cnNum(o.usd),usdRate:cnNum(o.usdRate)||41.5,notes:(o.notes||'').trim()};
+  const order={...rest,products:prods,importer:(o.importer||'').trim(),trackNo:(o.trackNo||'').trim(),pay1:cnNum(o.pay1),pay2:cnNum(o.pay2),weight:cnNum(o.weight),rate:cnNum(o.rate),usd:cnNum(o.usd),usdRate:cnNum(o.usdRate)||41.5,notes:(o.notes||'').trim()};
   if(order.pay1Date&&order.status==='pending')order.status='paid';
   const btn=document.getElementById('cnSaveBtn');btn.disabled=true;
   const ok=await cnSaveOrder(order,d.isNew?'Замовлення додано':'Замовлення збережено');
