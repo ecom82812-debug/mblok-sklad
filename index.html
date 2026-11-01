@@ -1239,6 +1239,12 @@ tr.row-zero .p-name{color:var(--muted)}
 .cn2-card.st-stocked{opacity:.86}
 .cn2-head{display:flex;align-items:center;gap:18px;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .cn2-id{display:flex;flex-direction:column;gap:2px;min-width:200px;cursor:pointer}
+.cn2-idrow{display:flex;align-items:center;gap:10px}
+.cn2-kg{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--text);background:var(--surface3);border-radius:7px;padding:0 8px;height:24px;font-variant-numeric:tabular-nums}
+.cn2-kg .i{color:var(--muted)}
+.cn2-kg.empty{color:var(--muted2);font-weight:600}
+.cn2-kg{white-space:nowrap}
+@media(max-width:760px){.cn2-plan .pl{display:none}.cn2-plan .cn2-dl{margin-left:0}}
 .cn2-id b{font-family:var(--display);font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.2px}
 .cn2-id span{font-size:12.5px;color:var(--muted)}
 .cn2-id .late{color:var(--amber);font-weight:600}
@@ -4241,7 +4247,7 @@ function renderChina(){
   const toStock=all.filter(o=>st(o)==='received').length;
   const spent=all.reduce((a,o)=>a+(o.pay1Date?cnNum(o.pay1):0)+(o.pay2Date?cnNum(o.pay2):0),0);
   document.getElementById('statsBar').innerHTML=kpiStrip([
-    {label:'В дорозі',val:fmtN(roadQty)+' <small style="font-size:.55em;font-weight:600;color:var(--muted)">шт</small>',sub:`${inRoad.length} замовл. · собівартість ${fmtShort(roadCost)}`,main:true},
+    {label:'В дорозі',val:fmtN(roadQty)+' <small style="font-size:.55em;font-weight:600;color:var(--muted)">шт</small> <span style="color:var(--muted2);font-weight:400">·</span> '+fmtN(Math.round(inRoad.reduce((a,o)=>a+cnNum(o.weight),0)*10)/10)+' <small style="font-size:.55em;font-weight:600;color:var(--muted)">кг</small>',sub:`${inRoad.length} замовл. · собівартість ${fmtShort(roadCost)}`,main:true},
     {label:'До оплати',val:money(due1+due2),sub:due2?`доставка ${fmtShort(due2)}${due1?` · викуп ${fmtShort(due1)}`:''}`:due1?`викуп ${fmtShort(due1)}`:'все сплачено',tone:due1+due2?'amber':''},
     {label:'Чекає оприбуткування',val:fmtN(toStock),sub:toStock?'отримані, ще не на складі':'немає',tone:toStock?'violet':'',onclick:toStock?"setCnFilter('received')":''},
     {label:'Сплачено всього',val:money(spent),sub:`${all.length} замовлень за весь час`},
@@ -4289,14 +4295,14 @@ function cnCardHtml(o,c){
       <td class="cn2-pn"><div class="cn2-thumb">${ph?`<img src="${escHtml(ph)}" alt="" loading="lazy" onerror="this.remove()">`:ic('box',15)}</div><span>${escHtml(r.p.name||'—')}</span></td>
       <td class="r">${fmtN(r.q)}</td>
       <td class="r mute">${r.b?fmtM(r.b):'—'}</td>
-      <td class="r"><b class="${r.paid?'fact':r.fact?'inv':'prog'}" title="${r.paid?'Фактична: доставка сплачена':r.fact?'За рахунком доставки (ще не сплачено)':'Прогноз імпортера'}">${r.unit?(r.fact?'':'≈ ')+fmtM(r.unit):'—'}</b>${r.pr&&r.pr!==r.b?`<div class="cn2-plan">прогноз ${fmtM(r.pr)} ${cnDelta(r.delta,true)}</div>`:''}</td>
+      <td class="r"><b class="${r.paid?'fact':r.fact?'inv':'prog'}" title="${r.paid?'Фактична: доставка сплачена':r.fact?'За рахунком доставки (ще не сплачено)':'Прогноз імпортера'}">${r.unit?(r.fact?'':'≈ ')+fmtM(r.unit):'—'}</b>${r.pr&&r.pr!==r.b?`<div class="cn2-plan"><span class="pl">прогноз ${fmtM(r.pr)}</span> ${cnDelta(r.delta,true)}</div>`:''}</td>
       <td class="r">${r.sum?fmtM(r.sum):'—'}</td>
     </tr>`;}).join('');
   const costNote=c.mode==='coeff'||c.mode==='share'?(o.pay2Date?`<span class="cn2-note ok">${ic('check',11)}Собівартість фактична — доставка сплачена й розподілена між товарами</span>`:`<span class="cn2-note">${ic('clock',11)}Собівартість за рахунком доставки — остаточна після оплати (курс може змінитися)</span>`):
     c.mode==='forecast'?`<span class="cn2-note">≈ прогноз імпортера. Точна собівартість з’явиться, коли буде відома сума доставки</span>`:`<span class="cn2-note">Вкажи ціну викупу і прогноз «під ключ», щоб бачити собівартість</span>`;
   return`<article class="cn2-card st-${s}">
     <header class="cn2-head">
-      <div class="cn2-id" onclick="openCnModal('${o.id}')"><b>${cnNo(o)}</b><span>${escHtml(o.importer||'Імпортер не вказаний')}${o.trackNo?` · <span class="cn2-track" title="Трек-номер вантажу — клікни, щоб скопіювати" onclick="event.stopPropagation();navigator.clipboard?.writeText('${jsq(o.trackNo)}');toast('Трек-номер скопійовано','ok')">${escHtml(o.trackNo)}</span>`:''} · ${cnDate(o.date)}${days!==null&&s!=='pending'?` · <span class="${!o.deliveryDate&&days>45?'late':''}">${o.deliveryDate?`доставка ${days} дн.`:`${days} дн. від замовлення`}</span>`:''}</span></div>
+      <div class="cn2-id" onclick="openCnModal('${o.id}')"><div class="cn2-idrow"><b>${cnNo(o)}</b>${cnNum(o.weight)?`<span class="cn2-kg" title="Вага вантажу${c.qtyAll?' · '+(cnNum(o.weight)/c.qtyAll).toFixed(2).replace('.',',')+' кг на 1 шт':''}">${ic('scale',13)}${String(cnNum(o.weight)).replace('.',',')} кг</span>`:`<span class="cn2-kg empty" title="Вагу ще не внесено">${ic('scale',13)}вага —</span>`}</div><span>${escHtml(o.importer||'Імпортер не вказаний')}${o.trackNo?` · <span class="cn2-track" title="Трек-номер вантажу — клікни, щоб скопіювати" onclick="event.stopPropagation();navigator.clipboard?.writeText('${jsq(o.trackNo)}');toast('Трек-номер скопійовано','ok')">${escHtml(o.trackNo)}</span>`:''} · ${cnDate(o.date)}${days!==null&&s!=='pending'?` · <span class="${!o.deliveryDate&&days>45?'late':''}">${o.deliveryDate?`доставка ${days} дн.`:`${days} дн. від замовлення`}</span>`:''}</span></div>
       ${cnPipe(o)}
       <div class="cn2-acts">${cnNextAction(o)}<button class="icon-btn" title="Відкрити й редагувати" onclick="openCnModal('${o.id}')">${ic('pencil',15)}</button></div>
     </header>
