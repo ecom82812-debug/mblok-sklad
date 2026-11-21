@@ -1379,6 +1379,24 @@ tr.row-zero .p-name{color:var(--muted)}
 .cn2-ir-r b{color:var(--text)}
 @media(max-width:760px){.cn2-ir{flex-wrap:wrap}.cn2-ir-r{width:100%;flex-direction:row;justify-content:space-between}}
 
+/* ══ Коробка: вага й габарити ══ */
+.dim-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.dim-row small{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.dim-in{position:relative}
+.dim-row input{width:100%;padding-right:30px}
+.dim-row span{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted2);pointer-events:none}
+.dim-hint{font-size:12px;color:var(--muted);margin-top:6px}
+.dim-hint b{color:var(--text)}
+.dr-box{border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin:0 0 14px;cursor:pointer;background:var(--surface)}
+.dr-box:hover{border-color:var(--border2)}
+.dr-box-h{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:650;color:var(--muted);margin-bottom:6px}
+.dr-box-g{display:grid;grid-template-columns:auto 1fr auto;gap:16px}
+.dr-box-g span{display:block;font-size:11px;color:var(--muted)}
+.dr-box-g b{font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dr-box-g small{display:block;font-size:11px;color:var(--muted)}
+.dr-box.empty{display:flex;align-items:center;gap:8px;width:100%;font-size:13px;font-weight:600;color:var(--text2);border-style:dashed;background:transparent;font-family:var(--font);height:42px}
+@media(max-width:760px){.dim-row{grid-template-columns:1fr 1fr}}
+
 /* ══ Підгрупи ══ */
 .seg-sub{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 12px;padding-left:4px}
 .ssg{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:12.5px;font-weight:550;font-family:var(--font);cursor:pointer;white-space:nowrap}
@@ -1674,6 +1692,16 @@ document.addEventListener('DOMContentLoaded',function(){
         <div class="form-group"><label>Кількість</label><input type="number" id="fQty" placeholder="0" min="0"></div>
       </div>
       <div class="form-group">
+        <label>Коробка: вага і габарити</label>
+        <div class="dim-row">
+          <div><small>Вага</small><div class="dim-in"><input type="number" id="fWKg" placeholder="Вага" step="0.01" min="0" oninput="dimPreview()"><span>кг</span></div></div>
+          <div><small>Довжина</small><div class="dim-in"><input type="number" id="fDimL" placeholder="Довжина" step="0.1" min="0" oninput="dimPreview()"><span>см</span></div></div>
+          <div><small>Ширина</small><div class="dim-in"><input type="number" id="fDimW" placeholder="Ширина" step="0.1" min="0" oninput="dimPreview()"><span>см</span></div></div>
+          <div><small>Висота</small><div class="dim-in"><input type="number" id="fDimH" placeholder="Висота" step="0.1" min="0" oninput="dimPreview()"><span>см</span></div></div>
+        </div>
+        <div class="dim-hint" id="dimHint"></div>
+      </div>
+      <div class="form-group">
         <label>Фото (URL або завантаж)</label>
         <input type="text" id="fPhoto" placeholder="https://..." oninput="previewModalPhotoVal(this.value)">
         <div class="photo-drop" id="photoDropZone" onclick="document.getElementById('fPhotoFile').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
@@ -1950,7 +1978,7 @@ const saved=sessionStorage.getItem('mblok_user');
 if(saved){currentUser=JSON.parse(saved);showApp();}
 
 // Номер версії складу: збільшувати, коли змінюється структура запису товару
-const APP_VER=2;
+const APP_VER=3;
 // ─── INIT ──────────────────────────────────────────────
 function initApp(){
   setSyncStatus('syncing');
@@ -2036,7 +2064,9 @@ let allHistory=[];             // останні записи для журна�
 let histSubscribed=false;
 const lastHist={};             // для злиття швидких ±1 в один запис
 let histUser='all', histAction='all';
-const HIST_FIELDS={name:'Назва',art:'Артикул',sup_art:'Арт. постачальника',warehouse:'Склад',group:'Група',qty:'Кількість',price_buy:'Ціна закупки',photo:'Фото'};
+const HIST_FIELDS={name:'Назва',art:'Артикул',sup_art:'Арт. постачальника',warehouse:'Склад',group:'Група',qty:'Кількість',price_buy:'Ціна закупки',photo:'Фото',wKg:'Вага коробки',dimL:'Довжина',dimW:'Ширина',dimH:'Висота'};
+// Характеристики коробки: вага (кг) і габарити (см)
+const DIM_KEYS=['wKg','dimL','dimW','dimH'];
 const HIST_ACT={
   create:{l:'Створено',ic:'plus',c:'g'},
   update:{l:'Змінено',ic:'pencil',c:'b'},
@@ -2056,6 +2086,7 @@ function snapItem(it){
   const s={name:it.name||'',art:it.art||'',sup_art:it.sup_art||'',warehouse:it.warehouse||'wh_1',
     qty:Number(it.qty)||0,price_buy:Number(it.price_buy)||0,photo:it.photo||'',group:it.group||'',order:it.order||0};
   if(it.tildaUid){TILDA_KEYS.forEach(k=>{s[k]=k==='tildaGone'?!!it[k]:(it[k]||'');});}
+  DIM_KEYS.forEach(k=>{const v=Number(it[k]);if(v>0)s[k]=v;});
   return s;
 }
 // Форми редагування не знають про поля Тільди — підтягуємо їх із поточного запису
@@ -2164,6 +2195,8 @@ function fmtHistVal(f,v){
   if(f==='qty')return fmtN(v)+' шт';
   if(f==='warehouse')return escHtml(whNameById(v));
   if(f==='group')return escHtml(grpNameById(v));
+  if(f==='wKg')return String(v).replace('.',',')+' кг';
+  if(f==='dimL'||f==='dimW'||f==='dimH')return String(v).replace('.',',')+' см';
   return escHtml(String(v)||'—');
 }
 function fmtWhen(ts){
@@ -3418,6 +3451,15 @@ function renderDrawer(){
       <div><span>Сума на складі</span><b>${fmtM(itemVal(r))}</b></div>
       <div class="dr-share"><span>Частка у вартості складу</span><b>${share.toFixed(1).replace('.',',')}%</b><div class="share-bar"><i style="width:${Math.max(1,Math.min(100,share))}%"></i></div></div>
     </div>
+    ${(()=>{const c=boxCalc(r);if(!c.w&&!c.cm3)return`<button class="dr-box empty" onclick="closeDrawer();openModal('${r.id}')">${ic('box',15)}Додати вагу й габарити коробки</button>`;
+      return`<div class="dr-box" onclick="closeDrawer();openModal('${r.id}')" title="Змінити">
+        <div class="dr-box-h">${ic('box',14)}Коробка</div>
+        <div class="dr-box-g">
+          <div><span>Вага</span><b>${c.w?fmtDec(c.w)+' кг':'—'}</b></div>
+          <div><span>Д × Ш × В</span><b>${c.cm3?`${fmtDec(c.l,1)} × ${fmtDec(c.wd,1)} × ${fmtDec(c.h,1)} см`:'—'}</b></div>
+          <div><span>Об’єм</span><b>${c.cm3?fmtDec(c.liters)+' л':'—'}</b>${c.cm3?`<small>${fmtDec(c.m3,4)} м³</small>`:''}</div>
+        </div>
+      </div>`;})()}
     <div class="dr-move">
       <label>Перемістити на склад</label>
       <select onchange="moveItem('${r.id}',this.value)"><option value="">Оберіть склад…</option>${allWarehouses.filter(w=>w.id!==r.warehouse).map(w=>`<option value="${w.id}">${escHtml(w.name)}</option>`).join('')}</select>
@@ -3660,7 +3702,7 @@ function makeRow(r,whGroups,whTot,showGroup){
     <td class="c-sel">${drag?`<span class="drag-handle" title="Перетягни, щоб змінити порядок">${ic('grip',14)}</span>`:''}<span class="sel-box${sel?' on':''}" onclick="toggleSel('${r.id}',event)" role="checkbox" aria-checked="${sel}"></span></td>
     <td class="c-name"><div class="nm-wrap">${photo}<div class="nm-txt">
       <div class="p-name"><span class="cell-view" onclick="startEdit('${r.id}','name',this)">${escHtml(r.name||'—')}</span></div>
-      <div class="p-meta">${r.art?`<span class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art)}</span>`:'<span class="p-art muted">без артикулу</span>'}${!showGroup&&_rowSubLbl&&grp&&grp.parent&&activeGroup!==grp.id?`<span class="p-sub">${escHtml(grp.name)}</span>`:''}${tildaBadge(r)}${r.sup_art?`<span class="p-sup-art" onclick="copySupArt('${jsq(r.sup_art)}',this)" title="Артикул постачальника — клікни, щоб скопіювати">${ic('copy',11)}${escHtml(r.sup_art)}</span>`:''}</div>
+      <div class="p-meta">${r.art?`<span class="p-art cell-view" onclick="startEdit('${r.id}','art',this)">${escHtml(r.art)}</span>`:'<span class="p-art muted">без артикулу</span>'}${!showGroup&&_rowSubLbl&&grp&&grp.parent&&activeGroup!==grp.id?`<span class="p-sub">${escHtml(grp.name)}</span>`:''}${tildaBadge(r)}${r.wKg?`<span class="p-sub" title="Вага коробки">${fmtDec(r.wKg)} кг</span>`:''}${r.sup_art?`<span class="p-sup-art" onclick="copySupArt('${jsq(r.sup_art)}',this)" title="Артикул постачальника — клікни, щоб скопіювати">${ic('copy',11)}${escHtml(r.sup_art)}</span>`:''}</div>
     </div></div></td>
     ${showGroup?`<td class="c-grp">${grp?`<span class="p-grp"><i style="background:${grp.color||'#888'}"></i>${escHtml(grpLabel(grp))}</span>`:'<span class="muted">—</span>'}</td>`:''}
     <td class="c-st">${stockBadge(r)}</td>
@@ -3918,6 +3960,11 @@ window.openModal=function(id){
   document.getElementById('fPriceBuy').value=r?.price_buy||'';
   document.getElementById('fQty').value=r?.qty||'';
   document.getElementById('fPhoto').value=r?.photo||'';
+  document.getElementById('fWKg').value=r?.wKg||'';
+  document.getElementById('fDimL').value=r?.dimL||'';
+  document.getElementById('fDimW').value=r?.dimW||'';
+  document.getElementById('fDimH').value=r?.dimH||'';
+  dimPreview();
   // Fill warehouse select
   const sel=document.getElementById('fWarehouse');
   sel.innerHTML=allWarehouses.map(wh=>`<option value="${wh.id}"${(r?.warehouse||activeTab)===wh.id?' selected':''}>${wh.name}</option>`).join('');
@@ -3931,6 +3978,17 @@ window.openModal=function(id){
   setTimeout(()=>document.getElementById('fName').focus(),100);
 };
 window.closeModal=()=>document.getElementById('overlay').classList.remove('open');
+// Об'єм коробки в літрах і м³
+function boxCalc(r){
+  const w=Number(r.wKg)||0,l=Number(r.dimL)||0,wd=Number(r.dimW)||0,h=Number(r.dimH)||0;
+  const cm3=l&&wd&&h?l*wd*h:0;
+  return{w,l,wd,h,cm3,liters:cm3/1000,m3:cm3/1e6};
+}
+const fmtDec=(v,d=2)=>Number(v).toLocaleString('uk-UA',{maximumFractionDigits:d});
+window.dimPreview=function(){
+  const c=boxCalc({wKg:document.getElementById('fWKg').value,dimL:document.getElementById('fDimL').value,dimW:document.getElementById('fDimW').value,dimH:document.getElementById('fDimH').value});
+  document.getElementById('dimHint').innerHTML=c.cm3?`Об’єм коробки <b>${fmtDec(c.liters,2)} л</b> · ${fmtDec(c.m3,4)} м³`:'Вага однієї коробки і її розміри — щоб легше рахувати доставку з Китаю';
+};
 window.closeModalOut=e=>{if(e.target===document.getElementById('overlay'))closeModal();};
 window.previewModalPhotoVal=function(url){
   const dz=document.getElementById('photoDropZone');const ex=dz.querySelector('img');if(ex)ex.remove();
@@ -3944,7 +4002,8 @@ window.saveItem=async function(){
   const id=document.getElementById('editId').value||undefined;
   const existing=id?allItems.find(x=>x.id===id):{};
   const maxOrder=allItems.filter(r=>r.warehouse===document.getElementById('fWarehouse').value).reduce((a,r)=>Math.max(a,Number(r.order)||0),0);
-  const item={id,name,art:document.getElementById('fArt').value.trim(),sup_art:document.getElementById('fSupArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),group:document.getElementById('fGroup').value||'',order:existing.order!==undefined?existing.order:maxOrder+10};
+  const item={id,name,art:document.getElementById('fArt').value.trim(),sup_art:document.getElementById('fSupArt').value.trim(),warehouse:document.getElementById('fWarehouse').value,price_buy:parseFloat(document.getElementById('fPriceBuy').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,photo:document.getElementById('fPhoto').value.trim(),group:document.getElementById('fGroup').value||'',order:existing.order!==undefined?existing.order:maxOrder+10,
+    wKg:parseFloat(document.getElementById('fWKg').value)||0,dimL:parseFloat(document.getElementById('fDimL').value)||0,dimW:parseFloat(document.getElementById('fDimW').value)||0,dimH:parseFloat(document.getElementById('fDimH').value)||0};
   closeModal();await saveToDb(item,{note:id?'редагування картки':''});toast(id?'Оновлено':'Додано','ok');
 };
 
