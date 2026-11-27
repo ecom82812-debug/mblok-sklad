@@ -1237,6 +1237,9 @@ tr.row-zero .p-name{color:var(--muted)}
 .cn2-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-xs);margin-bottom:14px;overflow:hidden}
 .cn2-card.st-received{border-color:var(--green-border);box-shadow:0 0 0 1px var(--green-border),var(--sh-xs)}
 .cn2-card.st-stocked{opacity:.86}
+.cn2-card.st-archived{opacity:.78}
+.cn2-stocked.arch{color:var(--muted);background:var(--surface3)}
+.cn2-tab-sep{width:1px;background:var(--border);margin:10px 4px;flex-shrink:0}
 .cn2-head{display:flex;align-items:center;gap:18px;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .cn2-id{display:flex;flex-direction:column;gap:2px;min-width:200px;cursor:pointer}
 .cn2-idrow{display:flex;align-items:center;gap:10px}
@@ -3072,7 +3075,7 @@ function renderTabs(){
   whs.push(`<div class="sb-label">Закупівлі</div>`);
   const dsActive=activeTab==='dropship';
   const cnActive=activeTab==='china';
-  const cnOpen=allOrders.filter(o=>o.status!=='received').length;
+  const cnOpen=allOrders.filter(o=>o.status!=='received'&&!o.archivedAt).length;
   whs.push(`<div class="tab${dsActive?' active':''}" onclick="switchTab('dropship')">${ic('link',18)}<div class="tab-txt"><span class="tab-name">Дропшипінг</span></div><span class="tab-count">${allDsItems.length}</span></div>`);
   whs.push(`<div class="tab${cnActive?' active':''}" onclick="switchTab('china')">${ic('ship',18)}<div class="tab-txt"><span class="tab-name">Замовлення з Китаю</span></div>${cnOpen?`<span class="tab-count">${cnOpen}</span>`:''}</div>`);
   whs.push(`<div class="sb-label">Контроль</div>`);
@@ -4243,7 +4246,8 @@ const cnToday=window.cnToday=()=>new Date().toISOString().slice(0,10);
 const cnNo=o=>'#'+String(o.id||'').slice(-4).toUpperCase();
 const cnDate=d=>{if(!d)return'—';const x=new Date(d+'T00:00:00');return isNaN(x)?d:x.toLocaleDateString('uk-UA',{day:'numeric',month:'short',year:'numeric'}).replace(' р.','');};
 const cnDays=(a,b)=>{if(!a)return null;const x=new Date(a+'T00:00:00'),y=b?new Date(b+'T00:00:00'):new Date();return Math.max(0,Math.round((y-x)/864e5));};
-const cnStage=o=>o.stockedAt?'stocked':(CN_STATUSES[o.status]?o.status:'pending');
+const cnStageRaw=o=>o.stockedAt?'stocked':(CN_STATUSES[o.status]?o.status:'pending');
+const cnStage=o=>o.archivedAt?'archived':cnStageRaw(o);
 
 // Собівартість/шт для кожного товару
 function cnCalc(o){
@@ -4294,10 +4298,11 @@ const cnBig=s=>typeof s==='string'&&s.startsWith('data:')&&s.length>45000;
 
 // ── Сторінка
 function renderChina(){
-  const all=[...allOrders];
   const st=o=>cnStage(o);
+  const archived=allOrders.filter(o=>o.archivedAt);
+  const all=allOrders.filter(o=>!o.archivedAt);   // архів не впливає на показники
   const active=all.filter(o=>st(o)!=='stocked');
-  const calcs=new Map(all.map(o=>[o.id,cnCalc(o)]));
+  const calcs=new Map(allOrders.map(o=>[o.id,cnCalc(o)]));
   const inRoad=all.filter(o=>st(o)==='shipping'||st(o)==='paid');
   const roadQty=inRoad.reduce((a,o)=>a+calcs.get(o.id).qtyAll,0);
   const roadCost=inRoad.reduce((a,o)=>a+calcs.get(o.id).costAll,0);
@@ -4309,22 +4314,23 @@ function renderChina(){
     {label:'В дорозі',val:fmtN(roadQty)+' <small style="font-size:.55em;font-weight:600;color:var(--muted)">шт</small> <span style="color:var(--muted2);font-weight:400">·</span> '+fmtN(Math.round(inRoad.reduce((a,o)=>a+cnNum(o.weight),0)*10)/10)+' <small style="font-size:.55em;font-weight:600;color:var(--muted)">кг</small>',sub:`${inRoad.length} замовл. · собівартість ${fmtShort(roadCost)}`,main:true},
     {label:'До оплати',val:money(due1+due2),sub:due2?`доставка ${fmtShort(due2)}${due1?` · викуп ${fmtShort(due1)}`:''}`:due1?`викуп ${fmtShort(due1)}`:'все сплачено',tone:due1+due2?'amber':''},
     {label:'Чекає оприбуткування',val:fmtN(toStock),sub:toStock?'отримані, ще не на складі':'немає',tone:toStock?'violet':'',onclick:toStock?"setCnFilter('received')":''},
-    {label:'Сплачено всього',val:money(spent),sub:`${all.length} замовлень за весь час`},
+    {label:'Сплачено всього',val:money(spent),sub:`${all.length} замовлень${archived.length?` · без архіву (${archived.length})`:''}`},
     ...(()=>{const dv=all.map(o=>calcs.get(o.id).shipDev).filter(x=>x!==null);if(!dv.length)return[];const av=dv.reduce((a,b)=>a+b,0)/dv.length;return[{label:'Доставка vs прогноз',val:`<span style="color:${av>0.005?'var(--red)':av<-0.005?'var(--green)':'inherit'}">${cnPct(av)}</span>`,sub:`в середньому по ${dv.length} замовл.`}];})(),
   ]);
-  const cnt=k=>k==='active'?active.length:k==='all'?all.length:all.filter(o=>st(o)===k).length;
+  const cnt=k=>k==='active'?active.length:k==='all'?all.length:k==='archived'?archived.length:all.filter(o=>st(o)===k).length;
   const tab=(k,l,dot)=>`<button class="cn2-tab${cnFilter===k?' on':''}" onclick="setCnFilter('${k}')">${dot?`<i style="background:${dot}"></i>`:''}${l}<span>${cnt(k)}</span></button>`;
-  const tabs=`<div class="cn2-tabs">${tab('active','Активні')}${CN_ORDER.map(k=>tab(k,CN_STATUSES[k].label,CN_STATUSES[k].dot)).join('')}${tab('stocked','На складі','#64748b')}${tab('all','Усі')}</div>`;
-  let list=cnFilter==='active'?active:cnFilter==='all'?all:all.filter(o=>st(o)===cnFilter);
-  const rank={received:0,shipping:1,paid:2,pending:3,stocked:4};
+  const tabs=`<div class="cn2-tabs">${tab('active','Активні')}${CN_ORDER.map(k=>tab(k,CN_STATUSES[k].label,CN_STATUSES[k].dot)).join('')}${tab('stocked','На складі','#64748b')}${tab('all','Усі')}<span class="cn2-tab-sep"></span>${tab('archived','Архів')}</div>`;
+  let list=cnFilter==='active'?active:cnFilter==='all'?all:cnFilter==='archived'?archived:all.filter(o=>st(o)===cnFilter);
+  const rank={received:0,shipping:1,paid:2,pending:3,stocked:4,archived:5};
   list=list.slice().sort((a,b)=>(rank[st(a)]-rank[st(b)])||((b.date||'')>(a.date||'')?1:-1));
-  const empty=`<div class="cn2-card"><div class="empty"><div class="e-ic">${ic('ship',22)}</div><b>${all.length?'Тут порожньо':'Замовлень ще немає'}</b><span>${all.length?'Обери іншу вкладку':'Натисни «Нове замовлення», щоб додати перше'}</span>${all.length?'':`<button class="btn btn-primary" onclick="openCnModal()">${ic('plus',15)}Нове замовлення</button>`}</div></div>`;
+  if(cnFilter==='archived')list=list.slice().sort((a,b)=>(b.archivedAt||'')>(a.archivedAt||'')?1:-1);
+  const empty=`<div class="cn2-card"><div class="empty"><div class="e-ic">${ic('ship',22)}</div><b>${cnFilter==='archived'?'В архіві порожньо':all.length?'Тут порожньо':'Замовлень ще немає'}</b><span>${cnFilter==='archived'?'Отримані замовлення можна перенести сюди кнопкою «В архів» — вони не впливатимуть на показники':all.length?'Обери іншу вкладку':'Натисни «Нове замовлення», щоб додати перше'}</span>${all.length?'':`<button class="btn btn-primary" onclick="openCnModal()">${ic('plus',15)}Нове замовлення</button>`}</div></div>`;
   document.getElementById('pageContent').innerHTML=tabs+(list.length?list.map(o=>cnCardHtml(o,calcs.get(o.id))).join(''):empty);
 }
 window.setCnFilter=function(f){cnFilter=f;renderPage();};
 
 function cnPipe(o){
-  const s=cnStage(o);
+  const s=cnStageRaw(o);
   const steps=[...CN_ORDER,'stocked'];
   const idx=steps.indexOf(s);
   const lbl={...Object.fromEntries(CN_ORDER.map(k=>[k,CN_STATUSES[k].short])),stocked:'На складі'};
@@ -4335,8 +4341,10 @@ function cnNextAction(o){
   if(s==='pending')return`<button class="btn" onclick="cnAdvance('${o.id}','paid')">${ic('check',14)}Викуплено</button>`;
   if(s==='paid')return`<button class="btn" onclick="cnAdvance('${o.id}','shipping')">${ic('truck',14)}Відправлено</button>`;
   if(s==='shipping')return`<button class="btn btn-primary" onclick="cnAdvance('${o.id}','received')">${ic('inbox',14)}Отримали</button>`;
-  if(s==='received')return`<button class="btn btn-primary" onclick="openCnImportFor('${o.id}')">${ic('warehouse',14)}Оприбуткувати на склад</button>`;
-  return`<span class="cn2-stocked">${ic('checkCircle',14)}На складі з ${cnDate((o.stockedAt||'').slice(0,10))}</span>`;
+  const arch=`<button class="btn" onclick="cnArchive('${o.id}',true)" title="Прибрати з активних і з показників. Можна повернути з вкладки «Архів»">${ic('archive',14)}В архів</button>`;
+  if(s==='received')return`<button class="btn btn-primary" onclick="openCnImportFor('${o.id}')">${ic('warehouse',14)}Оприбуткувати на склад</button>${arch}`;
+  if(s==='archived')return`<span class="cn2-stocked arch">${ic('archive',14)}В архіві з ${cnDate((o.archivedAt||'').slice(0,10))}</span><button class="btn" onclick="cnArchive('${o.id}',false)">${ic('undo',14)}Повернути</button>`;
+  return`<span class="cn2-stocked">${ic('checkCircle',14)}На складі з ${cnDate((o.stockedAt||'').slice(0,10))}</span>${arch}`;
 }
 function cnCardHtml(o,c){
   const s=cnStage(o);
@@ -4381,6 +4389,13 @@ function cnCardHtml(o,c){
     </div>
   </article>`;
 }
+window.cnArchive=async function(id,on){
+  const o=allOrders.find(x=>x.id===id);if(!o)return;
+  const upd={...o};
+  if(on){upd.archivedAt=new Date().toISOString();upd.archivedBy=currentUser?.login||'';}
+  else{delete upd.archivedAt;delete upd.archivedBy;}
+  await cnSaveOrder(upd,on?`${cnNo(o)} перенесено в архів`:`${cnNo(o)} повернуто з архіву`);
+};
 window.cnAdvance=async function(id,status){
   const o=allOrders.find(x=>x.id===id);if(!o)return;
   const upd={...o,status};
